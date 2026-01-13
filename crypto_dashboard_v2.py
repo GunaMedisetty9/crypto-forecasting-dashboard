@@ -749,7 +749,7 @@ if has_predictions:
                 # Highlight last 3 columns (RMSE, R² Score, MAPE) for LSTM row (index 3)
         def highlight_lstm_row(row):
             if row.name == 3:  # LSTM row
-                return ['background-color: #2d5016' if col in ['RMSE', 'R² Score', 'MAPE (%)'] else '' for col in row.index]
+                return ['background-color: #ffd700; color: #0e1117; font-weight: bold' if col in ['RMSE', 'R² Score', 'MAPE (%)'] else '' for col in row.index]
             return ['' for _ in row.index]
         
         styled_df = comparison_df_reversed.style.format({
@@ -783,7 +783,7 @@ values=[max(0.01, abs(x)) for x in comparison_df['R² Score'].tolist()],  # Ensu
             textposition='auto',
             textinfo='label+percent',
             insidetextorientation='radial',
-            pull=[0.05, 0.05, 0.05, 0.05],
+            pull=[0, 0, 0, 0],
             hovertemplate='<b>%{label}</b><br>R² Score: %{value:.4f}<br>Share: %{percent}<extra></extra>'
         )])
         

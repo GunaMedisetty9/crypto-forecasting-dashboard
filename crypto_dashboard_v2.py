@@ -228,7 +228,7 @@ div[data-testid="stSidebarCollapseButton"] svg {
             background: linear-gradient(90deg, transparent 0%, #8B7355 50%, transparent 100%) !important;
             margin: 2rem 0 !important;
         }
-        #MainMenu, footer, header {visibility: hidden;}
+        #MainMenu, footer, {visibility: hidden;}
         ::-webkit-scrollbar {width: 10px; height: 10px;}
         ::-webkit-scrollbar-track {background: #1e2130;}
         ::-webkit-scrollbar-thumb {background: #8B7355; border-radius: 5px;}

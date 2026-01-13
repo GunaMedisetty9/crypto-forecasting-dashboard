@@ -43,6 +43,7 @@ MODEL_COLORS = {
 if st.session_state.theme == 'dark':
     st.markdown("""
     <style>
+          :root { color-scheme: dark; }
         * {transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;}
         .stApp, .stApp > header, [data-testid="stHeader"] {
             background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;
@@ -225,6 +226,7 @@ if st.session_state.theme == 'dark':
 else:
     st.markdown("""
     <style>
+        :root { color-scheme: light; }
         * {transition: background-color 0.5s ease, color 0.5s ease !important;}
         .stApp {background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;}
         .main-header {font-size: 2.2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important;}
@@ -253,7 +255,20 @@ else:
         #MainMenu, footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
+div[data-testid="stSidebarCollapseButton"] {
+    background-color: #C9B99B !important;
+    border: 2px solid #A67C52 !important;
+    color: #0e1117 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    z-index: 999999 !important;
+}
 
+div[data-testid="stSidebarCollapseButton"] svg {
+    fill: #0e1117 !important;
+    stroke: #0e1117 !important;
+}
 # ============================================================================
 # HEADER
 # ============================================================================
@@ -345,6 +360,27 @@ def load_live_data(ticker):
     except:
         return None
 
+def filter_by_timerange(df: pd.DataFrame, time_range: str) -> pd.DataFrame:
+    if df is None or df.empty:
+        return df
+
+    df = df.sort_index()
+    end = df.index.max()
+
+    if time_range == "All":
+        return df
+    if time_range == "1Y":
+        start = end - pd.DateOffset(years=1)
+    elif time_range == "3Y":
+        start = end - pd.DateOffset(years=3)
+    elif time_range == "5Y":
+        start = end - pd.DateOffset(years=5)
+    else:
+        return df
+
+    return df.loc[df.index >= start]
+
+
 data_dict, predictions_data, train_data, test_data = load_data()
 
 # ============================================================================
@@ -381,6 +417,14 @@ selected_model = st.sidebar.selectbox(
 
 show_technical = st.sidebar.checkbox("Show Technical Indicators", value=True)
 show_forecast = st.sidebar.checkbox("Show Future Forecast", value=True) if has_predictions else False
+
+st.sidebar.markdown("---")
+time_range = st.sidebar.radio(
+    "Time Range",
+    options=["1Y", "3Y", "5Y", "All"],
+    index=2,  # default 5Y
+    horizontal=True
+)
 
 if has_predictions:
     st.sidebar.markdown("---")
@@ -427,7 +471,7 @@ st.sidebar.download_button(
     mime="text/csv",
     key="csv_dl"
 )
-
+plot_data = filter_by_timerange(data, time_range)
 # ============================================================================
 # MAIN METRICS
 # ============================================================================
@@ -475,7 +519,7 @@ legend_font_color = '#C9B99B' if st.session_state.theme == 'dark' else '#1f2937'
 fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
                     vertical_spacing=0.03, row_heights=[0.7, 0.3])
 
-recent_data = data.iloc[-180:]
+recent_data = plot_data.copy()
 fig.add_trace(go.Candlestick(
     x=recent_data.index,
     open=recent_data['Open'] if 'Open' in recent_data.columns else recent_data['Close'],
@@ -618,7 +662,7 @@ if show_technical:
         
         fig_rsi = go.Figure()
         fig_rsi.add_trace(go.Scatter(
-            x=data.index[-200:], y=data['RSI'].iloc[-200:],
+            x=plot_data.index,y=plot_data['RSI'],
             mode='lines', name='RSI', line=dict(color='#C9B99B', width=3),
             fill='tozeroy', fillcolor='rgba(201, 185, 155, 0.2)'
         ))
@@ -638,7 +682,7 @@ if show_technical:
         )
         st.plotly_chart(fig_rsi, use_container_width=True)
         
-        rsi_current = data['RSI'].iloc[-1]
+        rsi_current = plot_data['RSI'].iloc[-1]
         col1, col2, col3 = st.columns(3)
         with col1:
             st.metric("Current RSI", f"{rsi_current:.2f}")
@@ -652,12 +696,12 @@ if show_technical:
         st.markdown("**MACD (Moving Average Convergence Divergence)** - Trend-following momentum indicator")
         
         fig_macd = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.03, row_heights=[0.7, 0.3])
-        fig_macd.add_trace(go.Scatter(x=data.index[-200:], y=data['Close'].iloc[-200:], mode='lines', name='Price', line=dict(color='#C9B99B', width=2.5)), row=1, col=1)
-        fig_macd.add_trace(go.Scatter(x=data.index[-200:], y=data['MACD'].iloc[-200:], mode='lines', name='MACD', line=dict(color='#A67C52', width=2.5)), row=2, col=1)
-        fig_macd.add_trace(go.Scatter(x=data.index[-200:], y=data['MACD_Signal'].iloc[-200:], mode='lines', name='Signal', line=dict(color='#8B7355', width=2.5)), row=2, col=1)
+        fig_macd.add_trace(go.Scatter(x=plot_data.index, y=plot_data['Close'], mode='lines', name='Price', line=dict(color='#C9B99B', width=2.5)), row=1, col=1)
+        fig_macd.add_trace(go.Scatter(x=plot_data.index, y=plot_data['MACD'], mode='lines', name='MACD', line=dict(color='#A67C52', width=2.5)), row=2, col=1)
+        fig_macd.add_trace(go.Scatter(x=plot_data.index, y=plot_data['MACD_Signal'], mode='lines', name='Signal', line=dict(color='#8B7355', width=2.5)), row=2, col=1)
         
-        hist_colors = ['#B8B76D' if val >= 0 else '#A67C52' for val in data['MACD_Hist'].iloc[-200:]]
-        fig_macd.add_trace(go.Bar(x=data.index[-200:], y=data['MACD_Hist'].iloc[-200:], name='Histogram', marker_color=hist_colors, opacity=0.7), row=2, col=1)
+        hist_colors = ['#009E73' if val >= 0 else '#D55E00' for val in plot_data['MACD_Hist']]
+        fig_macd.add_trace(go.Bar(x=plot_data.index, y=plot_data['MACD_Hist'], name='Histogram', marker_color=hist_colors, opacity=0.7), row=2, col=1)
         
         fig_macd.update_layout(
             template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
@@ -670,10 +714,10 @@ if show_technical:
         st.markdown("**Bollinger Bands** - Volatility bands placed above and below a moving average")
         
         fig_bb = go.Figure()
-        fig_bb.add_trace(go.Scatter(x=data.index[-200:], y=data['BB_Upper'].iloc[-200:], mode='lines', name='Upper Band', line=dict(color='#A67C52', width=2, dash='dash')))
-        fig_bb.add_trace(go.Scatter(x=data.index[-200:], y=data['BB_Middle'].iloc[-200:], mode='lines', name='SMA (20)', line=dict(color='#C9B99B', width=2.5)))
-        fig_bb.add_trace(go.Scatter(x=data.index[-200:], y=data['BB_Lower'].iloc[-200:], mode='lines', name='Lower Band', line=dict(color='#8B7355', width=2, dash='dash'), fill='tonexty', fillcolor='rgba(166, 124, 82, 0.15)'))
-        fig_bb.add_trace(go.Scatter(x=data.index[-200:], y=data['Close'].iloc[-200:], mode='lines', name='Close Price', line=dict(color='#B8B76D', width=3)))
+        fig_bb.add_trace(go.Scatter(x=plot_data.index, y=plot_data['BB_Upper'], mode='lines', name='Upper Band', line=dict(color='#A67C52', width=2, dash='dash')))
+        fig_bb.add_trace(go.Scatter(x=plot_data.index, y=plot_data['BB_Middle'], mode='lines', name='SMA (20)', line=dict(color='#C9B99B', width=2.5)))
+        fig_bb.add_trace(go.Scatter(x=plot_data.index, y=plot_data['BB_Lower'], mode='lines', name='Lower Band', line=dict(color='#8B7355', width=2, dash='dash'), fill='tonexty', fillcolor='rgba(166, 124, 82, 0.15)'))
+        fig_bb.add_trace(go.Scatter(x=plot_data.index, y=plot_data['Close'], mode='lines', name='Close Price', line=dict(color='#B8B76D', width=3)))
         
         fig_bb.update_layout(
             template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
@@ -682,12 +726,12 @@ if show_technical:
         )
         st.plotly_chart(fig_bb, use_container_width=True)
         
-        data['BB_Width'] = ((data['BB_Upper'] - data['BB_Lower']) / data['BB_Middle']) * 100
+        plot_data['BB_Width'] = ((plot_data['BB_Upper'] - plot_data['BB_Lower']) / plot_data['BB_Middle']) * 100
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("Current BB Width", f"{data['BB_Width'].iloc[-1]:.2f}%")
+            st.metric("Current BB Width", f"{plot_data['BB_Width'].iloc[-1]:.2f}%")
         with col2:
-            st.metric("30-Day Avg Width", f"{data['BB_Width'].iloc[-30:].mean():.2f}%")
+            st.metric("30-Day Avg Width", f"{plot_data['BB_Width'].iloc[-30:].mean():.2f}%")
 
 # ============================================================================
 # ADDITIONAL ANALYSIS
@@ -704,7 +748,7 @@ with col1:
     fig_vol = make_subplots(specs=[[{"secondary_y": True}]])
     
     vol_colors_60 = []
-    for i in range(len(data.iloc[-60:])):
+    for i in range(len(plot_data)):
         if i == 0:
             vol_colors_60.append('#B8B76D')
         else:
@@ -713,8 +757,8 @@ with col1:
             else:
                 vol_colors_60.append('#A67C52')
     
-    fig_vol.add_trace(go.Bar(x=data.index[-60:], y=data['Volume'].iloc[-60:], name='Volume', marker_color=vol_colors_60, opacity=0.7), secondary_y=False)
-    fig_vol.add_trace(go.Scatter(x=data.index[-60:], y=data['Close'].iloc[-60:], name='Price', line=dict(color='#C9B99B', width=2.5)), secondary_y=True)
+    fig_vol.add_trace(go.Bar(x=plot_data.index,y=plot_data['Volume'], name='Volume', marker_color=vol_colors_60, opacity=0.7), secondary_y=False)
+    fig_vol.add_trace(go.Scatter(x=plot_data.index,y=plot_data['Close'], name='Price', line=dict(color='#C9B99B', width=2.5)), secondary_y=True)
     
     fig_vol.update_layout(
         template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,

@@ -43,7 +43,7 @@ MODEL_COLORS = {
 if st.session_state.theme == 'dark':
     st.markdown("""
     <style>
-        :root { color-scheme: dark; }
+        # :root { color-scheme: dark; }
         * {transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;}
         .stApp, .stApp > header, [data-testid="stHeader"] {
             background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;
@@ -238,7 +238,7 @@ div[data-testid="stSidebarCollapseButton"] svg {
 else:
     st.markdown("""
     <style>
-        :root { color-scheme: light; }
+        # :root { color-scheme: light; }
         * {transition: background-color 0.5s ease, color 0.5s ease !important;}
         .stApp {background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;}
         .main-header {font-size: 2.2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important;}

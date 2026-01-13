@@ -986,8 +986,323 @@ if show_technical:
         with c2:
             st.metric("30-Day Avg Width", f"{bb_width.iloc[-30:].mean():.2f}%")
 
-# -----------------------------------------------------------------------------
+# =============================================================================
 # ADDITIONAL ANALYSIS
-# -----------------------------------------------------------------------------
+# =============================================================================
+
 st.markdown("---")
-st.markdown("## 📊 Advanced Market
+st.markdown("## 📊 Advanced Market Analysis")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("### 📈 Volume & Price Analysis")
+
+    fig_vol = make_subplots(specs=[[{"secondary_y": True}]])
+
+    # Color volume bars based on close-to-close change
+    if "Close" in plot_data.columns and "Volume" in plot_data.columns:
+        close_diff = plot_data["Close"].diff()
+        vol_colors = np.where(close_diff >= 0, "#B8B76D", "#A67C52").tolist()
+        if len(vol_colors) > 0:
+            vol_colors[0] = "#B8B76D"
+    else:
+        vol_colors = "#B8B76D"
+
+    fig_vol.add_trace(
+        go.Bar(
+            x=plot_data.index,
+            y=plot_data["Volume"] if "Volume" in plot_data.columns else np.zeros(len(plot_data)),
+            name="Volume",
+            marker_color=vol_colors,
+            opacity=0.7,
+        ),
+        secondary_y=False,
+    )
+
+    fig_vol.add_trace(
+        go.Scatter(
+            x=plot_data.index,
+            y=plot_data["Close"] if "Close" in plot_data.columns else np.zeros(len(plot_data)),
+            name="Price",
+            line=dict(color="#C9B99B", width=2.5),
+        ),
+        secondary_y=True,
+    )
+
+    fig_vol.update_layout(
+        template=chart_template,
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color,
+        font=dict(color=text_color),
+        height=400,
+        showlegend=True,
+        legend=dict(
+            font=dict(color=legend_font_color),
+            bgcolor="rgba(0, 0, 0, 0)",
+            bordercolor="rgba(0, 0, 0, 0)",
+            borderwidth=0,
+        ),
+    )
+    fig_vol.update_yaxes(title_text="Volume", secondary_y=False, title_font=dict(color=text_color))
+    fig_vol.update_yaxes(title_text="Price (USD)", secondary_y=True, title_font=dict(color=text_color))
+
+    st.plotly_chart(fig_vol, use_container_width=True)
+
+with col2:
+    st.markdown("### 📊 Returns Distribution")
+
+    if "Returns" in data.columns:
+        returns = (data["Returns"].dropna() * 100).copy()
+    else:
+        returns = pd.Series(dtype=float)
+
+    fig_dist = go.Figure()
+    fig_dist.add_trace(
+        go.Histogram(
+            x=returns.iloc[-252:] if len(returns) > 0 else [],
+            nbinsx=50,
+            name="Daily Returns",
+            marker_color="#C9B99B",
+            opacity=0.8,
+        )
+    )
+
+    mean_return = float(returns.iloc[-252:].mean()) if len(returns) > 0 else 0.0
+    fig_dist.add_vline(
+        x=mean_return,
+        line_dash="dash",
+        line_color="#B8B76D",
+        line_width=2,
+        annotation_text=f"Mean: {mean_return:.2f}%",
+        annotation_font_color=text_color,
+    )
+
+    fig_dist.update_layout(
+        template=chart_template,
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color,
+        font=dict(color=text_color),
+        height=400,
+        xaxis_title="Daily Returns (%)",
+        yaxis_title="Frequency",
+        showlegend=True,
+        legend=dict(
+            font=dict(color=legend_font_color),
+            bgcolor="rgba(0, 0, 0, 0)",
+            bordercolor="rgba(0, 0, 0, 0)",
+            borderwidth=0,
+        ),
+    )
+    st.plotly_chart(fig_dist, use_container_width=True)
+
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.metric("Mean Return", f"{mean_return:.2f}%")
+    with col_b:
+        std_dev = float(returns.iloc[-252:].std()) if len(returns) > 0 else 0.0
+        st.metric("Std Dev", f"{std_dev:.2f}%")
+
+# =============================================================================
+# MODEL COMPARISON
+# =============================================================================
+
+if has_predictions:
+    st.markdown("---")
+    st.markdown("## 🏆 Model Performance Comparison")
+
+    col1, col2 = st.columns([2.5, 1.5])
+
+    comparison_df = pd.DataFrame(predictions_data["all_metrics"][selected_crypto])
+
+    with col1:
+        st.markdown("### 📊 Performance Metrics Table")
+
+        # Reverse order (show 3,2,1,0)
+        comparison_df_reversed = comparison_df.iloc[::-1].reset_index(drop=True)
+        comparison_df_reversed.index = [3, 2, 1, 0]
+
+        def highlight_lstm_row(row):
+            if row.name == 3:
+                return [
+                    "background-color: #ffd700; color: #0e1117; font-weight: bold"
+                    if col in ["RMSE", "R² Score", "MAPE (%)"]
+                    else ""
+                    for col in row.index
+                ]
+            return ["" for _ in row.index]
+
+        styled_df = (
+            comparison_df_reversed.style.format(
+                {
+                    "RMSE": "${:,.2f}",
+                    "MAE": "${:,.2f}",
+                    "R² Score": "{:.4f}",
+                    "MAPE (%)": "{:.2f}%",
+                }
+            )
+            .apply(highlight_lstm_row, axis=1)
+        )
+
+        st.dataframe(styled_df, use_container_width=True)
+
+    with col2:
+        st.markdown("### 🥧 Model Accuracy Distribution")
+
+        pie_colors = [
+            MODEL_COLORS.get(m, PALETTE_OKABE_ITO[i % len(PALETTE_OKABE_ITO)])
+            for i, m in enumerate(comparison_df["Model"].tolist())
+        ]
+
+        fig_pie = go.Figure(
+            data=[
+                go.Pie(
+                    labels=comparison_df["Model"].tolist(),
+                    values=[max(0.01, abs(x)) for x in comparison_df["R² Score"].tolist()],
+                    hole=0.35,
+                    marker=dict(
+                        colors=pie_colors,
+                        line=dict(color="#ffffff" if st.session_state.theme == "light" else "#0e1117", width=2),
+                    ),
+                    textfont=dict(color="#0e1117", size=14, family="Arial Black"),
+                    textposition="auto",
+                    textinfo="label+percent",
+                    insidetextorientation="radial",
+                    pull=[0, 0, 0, 0],
+                    hovertemplate="<b>%{label}</b><br>R² Score: %{value:.4f}<br>Share: %{percent}<extra></extra>",
+                )
+            ]
+        )
+
+        fig_pie.update_layout(
+            template=chart_template,
+            plot_bgcolor=bg_color,
+            paper_bgcolor=bg_color,
+            font=dict(color=text_color),
+            height=380,
+            showlegend=True,
+            legend=dict(
+                orientation="v",
+                yanchor="middle",
+                y=0.5,
+                xanchor="left",
+                x=1.05,
+                font=dict(color=legend_font_color, size=12),
+                bgcolor="rgba(0, 0, 0, 0)",
+                bordercolor="rgba(0, 0, 0, 0)",
+                borderwidth=0,
+            ),
+            margin=dict(l=20, r=120, t=40, b=20),
+        )
+
+        st.plotly_chart(fig_pie, use_container_width=True)
+
+# =============================================================================
+# SUMMARY STATISTICS
+# =============================================================================
+
+st.markdown("---")
+st.markdown("## 📋 Summary Statistics")
+
+summary_data = {
+    "Metric": [
+        "Current Price",
+        "All-Time High",
+        "All-Time Low",
+        "Avg Volume (30D)",
+        "Volatility (30D)",
+        "Current RSI",
+    ],
+    "Value": [
+        f"${float(data['Close'].iloc[-1]):,.2f}" if "Close" in data.columns else "N/A",
+        f"${float(data['Close'].max()):,.2f}" if "Close" in data.columns else "N/A",
+        f"${float(data['Close'].min()):,.2f}" if "Close" in data.columns else "N/A",
+        f"{float(data['Volume'].iloc[-30:].mean())/1e9:.2f}B" if "Volume" in data.columns and len(data) >= 30 else "N/A",
+        f"{float(data['Volatility'].iloc[-1]):.2f}%" if "Volatility" in data.columns else "N/A",
+        f"{float(data['RSI'].iloc[-1]):.2f}" if "RSI" in data.columns else "N/A",
+    ],
+}
+
+summary_df = pd.DataFrame(summary_data)
+st.table(summary_df)
+
+# =============================================================================
+# TRADING SIGNALS / MARKET ANALYSIS
+# =============================================================================
+
+st.markdown("---")
+st.markdown("## 📌 Trading Signals & Market Analysis")
+
+c1, c2, c3 = st.columns(3)
+
+with c1:
+    st.markdown("### 📈 Trend Analysis")
+    if "MA50" in data.columns and "Close" in data.columns:
+        if data["Close"].iloc[-1] > data["MA50"].iloc[-1]:
+            st.success("Bullish Trend")
+            st.write("Price is above MA50 indicating upward momentum.")
+        else:
+            st.error("Bearish Trend")
+            st.write("Price is below MA50 indicating downward pressure.")
+    else:
+        st.info("Trend unavailable (missing MA50/Close).")
+
+    if "MA7" in data.columns and "MA30" in data.columns:
+        if data["MA7"].iloc[-1] > data["MA30"].iloc[-1]:
+            st.info("Short-term Positive")
+        else:
+            st.warning("Short-term Negative")
+
+with c2:
+    st.markdown("### 🧭 Momentum Indicators")
+
+    if "RSI" in data.columns:
+        if current_rsi > 70:
+            st.warning("RSI Overbought")
+            st.write("Consider taking profits.")
+        elif current_rsi < 30:
+            st.success("RSI Oversold")
+            st.write("Potential buy opportunity.")
+        else:
+            st.info("RSI Neutral")
+            st.write("No strong signal.")
+    else:
+        st.info("RSI unavailable.")
+
+    if "MACD" in data.columns and "MACD_Signal" in data.columns:
+        macd_signal = "Bullish" if data["MACD"].iloc[-1] > data["MACD_Signal"].iloc[-1] else "Bearish"
+        st.metric("MACD Signal", macd_signal)
+
+with c3:
+    st.markdown("### 🌊 Volatility Status")
+    if "Volatility" in data.columns:
+        avg_vol = float(data["Volatility"].mean())
+        if current_vol > avg_vol * 1.5:
+            st.error("High Volatility")
+            st.write("Increased risk, use caution.")
+        elif current_vol < avg_vol * 0.5:
+            st.success("Low Volatility")
+            st.write("Stable market conditions.")
+        else:
+            st.info("Normal Volatility")
+            st.write("Standard market behavior.")
+
+        vol_ratio = ((current_vol / avg_vol) - 1) * 100 if avg_vol != 0 else 0.0
+        st.metric("Vol vs Average", f"{vol_ratio:+.1f}%")
+    else:
+        st.info("Volatility unavailable.")
+
+# =============================================================================
+# FOOTER
+# =============================================================================
+
+st.markdown("---")
+st.markdown(
+    f"""
+    <div style="text-align:center; color:#8B7355; padding: 1rem;">
+        Dashboard v6.2 Final | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+

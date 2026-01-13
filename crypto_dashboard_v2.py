@@ -79,9 +79,12 @@ if st.session_state.theme == 'dark':
             border-color: #C9B99B !important;
             box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
         }
-        [data-testid="collapsedControl"] svg {
-            fill: #0e1117 !important; stroke: #0e1117 !important;
-        }
+        div[data-testid="collapsedControl"] svg,
+div[data-testid="stSidebarCollapseButton"] svg {
+    fill: #0e1117 !important;
+    stroke: #0e1117 !important;
+}
+
         [data-testid="stSidebar"] .stSelectbox > div > div {
             background-color: #262730 !important;
             color: #D4C4A8 !important;
@@ -265,10 +268,6 @@ else:
     </style>
     """, unsafe_allow_html=True)
 
-div[data-testid="stSidebarCollapseButton"] svg {
-    fill: #0e1117 !important;
-    stroke: #0e1117 !important;
-}
 # ============================================================================
 # HEADER
 # ============================================================================

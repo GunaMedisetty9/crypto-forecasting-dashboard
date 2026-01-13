@@ -27,13 +27,9 @@ st.set_page_config(
 if "theme" not in st.session_state:
     st.session_state.theme = "dark"
 
-if "theme_changed" not in st.session_state:
-    st.session_state.theme_changed = False
-
 
 def toggle_theme():
     st.session_state.theme = "dark" if st.session_state.theme == "light" else "light"
-    st.session_state.theme_changed = True
 
 
 # -----------------------------------------------------------------------------
@@ -86,16 +82,24 @@ if st.session_state.theme == "dark":
                 font-size: 1rem !important;
             }
 
-            /* Sidebar collapse button (both Streamlit variants) */
+            /* Sidebar expand/collapse button (both Streamlit variants) */
             div[data-testid="collapsedControl"],
             div[data-testid="stSidebarCollapseButton"] {
+                position: fixed !important;
+                top: 0.75rem !important;
+                left: 0.75rem !important;
+                z-index: 1000000 !important;
+
+                padding: 0.25rem 0.4rem !important;
+                border-radius: 10px !important;
+
                 background-color: #C9B99B !important;
                 border: 2px solid #A67C52 !important;
-                color: #0e1117 !important;
+
                 opacity: 1 !important;
                 visibility: visible !important;
                 display: flex !important;
-                z-index: 999999 !important;
+
                 box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
             }
 
@@ -106,11 +110,11 @@ if st.session_state.theme == "dark":
                 box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
             }
 
-            /* ONLY the ">>" icon color = your dark text color */
+            /* Make the chevrons readable (high contrast on light button) */
             div[data-testid="collapsedControl"] svg,
             div[data-testid="stSidebarCollapseButton"] svg {
-                fill: #D4C4A8 !important;
-                stroke: #D4C4A8 !important;
+                fill: #0e1117 !important;
+                stroke: #0e1117 !important;
             }
 
             [data-testid="stSidebar"] .stSelectbox > div > div {
@@ -403,16 +407,24 @@ else:
                 text-align: center;
             }
 
-            /* Sidebar collapse button (both Streamlit variants) */
+            /* Sidebar expand/collapse button (both Streamlit variants) */
             div[data-testid="collapsedControl"],
             div[data-testid="stSidebarCollapseButton"] {
+                position: fixed !important;
+                top: 0.75rem !important;
+                left: 0.75rem !important;
+                z-index: 1000000 !important;
+
+                padding: 0.25rem 0.4rem !important;
+                border-radius: 10px !important;
+
                 background-color: #C9B99B !important;
                 border: 2px solid #A67C52 !important;
-                color: #0e1117 !important;
+
                 opacity: 1 !important;
                 visibility: visible !important;
                 display: flex !important;
-                z-index: 999999 !important;
+
                 box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
             }
 
@@ -423,11 +435,11 @@ else:
                 box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
             }
 
-            /* Icon color = light theme text */
+            /* Make the chevrons readable (high contrast on light button) */
             div[data-testid="collapsedControl"] svg,
             div[data-testid="stSidebarCollapseButton"] svg {
-                fill: #262730 !important;
-                stroke: #262730 !important;
+                fill: #0e1117 !important;
+                stroke: #0e1117 !important;
             }
 
             [data-testid="column"]:last-child {
@@ -477,11 +489,6 @@ with col2:
     st.button(toggle_symbol, on_click=toggle_theme, key="theme_toggle", help="Toggle Theme")
 
 st.markdown("---")
-
-# Fast theme switch: apply CSS + header, then stop before heavy rendering
-if st.session_state.theme_changed:
-    st.session_state.theme_changed = False
-    st.stop()
 
 # -----------------------------------------------------------------------------
 # DATA LOADING
@@ -554,7 +561,6 @@ def load_artifacts():
 
 @st.cache_data
 def load_price_csvs():
-    # Keep your filenames exactly as in your project folder
     btc_data = pd.read_csv("BTC_USD_data.csv", index_col=0, parse_dates=True)
     eth_data = pd.read_csv("ETH_USD_data.csv", index_col=0, parse_dates=True)
 
@@ -989,7 +995,6 @@ if show_technical:
 # =============================================================================
 # ADDITIONAL ANALYSIS
 # =============================================================================
-
 st.markdown("---")
 st.markdown("## 📊 Advanced Market Analysis")
 
@@ -1000,7 +1005,6 @@ with col1:
 
     fig_vol = make_subplots(specs=[[{"secondary_y": True}]])
 
-    # Color volume bars based on close-to-close change
     if "Close" in plot_data.columns and "Volume" in plot_data.columns:
         close_diff = plot_data["Close"].diff()
         vol_colors = np.where(close_diff >= 0, "#B8B76D", "#A67C52").tolist()
@@ -1063,7 +1067,7 @@ with col2:
             x=returns.iloc[-252:] if len(returns) > 0 else [],
             nbinsx=50,
             name="Daily Returns",
-            marker_color="#C9B99B",
+            marker_color="#C9B99B            ,
             opacity=0.8,
         )
     )
@@ -1140,8 +1144,7 @@ if has_predictions:
                     "R² Score": "{:.4f}",
                     "MAPE (%)": "{:.2f}%",
                 }
-            )
-            .apply(highlight_lstm_row, axis=1)
+            ).apply(highlight_lstm_row, axis=1)
         )
 
         st.dataframe(styled_df, use_container_width=True)
@@ -1305,4 +1308,3 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-

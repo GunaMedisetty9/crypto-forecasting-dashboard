@@ -474,8 +474,9 @@ fig.add_trace(go.Candlestick(
     low=recent_data['Low'] if 'Low' in recent_data.columns else recent_data['Close'],
     close=recent_data['Close'],
     name='OHLC',
-    increasing_line_color='#B8B76D',
-    decreasing_line_color='#A67C52'
+    increasing_line_color=MODEL_COLORS["LSTM"],   # green
+    decreasing_line_color="#D55E00",              # orange/red
+
 ), row=1, col=1)
 
 if show_technical:
@@ -483,7 +484,7 @@ if show_technical:
         fig.add_trace(go.Scatter(
             x=recent_data.index, y=recent_data['MA7'],
             mode='lines', name='MA7',
-            line=dict(color='#C9B99B', width=2),
+            line=dict(color="#0072B2", width=2),
             legendgroup='indicators'
         ), row=1, col=1)
     
@@ -491,7 +492,7 @@ if show_technical:
         fig.add_trace(go.Scatter(
             x=recent_data.index, y=recent_data['MA30'],
             mode='lines', name='MA30',
-            line=dict(color='#8B7355', width=2, dash='dash'),
+            line=dict(color="#56B4E9", width=2, dash='dash'),
             legendgroup='indicators'
         ), row=1, col=1)
 
@@ -499,11 +500,12 @@ if show_forecast and has_predictions:
     try:
         if selected_model == 'All Models':
             model_colors = {
-                'lstm': '#B8B76D',
-                'arima': '#A67C52',
-                'sarima': '#8B7355',
-                'prophet': '#C9B99B'
-            }
+    'lstm': MODEL_COLORS["LSTM"],
+    'arima': MODEL_COLORS["ARIMA"],
+    'sarima': MODEL_COLORS["SARIMA"],
+    'prophet': MODEL_COLORS["Prophet"]
+}
+
             for model in ['lstm', 'arima', 'sarima', 'prophet']:
                 pred_key = f'{model}_predictions'
                 if pred_key in predictions_data and selected_crypto in predictions_data[pred_key]:
@@ -537,12 +539,12 @@ if show_forecast and has_predictions:
 volume_colors = []
 for i in range(len(recent_data)):
     if i == 0:
-        volume_colors.append('#B8B76D')
+        volume_colors.append('#009E73')
     else:
         if recent_data['Close'].iloc[i] >= recent_data['Close'].iloc[i-1]:
-            volume_colors.append('#B8B76D')
+            volume_colors.append('#009E73')
         else:
-            volume_colors.append('#A67C52')
+            volume_colors.append('#D55E00')
 
 fig.add_trace(go.Bar(
     x=recent_data.index,
@@ -552,6 +554,18 @@ fig.add_trace(go.Bar(
     opacity=0.7,
     legendgroup='volume'
 ), row=2, col=1)
+
+# ===== Color palettes (do NOT change your text colors) =====
+PALETTE_OKABE_ITO = ["#0072B2", "#56B4E9", "#009E73", "#E69F00", "#D55E00", "#CC79A7", "#000000"]  # amber = #E69F00
+PALETTE_EXTRA = ["#5778A4", "#E49444", "#D1615D", "#85B6B2", "#6A9F58", "#E7CA60", "#A87C9F", "#F1A2A9", "#967662", "#B8B0AC"]
+
+MODEL_COLORS = {
+    "ARIMA":   "#0072B2",
+    "SARIMA":  "#56B4E9",
+    "Prophet": "#E69F00",  # amber
+    "LSTM":    "#009E73",
+}
+
 
 fig.update_layout(
     template=chart_template,
@@ -771,10 +785,13 @@ labels=comparison_df['Model'].tolist(),
 values=[max(0.01, abs(x)) for x in comparison_df['R² Score'].tolist()],  # Ensure positive values
 
             hole=0.35,
-            marker=dict(
-                colors=['#C9B99B', '#A67C52', '#8B7355', '#B8956A'],
-                line=dict(color='#ffffff' if st.session_state.theme == 'light' else '#0e1117', width=3)
-            ),
+            pie_colors = [MODEL_COLORS.get(m, PALETTE_OKABE_ITO[i % len(PALETTE_OKABE_ITO)])
+              for i, m in enumerate(comparison_df["Model"].tolist())]
+
+marker=dict(
+    colors=pie_colors,
+    line=dict(color='#ffffff' if st.session_state.theme == 'light' else '#0e1117', width=2)
+),
             textfont=dict(
                 color='#0e1117',
                 size=14,

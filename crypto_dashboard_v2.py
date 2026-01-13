@@ -3,8 +3,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import joblib
-from datetime import datetime
+from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings('ignore')
 import yfinance as yf
@@ -27,46 +28,36 @@ def toggle_theme():
     st.session_state.theme = 'dark' if st.session_state.theme == 'light' else 'light'
 
 # ============================================================================
-# WARM BROWN/SEPIA COLOR SCHEME
+# CSS WITH MUTED GREEN & FIXED TOGGLE POSITION
 # ============================================================================
 
 if st.session_state.theme == 'dark':
     st.markdown("""
     <style>
-        /* ===== SMOOTH TRANSITIONS ===== */
         * {
             transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;
         }
         
-        /* ===== BACKGROUNDS ===== */
         .stApp, .stApp > header, [data-testid="stHeader"] {
             background-color: #0e1117 !important;
         }
         
-        /* ===== SIDEBAR - WARM BROWN TEXT ===== */
         [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
             background-color: #1e2130 !important;
         }
         
-        /* All sidebar text in warm brown/beige */
         [data-testid="stSidebar"] * {
             color: #D4C4A8 !important;
         }
         
-        [data-testid="stSidebar"] h1,
-        [data-testid="stSidebar"] h2,
-        [data-testid="stSidebar"] h3,
-        [data-testid="stSidebar"] .stMarkdown {
+        [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
             color: #C9B99B !important;
-            font-weight: 500 !important;
         }
         
-        /* Sidebar labels */
         [data-testid="stSidebar"] label {
             color: #B8956A !important;
         }
         
-        /* ===== MAIN HEADERS - WARM BROWN ===== */
         .main-header {
             font-size: 2rem !important;
             color: #C9B99B !important;
@@ -82,20 +73,10 @@ if st.session_state.theme == 'dark':
             font-weight: 400 !important;
         }
         
-        /* ===== ALL MARKDOWN TEXT - WARM BEIGE ===== */
         .stMarkdown {
             color: #D4C4A8 !important;
         }
         
-        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-            color: #C9B99B !important;
-        }
-        
-        .stMarkdown p, .stMarkdown span, .stMarkdown div {
-            color: #D4C4A8 !important;
-        }
-        
-        /* ===== METRICS - WARM TONES ===== */
         [data-testid="stMetricValue"] {
             color: #D4C4A8 !important;
             font-size: 1.6rem !important;
@@ -104,18 +85,18 @@ if st.session_state.theme == 'dark':
         
         [data-testid="stMetricLabel"] {
             color: #B8956A !important;
-            font-size: 0.9rem !important;
         }
         
+        /* ===== MUTED YELLOWISH-GREEN (NOT BRIGHT GREEN) ===== */
         [data-testid="stMetricDelta"] {
-            color: #8B7355 !important;
+            color: #B8B76D !important;
         }
         
-        /* ===== FLOATING TOGGLE - TOP RIGHT ===== */
+        /* ===== TOGGLE BUTTON - ABSOLUTE RIGHT ===== */
         [data-testid="column"]:last-child {
             position: fixed !important;
-            top: 1rem !important;
-            right: 1rem !important;
+            top: 0.8rem !important;
+            right: 0.8rem !important;
             z-index: 999999 !important;
             width: 60px !important;
         }
@@ -129,8 +110,6 @@ if st.session_state.theme == 'dark':
             font-size: 1.8rem !important;
             width: 60px !important;
             height: 60px !important;
-            min-width: 60px !important;
-            min-height: 60px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -142,10 +121,8 @@ if st.session_state.theme == 'dark':
         [data-testid="column"]:last-child .stButton > button:hover {
             transform: scale(1.1) rotate(15deg) !important;
             box-shadow: 0 6px 30px rgba(166, 124, 82, 0.6) !important;
-            background: linear-gradient(135deg, #8B7355 0%, #A67C52 100%) !important;
         }
         
-        /* ===== SELECT BOXES - WARM COLORS ===== */
         .stSelectbox > div > div {
             background-color: #262730 !important;
             color: #D4C4A8 !important;
@@ -156,23 +133,10 @@ if st.session_state.theme == 'dark':
             color: #B8956A !important;
         }
         
-        /* Select dropdown options */
-        .stSelectbox option {
-            color: #D4C4A8 !important;
-            background-color: #262730 !important;
-        }
-        
-        /* ===== CHECKBOXES - WARM TEXT ===== */
         .stCheckbox > label {
             color: #D4C4A8 !important;
-            font-size: 0.95rem !important;
         }
         
-        .stCheckbox > label > span {
-            color: #D4C4A8 !important;
-        }
-        
-        /* ===== DOWNLOAD BUTTONS - WARM HOVER ===== */
         .stDownloadButton > button {
             background-color: transparent !important;
             color: #D4C4A8 !important;
@@ -182,7 +146,6 @@ if st.session_state.theme == 'dark':
             font-weight: 500 !important;
             width: 100% !important;
             text-align: left !important;
-            font-size: 0.95rem !important;
         }
         
         .stDownloadButton > button:hover {
@@ -191,27 +154,13 @@ if st.session_state.theme == 'dark':
             color: #C9B99B !important;
         }
         
-        /* ===== SUCCESS BOX - WARM TONES ===== */
+        /* ===== MUTED YELLOWISH-GREEN FOR SUCCESS BOXES ===== */
         .stSuccess {
-            background-color: rgba(139, 115, 85, 0.2) !important;
-            color: #C9B99B !important;
-            border-left: 4px solid #A67C52 !important;
+            background-color: rgba(184, 183, 109, 0.15) !important;
+            color: #B8B76D !important;
+            border-left: 4px solid #B8B76D !important;
         }
         
-        /* ===== INFO/WARNING BOXES ===== */
-        .stInfo {
-            background-color: rgba(166, 124, 82, 0.2) !important;
-            color: #D4C4A8 !important;
-            border-left: 4px solid #B8956A !important;
-        }
-        
-        .stWarning {
-            background-color: rgba(184, 149, 106, 0.2) !important;
-            color: #D4C4A8 !important;
-            border-left: 4px solid #B8956A !important;
-        }
-        
-        /* ===== TABS - WARM COLORS ===== */
         .stTabs [data-baseweb="tab-list"] {
             background-color: #1e2130 !important;
         }
@@ -225,75 +174,32 @@ if st.session_state.theme == 'dark':
             border-bottom-color: #A67C52 !important;
         }
         
-        /* ===== DATAFRAMES/TABLES - WARM TEXT ===== */
-        .dataframe {
-            color: #D4C4A8 !important;
-            background-color: #1e2130 !important;
-        }
-        
-        .dataframe th {
-            color: #C9B99B !important;
-            background-color: #262730 !important;
-        }
-        
-        .dataframe td {
-            color: #D4C4A8 !important;
-        }
-        
-        /* ===== EXPANDER - WARM COLORS ===== */
-        .streamlit-expanderHeader {
-            color: #C9B99B !important;
-        }
-        
-        /* ===== INPUT FIELDS ===== */
-        .stTextInput input {
-            color: #D4C4A8 !important;
-            background-color: #262730 !important;
-            border: 1px solid #8B7355 !important;
-        }
-        
-        .stTextInput label {
-            color: #B8956A !important;
-        }
-        
-        /* ===== HORIZONTAL RULE ===== */
-        hr {
-            border-color: #8B7355 !important;
-        }
-        
-        /* ===== HIDE BRANDING ===== */
+        hr {border-color: #8B7355 !important;}
         #MainMenu, footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 else:
-    # Light theme (keep as is)
     st.markdown("""
     <style>
-        * {
-            transition: background-color 0.5s ease, color 0.5s ease !important;
-        }
-        
+        * {transition: background-color 0.5s ease, color 0.5s ease !important;}
         .main-header {
             font-size: 2rem !important;
             color: #1f77b4 !important;
             text-align: center;
             font-weight: 700 !important;
         }
-        
         .sub-header {
             font-size: 1.1rem !important;
             color: #666 !important;
             text-align: center;
         }
-        
         [data-testid="column"]:last-child {
             position: fixed !important;
-            top: 1rem !important;
-            right: 1rem !important;
+            top: 0.8rem !important;
+            right: 0.8rem !important;
             z-index: 999999 !important;
             width: 60px !important;
         }
-        
         [data-testid="column"]:last-child .stButton > button {
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
             color: #1f2937 !important;
@@ -303,20 +209,15 @@ else:
             font-size: 1.8rem !important;
             width: 60px !important;
             height: 60px !important;
-            min-width: 60px !important;
-            min-height: 60px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4) !important;
             transition: all 0.3s ease !important;
         }
-        
         [data-testid="column"]:last-child .stButton > button:hover {
             transform: scale(1.1) rotate(15deg) !important;
-            box-shadow: 0 6px 30px rgba(245, 158, 11, 0.6) !important;
         }
-        
         #MainMenu, footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
@@ -336,7 +237,7 @@ with col2:
 st.markdown("---")
 
 # ============================================================================
-# DATA & DASHBOARD (Same as v3.3)
+# DATA LOADING
 # ============================================================================
 
 CRYPTO_LIST = {
@@ -374,12 +275,33 @@ def load_live_data(ticker):
         if not data.empty:
             if isinstance(data.columns, pd.MultiIndex):
                 data.columns = data.columns.get_level_values(0)
+            # Calculate basic indicators for live data
+            data['MA7'] = data['Close'].rolling(window=7).mean()
+            data['MA30'] = data['Close'].rolling(window=30).mean()
+            data['MA50'] = data['Close'].rolling(window=50).mean()
+            data['MA200'] = data['Close'].rolling(window=200).mean()
+            
+            # RSI
+            delta = data['Close'].diff()
+            gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+            loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+            rs = gain / loss
+            data['RSI'] = 100 - (100 / (1 + rs))
+            
+            # Volatility
+            data['Returns'] = data['Close'].pct_change()
+            data['Volatility'] = data['Returns'].rolling(window=30).std() * np.sqrt(252) * 100
+            
             return data
         return None
     except:
         return None
 
 data_dict, predictions_data, train_data, test_data = load_data()
+
+# ============================================================================
+# SIDEBAR
+# ============================================================================
 
 st.sidebar.title("⚙️ Dashboard Controls")
 st.sidebar.markdown("---")
@@ -407,6 +329,7 @@ selected_model = st.sidebar.selectbox(
     index=0
 )
 
+# ===== WORKING CHECKBOXES =====
 show_technical = st.sidebar.checkbox("Show Technical Indicators", value=True)
 show_forecast = st.sidebar.checkbox("Show Future Forecast", value=True) if has_predictions else False
 
@@ -427,14 +350,8 @@ def generate_pdf_report(crypto_name, data, metrics_df=None):
     doc = SimpleDocTemplate(buffer, pagesize=letter)
     elements = []
     styles = getSampleStyleSheet()
-    
     title = Paragraph(f"<b>Cryptocurrency Forecast Report: {crypto_name}</b>", styles['Title'])
     elements.append(title)
-    elements.append(Spacer(1, 12))
-    
-    date_text = Paragraph(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", styles['Normal'])
-    elements.append(date_text)
-    
     doc.build(elements)
     buffer.seek(0)
     return buffer
@@ -461,6 +378,10 @@ st.sidebar.download_button(
     mime="text/csv",
     key="csv_dl"
 )
+
+# ============================================================================
+# MAIN METRICS
+# ============================================================================
 
 col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -489,4 +410,93 @@ with col5:
 st.markdown("---")
 
 theme_emoji = "🌙" if st.session_state.theme == 'dark' else "☀️"
-st.success(f"{theme_emoji} Dashboard v3.4 - {crypto_name} | Warm Sepia Theme")
+st.success(f"{theme_emoji} Dashboard v3.5 - {crypto_name} | {selected_model}")
+
+# ============================================================================
+# PRICE CHART - SHOWS WHEN TECHNICAL INDICATORS IS ON
+# ============================================================================
+
+if show_technical or has_predictions:
+    st.markdown("## 📈 Price Analysis & Predictions")
+    
+    # Create chart based on theme
+    chart_template = 'plotly_dark' if st.session_state.theme == 'dark' else 'plotly_white'
+    
+    fig = go.Figure()
+    
+    # Historical prices
+    fig.add_trace(go.Scatter(
+        x=data.index,
+        y=data['Close'],
+        mode='lines',
+        name='Historical Price',
+        line=dict(color='#C9B99B', width=2)
+    ))
+    
+    # Technical indicators (only if checkbox is ON)
+    if show_technical:
+        if 'MA7' in data.columns:
+            fig.add_trace(go.Scatter(
+                x=data.index,
+                y=data['MA7'],
+                mode='lines',
+                name='MA7',
+                line=dict(color='#A67C52', width=1.5, dash='dot')
+            ))
+        
+        if 'MA30' in data.columns:
+            fig.add_trace(go.Scatter(
+                x=data.index,
+                y=data['MA30'],
+                mode='lines',
+                name='MA30',
+                line=dict(color='#8B7355', width=1.5, dash='dash')
+            ))
+    
+    # Predictions (only if forecast checkbox is ON and predictions exist)
+    if show_forecast and has_predictions:
+        if selected_model != 'All Models':
+            model_lower = selected_model.lower()
+            pred_key = f'{model_lower}_predictions'
+            if pred_key in predictions_data and selected_crypto in predictions_data[pred_key]:
+                preds = predictions_data[pred_key][selected_crypto]
+                fig.add_trace(go.Scatter(
+                    x=preds.index,
+                    y=preds['predictions'],
+                    mode='lines',
+                    name=f'{selected_model} Forecast',
+                    line=dict(color='#B8B76D', width=2, dash='dot')
+                ))
+    
+    fig.update_layout(
+        template=chart_template,
+        height=500,
+        xaxis_title="Date",
+        yaxis_title="Price (USD)",
+        hovermode='x unified',
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # Only show technical tabs if checkbox is ON
+    if show_technical:
+        st.markdown("### 📊 Technical Indicators")
+        
+        tab1, tab2, tab3 = st.tabs(["RSI", "MACD", "Bollinger Bands"])
+        
+        with tab1:
+            st.info("RSI (Relative Strength Index) measures momentum. >70 = Overbought, <30 = Oversold")
+        
+        with tab2:
+            st.info("MACD shows trend direction and momentum")
+        
+        with tab3:
+            st.info("Bollinger Bands show volatility and price extremes")
+
+# Show message when forecasts are turned off
+if has_predictions and not show_forecast:
+    st.info("💡 Enable 'Show Future Forecast' in the sidebar to see price predictions")
+
+if not show_technical:
+    st.info("💡 Enable 'Show Technical Indicators' in the sidebar to see detailed analysis")

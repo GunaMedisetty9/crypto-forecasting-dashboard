@@ -766,8 +766,10 @@ if has_predictions:
         
         # FIXED: PIE CHART WITH ALL 4 MODELS VISIBLE
         fig_pie = go.Figure(data=[go.Pie(
-            labels=comparison_df['Model'].tolist(),  # All 4 models
-            values=comparison_df['R² Score'].tolist(),  # All 4 values
+            # Use absolute values of R² Score or convert to percentage for better visualization
+labels=comparison_df['Model'].tolist(),
+values=[max(0.01, abs(x)) for x in comparison_df['R² Score'].tolist()],  # Ensure positive values
+
             hole=0.35,
             marker=dict(
                 colors=['#C9B99B', '#A67C52', '#8B7355', '#B8956A'],

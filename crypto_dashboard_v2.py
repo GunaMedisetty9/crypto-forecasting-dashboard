@@ -785,8 +785,10 @@ labels=comparison_df['Model'].tolist(),
 values=[max(0.01, abs(x)) for x in comparison_df['R² Score'].tolist()],  # Ensure positive values
 
             hole=0.35,
-            pie_colors = [MODEL_COLORS.get(m, PALETTE_OKABE_ITO[i % len(PALETTE_OKABE_ITO)])
-              for i, m in enumerate(comparison_df["Model"].tolist())]
+            marker=dict(
+    colors=pie_colors,
+    line=dict(color='#ffffff' if st.session_state.theme == 'light' else '#0e1117', width=2)
+),
 
 marker=dict(
     colors=pie_colors,

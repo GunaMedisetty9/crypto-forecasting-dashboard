@@ -28,7 +28,7 @@ def toggle_theme():
     st.session_state.theme = 'dark' if st.session_state.theme == 'light' else 'light'
 
 # ============================================================================
-# ULTIMATE CSS - ALL VISIBILITY ISSUES FIXED
+# FINAL CSS - ALL VISIBILITY FIXES
 # ============================================================================
 
 if st.session_state.theme == 'dark':
@@ -62,23 +62,26 @@ if st.session_state.theme == 'dark':
             font-size: 1rem !important;
         }
         
-        /* ===== FIX: SIDEBAR COLLAPSE BUTTON VISIBLE ===== */
+        /* ===== FIX: SIDEBAR COLLAPSE BUTTON FULLY VISIBLE IN DARK MODE ===== */
         [data-testid="collapsedControl"] {
-            background-color: #262730 !important;
-            border: 2px solid #C9B99B !important;
-            color: #C9B99B !important;
+            background-color: #C9B99B !important;
+            border: 2px solid #A67C52 !important;
+            color: #0e1117 !important;
+            box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
         }
         
         [data-testid="collapsedControl"]:hover {
             background-color: #A67C52 !important;
             border-color: #C9B99B !important;
+            box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
         }
         
         [data-testid="collapsedControl"] svg {
-            fill: #C9B99B !important;
+            fill: #0e1117 !important;
+            stroke: #0e1117 !important;
         }
         
-        /* ===== FIX: SELECTBOX DROPDOWN FULLY VISIBLE ===== */
+        /* ===== SELECTBOX DROPDOWN VISIBLE ===== */
         [data-testid="stSidebar"] .stSelectbox > div > div {
             background-color: #262730 !important;
             color: #D4C4A8 !important;
@@ -110,7 +113,7 @@ if st.session_state.theme == 'dark':
             color: #C9B99B !important;
         }
         
-        /* ===== HEADERS WITH GRADIENT ===== */
+        /* ===== HEADERS ===== */
         .main-header {
             font-size: 2.2rem !important;
             color: #C9B99B !important;
@@ -127,7 +130,6 @@ if st.session_state.theme == 'dark':
             font-weight: 400 !important;
         }
         
-        /* ===== SECTION HEADERS ===== */
         h2, h3 {
             color: #C9B99B !important;
             font-weight: 600 !important;
@@ -381,6 +383,21 @@ else:
         .main-header {font-size: 2.2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important;}
         .sub-header {font-size: 1.2rem !important; color: #666 !important; text-align: center;}
         
+        /* ===== SIDEBAR COLLAPSE VISIBLE IN LIGHT MODE ===== */
+        [data-testid="collapsedControl"] {
+            background-color: #1f77b4 !important;
+            border: 2px solid #0d47a1 !important;
+            color: white !important;
+        }
+        
+        [data-testid="collapsedControl"]:hover {
+            background-color: #0d47a1 !important;
+        }
+        
+        [data-testid="collapsedControl"] svg {
+            fill: white !important;
+        }
+        
         [data-testid="column"]:last-child {
             position: fixed !important;
             top: 0.8rem !important;
@@ -627,10 +644,10 @@ with col5:
 st.markdown("---")
 
 theme_emoji = "🌙" if st.session_state.theme == 'dark' else "☀️"
-st.success(f"{theme_emoji} Dashboard v6.0 Professional - {crypto_name} | {selected_model}")
+st.success(f"{theme_emoji} Dashboard v6.1 Final - {crypto_name} | {selected_model}")
 
 # ============================================================================
-# CANDLESTICK CHART WITH VISIBLE LEGENDS
+# CANDLESTICK CHART WITH CLEAN LEGENDS (NO BOXES)
 # ============================================================================
 
 st.markdown("## 📈 Price Analysis & Predictions")
@@ -638,7 +655,7 @@ st.markdown("## 📈 Price Analysis & Predictions")
 chart_template = 'plotly_dark' if st.session_state.theme == 'dark' else 'plotly_white'
 bg_color = '#0e1117' if st.session_state.theme == 'dark' else '#ffffff'
 text_color = '#D4C4A8' if st.session_state.theme == 'dark' else '#262730'
-legend_font_color = '#C9B99B' if st.session_state.theme == 'dark' else '#262730'
+legend_font_color = '#C9B99B' if st.session_state.theme == 'dark' else '#1f2937'
 
 fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
                     vertical_spacing=0.03, row_heights=[0.7, 0.3])
@@ -711,7 +728,6 @@ if show_forecast and has_predictions:
     except Exception as e:
         st.warning(f"Could not load predictions: {str(e)}")
 
-# Volume with colors
 volume_colors = []
 for i in range(len(recent_data)):
     if i == 0:
@@ -731,7 +747,7 @@ fig.add_trace(go.Bar(
     legendgroup='volume'
 ), row=2, col=1)
 
-# FIXED: LEGEND FULLY VISIBLE
+# FIXED: LEGEND WITHOUT BOXES - CLEAN DESIGN
 fig.update_layout(
     template=chart_template,
     plot_bgcolor=bg_color,
@@ -746,12 +762,12 @@ fig.update_layout(
         y=0.99,
         xanchor="left",
         x=1.01,
-        bgcolor='rgba(30, 33, 48, 0.9)',
-        bordercolor='#C9B99B',
-        borderwidth=2,
+        bgcolor='rgba(0, 0, 0, 0)',  # TRANSPARENT - NO BOX
+        bordercolor='rgba(0, 0, 0, 0)',  # TRANSPARENT - NO BORDER
+        borderwidth=0,
         font=dict(
             color=legend_font_color,
-            size=11,
+            size=12,
             family="Arial"
         )
     ),
@@ -765,7 +781,7 @@ fig.update_xaxes(title_text="Date", row=2, col=1, title_font=dict(color=text_col
 st.plotly_chart(fig, use_container_width=True)
 
 # ============================================================================
-# TECHNICAL INDICATORS
+# TECHNICAL INDICATORS - CLEAN LEGENDS
 # ============================================================================
 
 if show_technical:
@@ -806,9 +822,9 @@ if show_technical:
             showlegend=True,
             legend=dict(
                 font=dict(color=legend_font_color),
-                bgcolor='rgba(30, 33, 48, 0.9)',
-                bordercolor='#C9B99B',
-                borderwidth=2
+                bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
+                bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
+                borderwidth=0
             )
         )
         st.plotly_chart(fig_rsi, use_container_width=True)
@@ -860,9 +876,9 @@ if show_technical:
             hovermode='x unified',
             legend=dict(
                 font=dict(color=legend_font_color),
-                bgcolor='rgba(30, 33, 48, 0.9)',
-                bordercolor='#C9B99B',
-                borderwidth=2
+                bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
+                bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
+                borderwidth=0
             )
         )
         st.plotly_chart(fig_macd, use_container_width=True)
@@ -904,9 +920,9 @@ if show_technical:
             showlegend=True,
             legend=dict(
                 font=dict(color=legend_font_color),
-                bgcolor='rgba(30, 33, 48, 0.9)',
-                bordercolor='#C9B99B',
-                borderwidth=2
+                bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
+                bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
+                borderwidth=0
             )
         )
         st.plotly_chart(fig_bb, use_container_width=True)
@@ -919,7 +935,7 @@ if show_technical:
             st.metric("30-Day Avg Width", f"{data['BB_Width'].iloc[-30:].mean():.2f}%")
 
 # ============================================================================
-# ADDITIONAL ANALYSIS
+# ADDITIONAL ANALYSIS - CLEAN LEGENDS
 # ============================================================================
 
 st.markdown("---")
@@ -966,9 +982,9 @@ with col1:
         showlegend=True,
         legend=dict(
             font=dict(color=legend_font_color),
-            bgcolor='rgba(30, 33, 48, 0.9)',
-            bordercolor='#C9B99B',
-            borderwidth=2
+            bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
+            bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
+            borderwidth=0
         )
     )
     fig_vol.update_yaxes(title_text="Volume", secondary_y=False, title_font=dict(color=text_color))
@@ -1005,9 +1021,9 @@ with col2:
         showlegend=True,
         legend=dict(
             font=dict(color=legend_font_color),
-            bgcolor='rgba(30, 33, 48, 0.9)',
-            bordercolor='#C9B99B',
-            borderwidth=2
+            bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
+            bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
+            borderwidth=0
         )
     )
     st.plotly_chart(fig_dist, use_container_width=True)
@@ -1019,7 +1035,7 @@ with col2:
         st.metric("Std Dev", f"{returns[-252:].std():.2f}%")
 
 # ============================================================================
-# MODEL COMPARISON (FIXED PIE CHART)
+# MODEL COMPARISON (FIXED PIE CHART - ALL MODELS VISIBLE)
 # ============================================================================
 
 if has_predictions:
@@ -1044,23 +1060,25 @@ if has_predictions:
     with col2:
         st.markdown("### 🥧 Model Accuracy Distribution")
         
-        # FIXED: PIE CHART WITH ALL MODELS VISIBLE
+        # FIXED: PIE CHART WITH ALL 4 MODELS + PERCENTAGES VISIBLE
         fig_pie = go.Figure(data=[go.Pie(
-            labels=comparison_df['Model'],
-            values=comparison_df['R² Score'],
-            hole=0.4,
+            labels=comparison_df['Model'].tolist(),
+            values=comparison_df['R² Score'].tolist(),
+            hole=0.35,
             marker=dict(
                 colors=['#C9B99B', '#A67C52', '#8B7355', '#B8956A'],
-                line=dict(color='#0e1117', width=2)
+                line=dict(color='#ffffff' if st.session_state.theme == 'light' else '#0e1117', width=3)
             ),
             textfont=dict(
-                color='#0e1117',
-                size=13,
+                color='#ffffff' if st.session_state.theme == 'light' else '#0e1117',
+                size=14,
                 family="Arial Black"
             ),
-            textposition='inside',
+            textposition='auto',
             textinfo='label+percent',
-            hovertemplate='<b>%{label}</b><br>R² Score: %{value:.4f}<br>Percentage: %{percent}<extra></extra>'
+            insidetextorientation='radial',
+            pull=[0.05, 0.05, 0.05, 0.05],  # Slightly separate slices for visibility
+            hovertemplate='<b>%{label}</b><br>R² Score: %{value:.4f}<br>Share: %{percent}<extra></extra>'
         )])
         
         fig_pie.update_layout(
@@ -1068,7 +1086,7 @@ if has_predictions:
             plot_bgcolor=bg_color,
             paper_bgcolor=bg_color,
             font=dict(color=text_color),
-            height=350,
+            height=380,
             showlegend=True,
             legend=dict(
                 orientation="v",
@@ -1078,12 +1096,13 @@ if has_predictions:
                 x=1.05,
                 font=dict(
                     color=legend_font_color,
-                    size=11
+                    size=12
                 ),
-                bgcolor='rgba(30, 33, 48, 0.9)',
-                bordercolor='#C9B99B',
-                borderwidth=2
-            )
+                bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
+                bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
+                borderwidth=0
+            ),
+            margin=dict(l=20, r=120, t=40, b=20)
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
@@ -1174,8 +1193,7 @@ with col3:
 st.markdown("---")
 st.markdown(
     f"<div style='text-align: center; color: #8B7355; padding: 1rem;'>"
-    f"Dashboard v6.0 Professional | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | "
-    f"Data Source: Yahoo Finance"
+    f"✨ Dashboard v6.1 Final | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨"
     f"</div>",
     unsafe_allow_html=True
 )

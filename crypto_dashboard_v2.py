@@ -746,19 +746,18 @@ if has_predictions:
         comparison_df_reversed = comparison_df.iloc[::-1].reset_index(drop=True)
         comparison_df_reversed.index = [3, 2, 1, 0]  # Set index to 3, 2, 1, 0
         
-        # Highlight last 3 columns (RMSE, R² Score, MAPE) for LSTM row (index 3)
-def highlight_lstm_row(row):
-    if row.name == 3:  # LSTM row
-        return ['background-color: #2d5016' if col in ['RMSE', 'R² Score', 'MAPE (%)'] else '' for col in row.index]
-    return ['' for _ in row.index]
-
-styled_df = comparison_df_reversed.style.format({
-    'RMSE': '${:,.2f}',
-    'MAE': '${:,.2f}',
-    'R² Score': '{:.4f}',
-    'MAPE (%)': '{:.2f}%'
-}).apply(highlight_lstm_row, axis=1)
-
+                # Highlight last 3 columns (RMSE, R² Score, MAPE) for LSTM row (index 3)
+        def highlight_lstm_row(row):
+            if row.name == 3:  # LSTM row
+                return ['background-color: #2d5016' if col in ['RMSE', 'R² Score', 'MAPE (%)'] else '' for col in row.index]
+            return ['' for _ in row.index]
+        
+        styled_df = comparison_df_reversed.style.format({
+            'RMSE': '${:,.2f}',
+            'MAE': '${:,.2f}',
+            'R² Score': '{:.4f}',
+            'MAPE (%)': '{:.2f}%'
+        }).apply(highlight_lstm_row, axis=1)
         
         st.dataframe(styled_df, use_container_width=True)
     

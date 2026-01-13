@@ -8,3 +8,4 @@ tensorflow>=2.16.0
 statsmodels
 prophet
 yfinance
+reportlab

@@ -789,11 +789,6 @@ values=[max(0.01, abs(x)) for x in comparison_df['R² Score'].tolist()],  # Ensu
     colors=pie_colors,
     line=dict(color='#ffffff' if st.session_state.theme == 'light' else '#0e1117', width=2)
 ),
-
-marker=dict(
-    colors=pie_colors,
-    line=dict(color='#ffffff' if st.session_state.theme == 'light' else '#0e1117', width=2)
-),
             textfont=dict(
                 color='#0e1117',
                 size=14,

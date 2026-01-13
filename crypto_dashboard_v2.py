@@ -28,18 +28,23 @@ def toggle_theme():
     st.session_state.theme = 'dark' if st.session_state.theme == 'light' else 'light'
 
 # ============================================================================
-# FIXED CSS - SIDEBAR DROPDOWN VISIBLE + TABLE TEXT VISIBLE
+# ULTIMATE CSS - ALL VISIBILITY ISSUES FIXED
 # ============================================================================
 
 if st.session_state.theme == 'dark':
     st.markdown("""
     <style>
         * {transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;}
-        .stApp, .stApp > header, [data-testid="stHeader"] {background-color: #0e1117 !important;}
         
-        /* ===== SIDEBAR - FIXED VISIBILITY ===== */
+        /* ===== MAIN BACKGROUNDS ===== */
+        .stApp, .stApp > header, [data-testid="stHeader"] {
+            background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;
+        }
+        
+        /* ===== SIDEBAR STYLING ===== */
         [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
-            background-color: #1e2130 !important;
+            background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
+            border-right: 2px solid #8B7355 !important;
         }
         
         [data-testid="stSidebar"] * {
@@ -48,18 +53,36 @@ if st.session_state.theme == 'dark':
         
         [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
             color: #C9B99B !important;
+            font-weight: 600 !important;
         }
         
         [data-testid="stSidebar"] label {
             color: #C9B99B !important;
             font-weight: 500 !important;
+            font-size: 1rem !important;
         }
         
-        /* ===== FIX: SELECTBOX DROPDOWN OPTIONS VISIBLE ===== */
+        /* ===== FIX: SIDEBAR COLLAPSE BUTTON VISIBLE ===== */
+        [data-testid="collapsedControl"] {
+            background-color: #262730 !important;
+            border: 2px solid #C9B99B !important;
+            color: #C9B99B !important;
+        }
+        
+        [data-testid="collapsedControl"]:hover {
+            background-color: #A67C52 !important;
+            border-color: #C9B99B !important;
+        }
+        
+        [data-testid="collapsedControl"] svg {
+            fill: #C9B99B !important;
+        }
+        
+        /* ===== FIX: SELECTBOX DROPDOWN FULLY VISIBLE ===== */
         [data-testid="stSidebar"] .stSelectbox > div > div {
             background-color: #262730 !important;
             color: #D4C4A8 !important;
-            border: 1px solid #8B7355 !important;
+            border: 2px solid #8B7355 !important;
         }
         
         [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] {
@@ -71,14 +94,15 @@ if st.session_state.theme == 'dark':
             color: #D4C4A8 !important;
         }
         
-        /* Dropdown menu options */
         [data-testid="stSidebar"] div[role="listbox"] {
             background-color: #262730 !important;
+            border: 2px solid #8B7355 !important;
         }
         
         [data-testid="stSidebar"] div[role="option"] {
             background-color: #262730 !important;
             color: #D4C4A8 !important;
+            padding: 0.75rem !important;
         }
         
         [data-testid="stSidebar"] div[role="option"]:hover {
@@ -86,25 +110,62 @@ if st.session_state.theme == 'dark':
             color: #C9B99B !important;
         }
         
+        /* ===== HEADERS WITH GRADIENT ===== */
         .main-header {
-            font-size: 2rem !important;
+            font-size: 2.2rem !important;
             color: #C9B99B !important;
             text-align: center;
             font-weight: 700 !important;
             margin-bottom: 0.5rem !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
         }
         
         .sub-header {
-            font-size: 1.1rem !important;
+            font-size: 1.2rem !important;
             color: #A67C52 !important;
             text-align: center;
             font-weight: 400 !important;
         }
         
+        /* ===== SECTION HEADERS ===== */
+        h2, h3 {
+            color: #C9B99B !important;
+            font-weight: 600 !important;
+            border-bottom: 2px solid #8B7355 !important;
+            padding-bottom: 0.5rem !important;
+        }
+        
         .stMarkdown {color: #D4C4A8 !important;}
-        [data-testid="stMetricValue"] {color: #D4C4A8 !important; font-size: 1.6rem !important; font-weight: bold !important;}
-        [data-testid="stMetricLabel"] {color: #B8956A !important;}
-        [data-testid="stMetricDelta"] {color: #B8B76D !important;}
+        
+        /* ===== METRICS WITH CARDS ===== */
+        [data-testid="stMetricValue"] {
+            color: #C9B99B !important;
+            font-size: 1.8rem !important;
+            font-weight: bold !important;
+        }
+        
+        [data-testid="stMetricLabel"] {
+            color: #B8956A !important;
+            font-weight: 500 !important;
+        }
+        
+        [data-testid="stMetricDelta"] {
+            color: #B8B76D !important;
+            font-weight: 600 !important;
+        }
+        
+        div[data-testid="metric-container"] {
+            background: linear-gradient(135deg, #1e2130 0%, #262730 100%) !important;
+            border: 2px solid #8B7355 !important;
+            border-radius: 10px !important;
+            padding: 1rem !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+        }
+        
+        div[data-testid="metric-container"]:hover {
+            border-color: #C9B99B !important;
+            box-shadow: 0 6px 12px rgba(201, 185, 155, 0.2) !important;
+        }
         
         /* ===== TOGGLE BUTTON ===== */
         [data-testid="column"]:last-child {
@@ -118,7 +179,7 @@ if st.session_state.theme == 'dark':
         [data-testid="column"]:last-child .stButton > button {
             background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
             color: #0e1117 !important;
-            border: 2px solid #C9B99B !important;
+            border: 3px solid #C9B99B !important;
             padding: 0 !important;
             border-radius: 50% !important;
             font-size: 1.8rem !important;
@@ -127,57 +188,112 @@ if st.session_state.theme == 'dark':
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            box-shadow: 0 4px 20px rgba(166, 124, 82, 0.4) !important;
+            box-shadow: 0 4px 20px rgba(166, 124, 82, 0.5) !important;
             transition: all 0.3s ease !important;
             margin: 0 !important;
         }
         
         [data-testid="column"]:last-child .stButton > button:hover {
-            transform: scale(1.1) rotate(15deg) !important;
-            box-shadow: 0 6px 30px rgba(166, 124, 82, 0.6) !important;
+            transform: scale(1.15) rotate(180deg) !important;
+            box-shadow: 0 6px 30px rgba(166, 124, 82, 0.7) !important;
         }
         
+        /* ===== FORM ELEMENTS ===== */
         .stSelectbox > div > div {
             background-color: #262730 !important;
             color: #D4C4A8 !important;
-            border: 1px solid #8B7355 !important;
+            border: 2px solid #8B7355 !important;
         }
         
-        .stSelectbox label {color: #B8956A !important;}
-        .stCheckbox > label {color: #D4C4A8 !important;}
-        
-        .stDownloadButton > button {
-            background-color: transparent !important;
-            color: #D4C4A8 !important;
-            border: none !important;
-            padding: 0.5rem 0.8rem !important;
-            border-radius: 6px !important;
+        .stSelectbox label {
+            color: #C9B99B !important;
             font-weight: 500 !important;
-            width: 100% !important;
-            text-align: left !important;
         }
         
-        .stDownloadButton > button:hover {
-            background-color: rgba(166, 124, 82, 0.15) !important;
-            transform: translateX(5px) !important;
+        .stCheckbox > label {
+            color: #D4C4A8 !important;
+            font-weight: 500 !important;
+        }
+        
+        .stCheckbox > label:hover {
             color: #C9B99B !important;
         }
         
-        .stSuccess {
-            background-color: rgba(184, 183, 109, 0.15) !important;
-            color: #B8B76D !important;
-            border-left: 4px solid #B8B76D !important;
+        /* ===== DOWNLOAD BUTTONS ===== */
+        .stDownloadButton > button {
+            background: linear-gradient(135deg, #262730 0%, #1e2130 100%) !important;
+            color: #D4C4A8 !important;
+            border: 2px solid #8B7355 !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            width: 100% !important;
+            text-align: center !important;
+            transition: all 0.3s ease !important;
         }
         
-        .stTabs [data-baseweb="tab-list"] {background-color: #1e2130 !important;}
-        .stTabs [data-baseweb="tab"] {color: #8B7355 !important;}
-        .stTabs [aria-selected="true"] {color: #C9B99B !important; border-bottom-color: #A67C52 !important;}
+        .stDownloadButton > button:hover {
+            background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
+            transform: translateY(-2px) !important;
+            color: #0e1117 !important;
+            box-shadow: 0 4px 12px rgba(166, 124, 82, 0.4) !important;
+        }
         
-        /* ===== FIX: TABLE TEXT VISIBLE WITH WARM COLORS ===== */
+        /* ===== SUCCESS/INFO BOXES ===== */
+        .stSuccess {
+            background: linear-gradient(135deg, rgba(184, 183, 109, 0.2) 0%, rgba(184, 183, 109, 0.1) 100%) !important;
+            color: #B8B76D !important;
+            border-left: 4px solid #B8B76D !important;
+            border-radius: 8px !important;
+            padding: 1rem !important;
+        }
+        
+        .stInfo {
+            background: linear-gradient(135deg, rgba(166, 124, 82, 0.2) 0%, rgba(166, 124, 82, 0.1) 100%) !important;
+            color: #D4C4A8 !important;
+            border-left: 4px solid #A67C52 !important;
+            border-radius: 8px !important;
+        }
+        
+        .stWarning {
+            background: linear-gradient(135deg, rgba(184, 149, 106, 0.2) 0%, rgba(184, 149, 106, 0.1) 100%) !important;
+            color: #D4C4A8 !important;
+            border-left: 4px solid #B8956A !important;
+            border-radius: 8px !important;
+        }
+        
+        .stError {
+            background: linear-gradient(135deg, rgba(166, 124, 82, 0.3) 0%, rgba(166, 124, 82, 0.15) 100%) !important;
+            color: #D4C4A8 !important;
+            border-left: 4px solid #A67C52 !important;
+            border-radius: 8px !important;
+        }
+        
+        /* ===== TABS STYLING ===== */
+        .stTabs [data-baseweb="tab-list"] {
+            background-color: #1e2130 !important;
+            border-radius: 10px !important;
+            padding: 0.5rem !important;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            color: #8B7355 !important;
+            font-weight: 500 !important;
+            padding: 0.75rem 1.5rem !important;
+        }
+        
+        .stTabs [aria-selected="true"] {
+            color: #C9B99B !important;
+            border-bottom: 3px solid #A67C52 !important;
+            font-weight: 600 !important;
+        }
+        
+        /* ===== TABLES - FULL VISIBILITY ===== */
         .dataframe {
             color: #D4C4A8 !important;
             background-color: #1e2130 !important;
-            border: 1px solid #8B7355 !important;
+            border: 2px solid #8B7355 !important;
+            border-radius: 8px !important;
         }
         
         .dataframe thead tr th {
@@ -185,12 +301,14 @@ if st.session_state.theme == 'dark':
             color: #C9B99B !important;
             border: 1px solid #8B7355 !important;
             font-weight: 600 !important;
+            padding: 0.75rem !important;
         }
         
         .dataframe tbody tr td {
             background-color: #1e2130 !important;
             color: #D4C4A8 !important;
             border: 1px solid #8B7355 !important;
+            padding: 0.75rem !important;
         }
         
         .dataframe tbody tr:hover td {
@@ -198,11 +316,11 @@ if st.session_state.theme == 'dark':
             color: #C9B99B !important;
         }
         
-        /* ===== FIX: st.table() STYLING ===== */
         table {
             color: #D4C4A8 !important;
             background-color: #1e2130 !important;
             border: 2px solid #8B7355 !important;
+            border-radius: 8px !important;
         }
         
         table thead tr th {
@@ -224,16 +342,45 @@ if st.session_state.theme == 'dark':
             background-color: #262730 !important;
         }
         
-        hr {border-color: #8B7355 !important;}
-        #MainMenu, footer {visibility: hidden;}
+        /* ===== DIVIDERS ===== */
+        hr {
+            border: none !important;
+            height: 2px !important;
+            background: linear-gradient(90deg, transparent 0%, #8B7355 50%, transparent 100%) !important;
+            margin: 2rem 0 !important;
+        }
+        
+        /* ===== HIDE STREAMLIT BRANDING ===== */
+        #MainMenu, footer, header {visibility: hidden;}
+        
+        /* ===== SCROLLBAR STYLING ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1e2130;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #8B7355;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A67C52;
+        }
     </style>
     """, unsafe_allow_html=True)
 else:
     st.markdown("""
     <style>
         * {transition: background-color 0.5s ease, color 0.5s ease !important;}
-        .main-header {font-size: 2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important;}
-        .sub-header {font-size: 1.1rem !important; color: #666 !important; text-align: center;}
+        .stApp {background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;}
+        .main-header {font-size: 2.2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important;}
+        .sub-header {font-size: 1.2rem !important; color: #666 !important; text-align: center;}
+        
         [data-testid="column"]:last-child {
             position: fixed !important;
             top: 0.8rem !important;
@@ -241,10 +388,11 @@ else:
             z-index: 999999 !important;
             width: 60px !important;
         }
+        
         [data-testid="column"]:last-child .stButton > button {
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
             color: #1f2937 !important;
-            border: none !important;
+            border: 3px solid #f59e0b !important;
             padding: 0 !important;
             border-radius: 50% !important;
             font-size: 1.8rem !important;
@@ -253,10 +401,14 @@ else:
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4) !important;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.5) !important;
             transition: all 0.3s ease !important;
         }
-        [data-testid="column"]:last-child .stButton > button:hover {transform: scale(1.1) rotate(15deg) !important;}
+        
+        [data-testid="column"]:last-child .stButton > button:hover {
+            transform: scale(1.15) rotate(180deg) !important;
+        }
+        
         #MainMenu, footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
@@ -268,7 +420,7 @@ else:
 col1, col2 = st.columns([20, 1])
 with col1:
     st.markdown('<div class="main-header">📈 Cryptocurrency Market Forecasting Dashboard</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">🤖 Time Series Analysis with ARIMA, SARIMA, Prophet & LSTM</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">🤖 Advanced Time Series Analysis with ARIMA, SARIMA, Prophet & LSTM</div>', unsafe_allow_html=True)
 with col2:
     toggle_symbol = "☀️" if st.session_state.theme == 'dark' else "🌙"
     st.button(toggle_symbol, on_click=toggle_theme, key="theme_toggle", help="Toggle Theme")
@@ -279,7 +431,6 @@ st.markdown("---")
 # DATA LOADING
 # ============================================================================
 
-# FIXED: Use ticker format (BTC-USD) instead of names
 CRYPTO_LIST = {
     'BTC-USD': 'BTC-USD',
     'ETH-USD': 'ETH-USD',
@@ -371,14 +522,13 @@ data_dict, predictions_data, train_data, test_data = load_data()
 st.sidebar.title("⚙️ Dashboard Controls")
 st.sidebar.markdown("---")
 
-# FIXED: Use ticker format in dropdown
 selected_crypto = st.sidebar.selectbox(
     "Select Cryptocurrency",
     options=list(CRYPTO_LIST.keys()),
     index=0
 )
 
-crypto_name = selected_crypto  # For display
+crypto_name = selected_crypto
 
 if selected_crypto in ['BTC-USD', 'ETH-USD']:
     data = data_dict[selected_crypto]
@@ -407,10 +557,10 @@ if has_predictions:
     metrics_df = pd.DataFrame(predictions_data['all_metrics'][selected_crypto])
     best_model = metrics_df.sort_values('RMSE').iloc[0]
     
-    st.sidebar.metric("Best Model", best_model['Model'])
-    st.sidebar.metric("RMSE", f"${best_model['RMSE']:,.2f}")
-    st.sidebar.metric("R² Score", f"{best_model['R² Score']:.4f}")
-    st.sidebar.metric("MAPE", f"{best_model['MAPE (%)']:.2f}%")
+    st.sidebar.metric("🏆 Best Model", best_model['Model'])
+    st.sidebar.metric("📉 RMSE", f"${best_model['RMSE']:,.2f}")
+    st.sidebar.metric("📊 R² Score", f"{best_model['R² Score']:.4f}")
+    st.sidebar.metric("📈 MAPE", f"{best_model['MAPE (%)']:.2f}%")
 
 def generate_pdf_report(crypto_name, data, metrics_df=None):
     buffer = BytesIO()
@@ -431,7 +581,7 @@ pdf_buffer = generate_pdf_report(crypto_name, data,
 csv_data = data.to_csv()
 
 st.sidebar.download_button(
-    label="📄 PDF Report",
+    label="📄 Download PDF Report",
     data=pdf_buffer,
     file_name=f"{crypto_name}_forecast_{datetime.now().strftime('%Y%m%d')}.pdf",
     mime="application/pdf",
@@ -439,7 +589,7 @@ st.sidebar.download_button(
 )
 
 st.sidebar.download_button(
-    label="📊 CSV Data",
+    label="📊 Download CSV Data",
     data=csv_data,
     file_name=f"{crypto_name}_data_{datetime.now().strftime('%Y%m%d')}.csv",
     mime="text/csv",
@@ -477,10 +627,10 @@ with col5:
 st.markdown("---")
 
 theme_emoji = "🌙" if st.session_state.theme == 'dark' else "☀️"
-st.success(f"{theme_emoji} Dashboard v5.0 - {crypto_name} | {selected_model}")
+st.success(f"{theme_emoji} Dashboard v6.0 Professional - {crypto_name} | {selected_model}")
 
 # ============================================================================
-# CANDLESTICK CHART WITH PREDICTIONS
+# CANDLESTICK CHART WITH VISIBLE LEGENDS
 # ============================================================================
 
 st.markdown("## 📈 Price Analysis & Predictions")
@@ -488,12 +638,11 @@ st.markdown("## 📈 Price Analysis & Predictions")
 chart_template = 'plotly_dark' if st.session_state.theme == 'dark' else 'plotly_white'
 bg_color = '#0e1117' if st.session_state.theme == 'dark' else '#ffffff'
 text_color = '#D4C4A8' if st.session_state.theme == 'dark' else '#262730'
+legend_font_color = '#C9B99B' if st.session_state.theme == 'dark' else '#262730'
 
-# Create candlestick chart
 fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
                     vertical_spacing=0.03, row_heights=[0.7, 0.3])
 
-# Candlestick for recent data
 recent_data = data.iloc[-180:]
 fig.add_trace(go.Candlestick(
     x=recent_data.index,
@@ -506,23 +655,23 @@ fig.add_trace(go.Candlestick(
     decreasing_line_color='#A67C52'
 ), row=1, col=1)
 
-# Technical indicators
 if show_technical:
     if 'MA7' in data.columns:
         fig.add_trace(go.Scatter(
             x=recent_data.index, y=recent_data['MA7'],
             mode='lines', name='MA7',
-            line=dict(color='#C9B99B', width=1.5)
+            line=dict(color='#C9B99B', width=2),
+            legendgroup='indicators'
         ), row=1, col=1)
     
     if 'MA30' in data.columns:
         fig.add_trace(go.Scatter(
             x=recent_data.index, y=recent_data['MA30'],
             mode='lines', name='MA30',
-            line=dict(color='#8B7355', width=1.5, dash='dash')
+            line=dict(color='#8B7355', width=2, dash='dash'),
+            legendgroup='indicators'
         ), row=1, col=1)
 
-# Predictions
 if show_forecast and has_predictions:
     try:
         if selected_model == 'All Models':
@@ -542,7 +691,8 @@ if show_forecast and has_predictions:
                             y=preds['predictions'],
                             mode='lines',
                             name=f'{model.upper()} Forecast',
-                            line=dict(color=model_colors[model], width=2, dash='dot')
+                            line=dict(color=model_colors[model], width=2.5, dash='dot'),
+                            legendgroup='forecasts'
                         ), row=1, col=1)
         else:
             model_lower = selected_model.lower()
@@ -555,54 +705,73 @@ if show_forecast and has_predictions:
                         y=preds['predictions'],
                         mode='lines',
                         name=f'{selected_model} Forecast',
-                        line=dict(color='#B8B76D', width=2.5, dash='dot')
+                        line=dict(color='#B8B76D', width=3, dash='dot'),
+                        legendgroup='forecasts'
                     ), row=1, col=1)
     except Exception as e:
         st.warning(f"Could not load predictions: {str(e)}")
 
-# FIXED: Volume bars with GREEN/RED colors
+# Volume with colors
 volume_colors = []
 for i in range(len(recent_data)):
     if i == 0:
         volume_colors.append('#B8B76D')
     else:
         if recent_data['Close'].iloc[i] >= recent_data['Close'].iloc[i-1]:
-            volume_colors.append('#B8B76D')  # Green for up
+            volume_colors.append('#B8B76D')
         else:
-            volume_colors.append('#A67C52')  # Red for down
+            volume_colors.append('#A67C52')
 
 fig.add_trace(go.Bar(
     x=recent_data.index,
     y=recent_data['Volume'],
     name='Volume',
     marker_color=volume_colors,
-    opacity=0.7
+    opacity=0.7,
+    legendgroup='volume'
 ), row=2, col=1)
 
+# FIXED: LEGEND FULLY VISIBLE
 fig.update_layout(
     template=chart_template,
     plot_bgcolor=bg_color,
     paper_bgcolor=bg_color,
-    font=dict(color=text_color),
+    font=dict(color=text_color, size=12),
     height=650,
     xaxis_rangeslider_visible=False,
     hovermode='x unified',
-    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    legend=dict(
+        orientation="v",
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=1.01,
+        bgcolor='rgba(30, 33, 48, 0.9)',
+        bordercolor='#C9B99B',
+        borderwidth=2,
+        font=dict(
+            color=legend_font_color,
+            size=11,
+            family="Arial"
+        )
+    ),
+    showlegend=True
 )
 
-fig.update_yaxes(title_text="Price (USD)", row=1, col=1)
-fig.update_yaxes(title_text="Volume", row=2, col=1)
+fig.update_yaxes(title_text="Price (USD)", row=1, col=1, title_font=dict(color=text_color))
+fig.update_yaxes(title_text="Volume", row=2, col=1, title_font=dict(color=text_color))
+fig.update_xaxes(title_text="Date", row=2, col=1, title_font=dict(color=text_color))
 
 st.plotly_chart(fig, use_container_width=True)
 
 # ============================================================================
-# TECHNICAL INDICATORS WITH CHARTS
+# TECHNICAL INDICATORS
 # ============================================================================
 
 if show_technical:
-    st.markdown("### 📊 Technical Indicators")
+    st.markdown("## 📊 Technical Indicators")
     
-    tab1, tab2, tab3 = st.tabs(["📈 RSI", "📉 MACD", "🔔 Bollinger Bands"])
+    tab1, tab2, tab3 = st.tabs(["📈 RSI Analysis", "📉 MACD Indicator", "🔔 Bollinger Bands"])
     
     with tab1:
         st.markdown("**RSI (Relative Strength Index)** - Momentum oscillator measuring speed and magnitude of price changes")
@@ -613,16 +782,15 @@ if show_technical:
             y=data['RSI'].iloc[-200:],
             mode='lines',
             name='RSI',
-            line=dict(color='#C9B99B', width=2),
+            line=dict(color='#C9B99B', width=3),
             fill='tozeroy',
             fillcolor='rgba(201, 185, 155, 0.2)'
         ))
         
-        fig_rsi.add_hline(y=70, line_dash="dash", line_color="#A67C52", annotation_text="Overbought (70)")
-        fig_rsi.add_hline(y=30, line_dash="dash", line_color="#8B7355", annotation_text="Oversold (30)")
-        fig_rsi.add_hline(y=50, line_dash="dot", line_color="#666", annotation_text="Neutral")
+        fig_rsi.add_hline(y=70, line_dash="dash", line_color="#A67C52", annotation_text="Overbought (70)", annotation_font_color=text_color)
+        fig_rsi.add_hline(y=30, line_dash="dash", line_color="#8B7355", annotation_text="Oversold (30)", annotation_font_color=text_color)
+        fig_rsi.add_hline(y=50, line_dash="dot", line_color="#666", annotation_text="Neutral", annotation_font_color=text_color)
         
-        # Add shaded regions
         fig_rsi.add_hrect(y0=70, y1=100, fillcolor="#A67C52", opacity=0.1, line_width=0)
         fig_rsi.add_hrect(y0=0, y1=30, fillcolor="#8B7355", opacity=0.1, line_width=0)
         
@@ -631,10 +799,17 @@ if show_technical:
             plot_bgcolor=bg_color,
             paper_bgcolor=bg_color,
             font=dict(color=text_color),
-            height=400,
+            height=450,
             xaxis_title="Date",
             yaxis_title="RSI",
-            yaxis=dict(range=[0, 100])
+            yaxis=dict(range=[0, 100]),
+            showlegend=True,
+            legend=dict(
+                font=dict(color=legend_font_color),
+                bgcolor='rgba(30, 33, 48, 0.9)',
+                bordercolor='#C9B99B',
+                borderwidth=2
+            )
         )
         st.plotly_chart(fig_rsi, use_container_width=True)
         
@@ -656,20 +831,19 @@ if show_technical:
         
         fig_macd.add_trace(go.Scatter(
             x=data.index[-200:], y=data['Close'].iloc[-200:],
-            mode='lines', name='Price', line=dict(color='#C9B99B', width=2)
+            mode='lines', name='Price', line=dict(color='#C9B99B', width=2.5)
         ), row=1, col=1)
         
         fig_macd.add_trace(go.Scatter(
             x=data.index[-200:], y=data['MACD'].iloc[-200:],
-            mode='lines', name='MACD', line=dict(color='#A67C52', width=2)
+            mode='lines', name='MACD', line=dict(color='#A67C52', width=2.5)
         ), row=2, col=1)
         
         fig_macd.add_trace(go.Scatter(
             x=data.index[-200:], y=data['MACD_Signal'].iloc[-200:],
-            mode='lines', name='Signal', line=dict(color='#8B7355', width=2)
+            mode='lines', name='Signal', line=dict(color='#8B7355', width=2.5)
         ), row=2, col=1)
         
-        # Histogram with colors
         hist_colors = ['#B8B76D' if val >= 0 else '#A67C52' for val in data['MACD_Hist'].iloc[-200:]]
         fig_macd.add_trace(go.Bar(
             x=data.index[-200:], y=data['MACD_Hist'].iloc[-200:],
@@ -681,9 +855,15 @@ if show_technical:
             plot_bgcolor=bg_color,
             paper_bgcolor=bg_color,
             font=dict(color=text_color),
-            height=500,
+            height=550,
             showlegend=True,
-            hovermode='x unified'
+            hovermode='x unified',
+            legend=dict(
+                font=dict(color=legend_font_color),
+                bgcolor='rgba(30, 33, 48, 0.9)',
+                bordercolor='#C9B99B',
+                borderwidth=2
+            )
         )
         st.plotly_chart(fig_macd, use_container_width=True)
     
@@ -694,23 +874,23 @@ if show_technical:
         
         fig_bb.add_trace(go.Scatter(
             x=data.index[-200:], y=data['BB_Upper'].iloc[-200:],
-            mode='lines', name='Upper Band', line=dict(color='#A67C52', width=1, dash='dash')
+            mode='lines', name='Upper Band', line=dict(color='#A67C52', width=2, dash='dash')
         ))
         
         fig_bb.add_trace(go.Scatter(
             x=data.index[-200:], y=data['BB_Middle'].iloc[-200:],
-            mode='lines', name='SMA (20)', line=dict(color='#C9B99B', width=2)
+            mode='lines', name='SMA (20)', line=dict(color='#C9B99B', width=2.5)
         ))
         
         fig_bb.add_trace(go.Scatter(
             x=data.index[-200:], y=data['BB_Lower'].iloc[-200:],
-            mode='lines', name='Lower Band', line=dict(color='#8B7355', width=1, dash='dash'),
-            fill='tonexty', fillcolor='rgba(166, 124, 82, 0.1)'
+            mode='lines', name='Lower Band', line=dict(color='#8B7355', width=2, dash='dash'),
+            fill='tonexty', fillcolor='rgba(166, 124, 82, 0.15)'
         ))
         
         fig_bb.add_trace(go.Scatter(
             x=data.index[-200:], y=data['Close'].iloc[-200:],
-            mode='lines', name='Close Price', line=dict(color='#B8B76D', width=2.5)
+            mode='lines', name='Close Price', line=dict(color='#B8B76D', width=3)
         ))
         
         fig_bb.update_layout(
@@ -718,9 +898,16 @@ if show_technical:
             plot_bgcolor=bg_color,
             paper_bgcolor=bg_color,
             font=dict(color=text_color),
-            height=450,
+            height=500,
             xaxis_title="Date",
-            yaxis_title="Price (USD)"
+            yaxis_title="Price (USD)",
+            showlegend=True,
+            legend=dict(
+                font=dict(color=legend_font_color),
+                bgcolor='rgba(30, 33, 48, 0.9)',
+                bordercolor='#C9B99B',
+                borderwidth=2
+            )
         )
         st.plotly_chart(fig_bb, use_container_width=True)
         
@@ -736,17 +923,15 @@ if show_technical:
 # ============================================================================
 
 st.markdown("---")
-st.markdown("## 📊 Additional Analysis")
+st.markdown("## 📊 Advanced Market Analysis")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown("### 📈 Volume Analysis")
+    st.markdown("### 📈 Volume & Price Analysis")
     
-    # Volume with price overlay
     fig_vol = make_subplots(specs=[[{"secondary_y": True}]])
     
-    # Volume bars
     vol_colors_60 = []
     for i in range(len(data.iloc[-60:])):
         if i == 0:
@@ -765,12 +950,11 @@ with col1:
         opacity=0.7
     ), secondary_y=False)
     
-    # Price line
     fig_vol.add_trace(go.Scatter(
         x=data.index[-60:],
         y=data['Close'].iloc[-60:],
         name='Price',
-        line=dict(color='#C9B99B', width=2)
+        line=dict(color='#C9B99B', width=2.5)
     ), secondary_y=True)
     
     fig_vol.update_layout(
@@ -778,17 +962,23 @@ with col1:
         plot_bgcolor=bg_color,
         paper_bgcolor=bg_color,
         font=dict(color=text_color),
-        height=350
+        height=400,
+        showlegend=True,
+        legend=dict(
+            font=dict(color=legend_font_color),
+            bgcolor='rgba(30, 33, 48, 0.9)',
+            bordercolor='#C9B99B',
+            borderwidth=2
+        )
     )
-    fig_vol.update_yaxes(title_text="Volume", secondary_y=False)
-    fig_vol.update_yaxes(title_text="Price (USD)", secondary_y=True)
+    fig_vol.update_yaxes(title_text="Volume", secondary_y=False, title_font=dict(color=text_color))
+    fig_vol.update_yaxes(title_text="Price (USD)", secondary_y=True, title_font=dict(color=text_color))
     
     st.plotly_chart(fig_vol, use_container_width=True)
 
 with col2:
     st.markdown("### 📊 Returns Distribution")
     
-    # FIXED: Returns histogram with proper data
     returns = data['Returns'].dropna() * 100
     
     fig_dist = go.Figure()
@@ -800,41 +990,48 @@ with col2:
         opacity=0.8
     ))
     
-    # Add mean line
     mean_return = returns[-252:].mean()
-    fig_dist.add_vline(x=mean_return, line_dash="dash", line_color="#B8B76D", 
-                      annotation_text=f"Mean: {mean_return:.2f}%")
+    fig_dist.add_vline(x=mean_return, line_dash="dash", line_color="#B8B76D", line_width=2,
+                      annotation_text=f"Mean: {mean_return:.2f}%", annotation_font_color=text_color)
     
     fig_dist.update_layout(
         template=chart_template,
         plot_bgcolor=bg_color,
         paper_bgcolor=bg_color,
         font=dict(color=text_color),
-        height=350,
+        height=400,
         xaxis_title="Daily Returns (%)",
         yaxis_title="Frequency",
-        showlegend=False
+        showlegend=True,
+        legend=dict(
+            font=dict(color=legend_font_color),
+            bgcolor='rgba(30, 33, 48, 0.9)',
+            bordercolor='#C9B99B',
+            borderwidth=2
+        )
     )
     st.plotly_chart(fig_dist, use_container_width=True)
     
-    # Returns statistics
     col_a, col_b = st.columns(2)
     with col_a:
         st.metric("Mean Return", f"{mean_return:.2f}%")
     with col_b:
         st.metric("Std Dev", f"{returns[-252:].std():.2f}%")
 
-# Model Comparison
+# ============================================================================
+# MODEL COMPARISON (FIXED PIE CHART)
+# ============================================================================
+
 if has_predictions:
     st.markdown("---")
-    st.markdown("### 🏆 Model Performance Comparison")
+    st.markdown("## 🏆 Model Performance Comparison")
     
-    col1, col2 = st.columns([2, 1])
+    col1, col2 = st.columns([2.5, 1.5])
     
     with col1:
+        st.markdown("### 📊 Performance Metrics Table")
         comparison_df = pd.DataFrame(predictions_data['all_metrics'][selected_crypto])
         
-        # Style the dataframe
         styled_df = comparison_df.style.format({
             'RMSE': '${:,.2f}',
             'MAE': '${:,.2f}',
@@ -845,13 +1042,25 @@ if has_predictions:
         st.dataframe(styled_df, use_container_width=True)
     
     with col2:
-        st.markdown("#### Accuracy Comparison")
+        st.markdown("### 🥧 Model Accuracy Distribution")
+        
+        # FIXED: PIE CHART WITH ALL MODELS VISIBLE
         fig_pie = go.Figure(data=[go.Pie(
             labels=comparison_df['Model'],
             values=comparison_df['R² Score'],
             hole=0.4,
-            marker_colors=['#C9B99B', '#A67C52', '#8B7355', '#B8956A'],
-            textfont=dict(color='white', size=14)
+            marker=dict(
+                colors=['#C9B99B', '#A67C52', '#8B7355', '#B8956A'],
+                line=dict(color='#0e1117', width=2)
+            ),
+            textfont=dict(
+                color='#0e1117',
+                size=13,
+                family="Arial Black"
+            ),
+            textposition='inside',
+            textinfo='label+percent',
+            hovertemplate='<b>%{label}</b><br>R² Score: %{value:.4f}<br>Percentage: %{percent}<extra></extra>'
         )])
         
         fig_pie.update_layout(
@@ -859,17 +1068,31 @@ if has_predictions:
             plot_bgcolor=bg_color,
             paper_bgcolor=bg_color,
             font=dict(color=text_color),
-            height=300,
-            showlegend=True
+            height=350,
+            showlegend=True,
+            legend=dict(
+                orientation="v",
+                yanchor="middle",
+                y=0.5,
+                xanchor="left",
+                x=1.05,
+                font=dict(
+                    color=legend_font_color,
+                    size=11
+                ),
+                bgcolor='rgba(30, 33, 48, 0.9)',
+                bordercolor='#C9B99B',
+                borderwidth=2
+            )
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
 # ============================================================================
-# SUMMARY STATISTICS (FIXED: TABLE TEXT VISIBLE)
+# SUMMARY STATISTICS
 # ============================================================================
 
 st.markdown("---")
-st.markdown("### 📋 Summary Statistics")
+st.markdown("## 📋 Summary Statistics")
 
 summary_data = {
     'Metric': [
@@ -890,50 +1113,69 @@ summary_data = {
     ]
 }
 summary_df = pd.DataFrame(summary_data)
-
-# Use st.table for better visibility with CSS styling
 st.table(summary_df)
 
-# Trading Signals
+# ============================================================================
+# TRADING SIGNALS
+# ============================================================================
+
 st.markdown("---")
-st.markdown("### 🎯 Trading Signals & Analysis")
+st.markdown("## 🎯 Trading Signals & Market Analysis")
 
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown("#### Trend Analysis")
+    st.markdown("#### 📈 Trend Analysis")
     if data['Close'].iloc[-1] > data['MA50'].iloc[-1]:
-        st.success("🟢 **Bullish Trend** - Price above MA50")
+        st.success("🟢 **Bullish Trend**")
+        st.write("Price is above MA50 indicating upward momentum")
     else:
-        st.error("🔴 **Bearish Trend** - Price below MA50")
+        st.error("🔴 **Bearish Trend**")
+        st.write("Price is below MA50 indicating downward pressure")
     
     if data['MA7'].iloc[-1] > data['MA30'].iloc[-1]:
-        st.info("📈 Short-term momentum: Positive")
+        st.info("📈 Short-term: **Positive**")
     else:
-        st.warning("📉 Short-term momentum: Negative")
+        st.warning("📉 Short-term: **Negative**")
 
 with col2:
-    st.markdown("#### Momentum Indicators")
+    st.markdown("#### 🎯 Momentum Indicators")
     
     if current_rsi > 70:
-        st.warning("⚠️ RSI Overbought")
+        st.warning("⚠️ **RSI Overbought**")
+        st.write("Consider taking profits")
     elif current_rsi < 30:
-        st.success("✅ RSI Oversold (Buy Signal)")
+        st.success("✅ **RSI Oversold**")
+        st.write("Potential buy opportunity")
     else:
-        st.info("➡️ RSI Neutral")
+        st.info("➡️ **RSI Neutral**")
+        st.write("No strong signal")
     
-    macd_signal = "Bullish" if data['MACD'].iloc[-1] > data['MACD_Signal'].iloc[-1] else "Bearish"
+    macd_signal = "Bullish 🟢" if data['MACD'].iloc[-1] > data['MACD_Signal'].iloc[-1] else "Bearish 🔴"
     st.metric("MACD Signal", macd_signal)
 
 with col3:
-    st.markdown("#### Volatility Status")
+    st.markdown("#### 🌊 Volatility Status")
     
     avg_vol = data['Volatility'].mean()
     if current_vol > avg_vol * 1.5:
-        st.error("🌊 High Volatility")
+        st.error("🌊 **High Volatility**")
+        st.write("Increased risk, use caution")
     elif current_vol < avg_vol * 0.5:
-        st.success("😌 Low Volatility")
+        st.success("😌 **Low Volatility**")
+        st.write("Stable market conditions")
     else:
-        st.info("📊 Normal Volatility")
+        st.info("📊 **Normal Volatility**")
+        st.write("Standard market behavior")
     
-    st.metric("Vol vs Avg", f"{((current_vol / avg_vol - 1) * 100):+.1f}%")
+    st.metric("Vol vs Average", f"{((current_vol / avg_vol - 1) * 100):+.1f}%")
+
+# Footer
+st.markdown("---")
+st.markdown(
+    f"<div style='text-align: center; color: #8B7355; padding: 1rem;'>"
+    f"Dashboard v6.0 Professional | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | "
+    f"Data Source: Yahoo Finance"
+    f"</div>",
+    unsafe_allow_html=True
+)

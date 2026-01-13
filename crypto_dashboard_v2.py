@@ -784,53 +784,56 @@ if has_predictions:
         
         st.dataframe(styled_df, use_container_width=True)
     
-    with col2:
-        st.markdown("### 🥧 Model Accuracy Distribution")
-        
-        # FIXED: PIE CHART WITH ALL 4 MODELS VISIBLE
-        fig_pie = go.Figure(data=[go.Pie(
-            # Use absolute values of R² Score or convert to percentage for better visualization
-labels=comparison_df['Model'].tolist(),
-values=[max(0.01, abs(x)) for x in comparison_df['R² Score'].tolist()],  # Ensure positive values
+with col2:
+    st.markdown("### 🥧 Model Accuracy Distribution")
 
-            hole=0.35,
-            marker=dict(
-    colors=pie_colors,
-    line=dict(color='#ffffff' if st.session_state.theme == 'light' else '#0e1117', width=2)
-),
-            textfont=dict(
-                color='#0e1117',
-                size=14,
-                family="Arial Black"
-            ),
-            textposition='auto',
-            textinfo='label+percent',
-            insidetextorientation='radial',
-            pull=[0, 0, 0, 0],
-            hovertemplate='<b>%{label}</b><br>R² Score: %{value:.4f}<br>Share: %{percent}<extra></extra>'
-        )])
-        
-        fig_pie.update_layout(
-            template=chart_template,
-            plot_bgcolor=bg_color,
-            paper_bgcolor=bg_color,
-            font=dict(color=text_color),
-            height=380,
-            showlegend=True,
-            legend=dict(
-                orientation="v",
-                yanchor="middle",
-                y=0.5,
-                xanchor="left",
-                x=1.05,
-                font=dict(color=legend_font_color, size=12),
-                bgcolor='rgba(0, 0, 0, 0)',
-                bordercolor='rgba(0, 0, 0, 0)',
-                borderwidth=0
-            ),
-            margin=dict(l=20, r=120, t=40, b=20)
-        )
-        st.plotly_chart(fig_pie, use_container_width=True)
+    # Define pie colors BEFORE using them
+    pie_colors = [MODEL_COLORS.get(m, PALETTE_OKABE_ITO[i % len(PALETTE_OKABE_ITO)])
+                  for i, m in enumerate(comparison_df["Model"].tolist())]
+
+    fig_pie = go.Figure(data=[go.Pie(
+        labels=comparison_df['Model'].tolist(),
+        values=[max(0.01, abs(x)) for x in comparison_df['R² Score'].tolist()],
+        hole=0.35,
+        marker=dict(
+            colors=pie_colors,
+            line=dict(color='#ffffff' if st.session_state.theme == 'light' else '#0e1117', width=2)
+        ),
+        textfont=dict(
+            color='#0e1117',
+            size=14,
+            family="Arial Black"
+        ),
+        textposition='auto',
+        textinfo='label+percent',
+        insidetextorientation='radial',
+        pull=[0, 0, 0, 0],
+        hovertemplate='<b>%{label}</b><br>R² Score: %{value:.4f}<br>Share: %{percent}<extra></extra>'
+    )])
+
+    fig_pie.update_layout(
+        template=chart_template,
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color,
+        font=dict(color=text_color),
+        height=380,
+        showlegend=True,
+        legend=dict(
+            orientation="v",
+            yanchor="middle",
+            y=0.5,
+            xanchor="left",
+            x=1.05,
+            font=dict(color=legend_font_color, size=12),
+            bgcolor='rgba(0, 0, 0, 0)',
+            bordercolor='rgba(0, 0, 0, 0)',
+            borderwidth=0
+        ),
+        margin=dict(l=20, r=120, t=40, b=20)
+    )
+
+    st.plotly_chart(fig_pie, use_container_width=True)
+
 
 # ============================================================================
 # SUMMARY STATISTICS

@@ -26,7 +26,16 @@ if 'theme' not in st.session_state:
 
 def toggle_theme():
     st.session_state.theme = 'dark' if st.session_state.theme == 'light' else 'light'
+# ===== Color palettes (must be defined BEFORE charts use them) =====
+PALETTE_OKABE_ITO = ["#0072B2", "#56B4E9", "#009E73", "#E69F00", "#D55E00", "#CC79A7", "#000000"]
+PALETTE_EXTRA = ["#5778A4", "#E49444", "#D1615D", "#85B6B2", "#6A9F58", "#E7CA60", "#A87C9F", "#F1A2A9", "#967662", "#B8B0AC"]
 
+MODEL_COLORS = {
+    "ARIMA":   "#0072B2",
+    "SARIMA":  "#56B4E9",
+    "Prophet": "#E69F00",  # amber
+    "LSTM":    "#009E73",
+}
 # ============================================================================
 # CSS (SAME AS v6.1)
 # ============================================================================

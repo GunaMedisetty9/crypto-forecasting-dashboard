@@ -28,351 +28,189 @@ def toggle_theme():
     st.session_state.theme = 'dark' if st.session_state.theme == 'light' else 'light'
 
 # ============================================================================
-# FINAL CSS - ALL VISIBILITY FIXES
+# CSS (SAME AS v6.1)
 # ============================================================================
 
 if st.session_state.theme == 'dark':
     st.markdown("""
     <style>
         * {transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;}
-        
-        /* ===== MAIN BACKGROUNDS ===== */
         .stApp, .stApp > header, [data-testid="stHeader"] {
             background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;
         }
-        
-        /* ===== SIDEBAR STYLING ===== */
         [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
             background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
             border-right: 2px solid #8B7355 !important;
         }
-        
-        [data-testid="stSidebar"] * {
-            color: #D4C4A8 !important;
-        }
-        
+        [data-testid="stSidebar"] * {color: #D4C4A8 !important;}
         [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
-            color: #C9B99B !important;
-            font-weight: 600 !important;
+            color: #C9B99B !important; font-weight: 600 !important;
         }
-        
         [data-testid="stSidebar"] label {
-            color: #C9B99B !important;
-            font-weight: 500 !important;
-            font-size: 1rem !important;
+            color: #C9B99B !important; font-weight: 500 !important; font-size: 1rem !important;
         }
-        
-        /* ===== FIX: SIDEBAR COLLAPSE BUTTON FULLY VISIBLE IN DARK MODE ===== */
         [data-testid="collapsedControl"] {
             background-color: #C9B99B !important;
             border: 2px solid #A67C52 !important;
             color: #0e1117 !important;
             box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
         }
-        
         [data-testid="collapsedControl"]:hover {
             background-color: #A67C52 !important;
             border-color: #C9B99B !important;
             box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
         }
-        
         [data-testid="collapsedControl"] svg {
-            fill: #0e1117 !important;
-            stroke: #0e1117 !important;
+            fill: #0e1117 !important; stroke: #0e1117 !important;
         }
-        
-        /* ===== SELECTBOX DROPDOWN VISIBLE ===== */
         [data-testid="stSidebar"] .stSelectbox > div > div {
             background-color: #262730 !important;
             color: #D4C4A8 !important;
             border: 2px solid #8B7355 !important;
         }
-        
         [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] {
             background-color: #262730 !important;
         }
-        
         [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div {
-            background-color: #262730 !important;
-            color: #D4C4A8 !important;
+            background-color: #262730 !important; color: #D4C4A8 !important;
         }
-        
         [data-testid="stSidebar"] div[role="listbox"] {
-            background-color: #262730 !important;
-            border: 2px solid #8B7355 !important;
+            background-color: #262730 !important; border: 2px solid #8B7355 !important;
         }
-        
         [data-testid="stSidebar"] div[role="option"] {
-            background-color: #262730 !important;
-            color: #D4C4A8 !important;
-            padding: 0.75rem !important;
+            background-color: #262730 !important; color: #D4C4A8 !important; padding: 0.75rem !important;
         }
-        
         [data-testid="stSidebar"] div[role="option"]:hover {
-            background-color: #3a3d4a !important;
-            color: #C9B99B !important;
+            background-color: #3a3d4a !important; color: #C9B99B !important;
         }
-        
-        /* ===== HEADERS ===== */
         .main-header {
-            font-size: 2.2rem !important;
-            color: #C9B99B !important;
-            text-align: center;
-            font-weight: 700 !important;
-            margin-bottom: 0.5rem !important;
+            font-size: 2.2rem !important; color: #C9B99B !important; text-align: center;
+            font-weight: 700 !important; margin-bottom: 0.5rem !important;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
         }
-        
         .sub-header {
-            font-size: 1.2rem !important;
-            color: #A67C52 !important;
-            text-align: center;
-            font-weight: 400 !important;
+            font-size: 1.2rem !important; color: #A67C52 !important;
+            text-align: center; font-weight: 400 !important;
         }
-        
         h2, h3 {
-            color: #C9B99B !important;
-            font-weight: 600 !important;
-            border-bottom: 2px solid #8B7355 !important;
-            padding-bottom: 0.5rem !important;
+            color: #C9B99B !important; font-weight: 600 !important;
+            border-bottom: 2px solid #8B7355 !important; padding-bottom: 0.5rem !important;
         }
-        
         .stMarkdown {color: #D4C4A8 !important;}
-        
-        /* ===== METRICS WITH CARDS ===== */
         [data-testid="stMetricValue"] {
-            color: #C9B99B !important;
-            font-size: 1.8rem !important;
-            font-weight: bold !important;
+            color: #C9B99B !important; font-size: 1.8rem !important; font-weight: bold !important;
         }
-        
-        [data-testid="stMetricLabel"] {
-            color: #B8956A !important;
-            font-weight: 500 !important;
-        }
-        
-        [data-testid="stMetricDelta"] {
-            color: #B8B76D !important;
-            font-weight: 600 !important;
-        }
-        
+        [data-testid="stMetricLabel"] {color: #B8956A !important; font-weight: 500 !important;}
+        [data-testid="stMetricDelta"] {color: #B8B76D !important; font-weight: 600 !important;}
         div[data-testid="metric-container"] {
             background: linear-gradient(135deg, #1e2130 0%, #262730 100%) !important;
-            border: 2px solid #8B7355 !important;
-            border-radius: 10px !important;
-            padding: 1rem !important;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+            border: 2px solid #8B7355 !important; border-radius: 10px !important;
+            padding: 1rem !important; box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
         }
-        
         div[data-testid="metric-container"]:hover {
             border-color: #C9B99B !important;
             box-shadow: 0 6px 12px rgba(201, 185, 155, 0.2) !important;
         }
-        
-        /* ===== TOGGLE BUTTON ===== */
         [data-testid="column"]:last-child {
-            position: fixed !important;
-            top: 0.8rem !important;
-            right: 0.8rem !important;
-            z-index: 999999 !important;
-            width: 60px !important;
+            position: fixed !important; top: 0.8rem !important; right: 0.8rem !important;
+            z-index: 999999 !important; width: 60px !important;
         }
-        
         [data-testid="column"]:last-child .stButton > button {
             background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
-            color: #0e1117 !important;
-            border: 3px solid #C9B99B !important;
-            padding: 0 !important;
-            border-radius: 50% !important;
-            font-size: 1.8rem !important;
-            width: 60px !important;
-            height: 60px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+            color: #0e1117 !important; border: 3px solid #C9B99B !important;
+            padding: 0 !important; border-radius: 50% !important; font-size: 1.8rem !important;
+            width: 60px !important; height: 60px !important;
+            display: flex !important; align-items: center !important; justify-content: center !important;
             box-shadow: 0 4px 20px rgba(166, 124, 82, 0.5) !important;
-            transition: all 0.3s ease !important;
-            margin: 0 !important;
+            transition: all 0.3s ease !important; margin: 0 !important;
         }
-        
         [data-testid="column"]:last-child .stButton > button:hover {
             transform: scale(1.15) rotate(180deg) !important;
             box-shadow: 0 6px 30px rgba(166, 124, 82, 0.7) !important;
         }
-        
-        /* ===== FORM ELEMENTS ===== */
         .stSelectbox > div > div {
-            background-color: #262730 !important;
-            color: #D4C4A8 !important;
+            background-color: #262730 !important; color: #D4C4A8 !important;
             border: 2px solid #8B7355 !important;
         }
-        
-        .stSelectbox label {
-            color: #C9B99B !important;
-            font-weight: 500 !important;
-        }
-        
-        .stCheckbox > label {
-            color: #D4C4A8 !important;
-            font-weight: 500 !important;
-        }
-        
-        .stCheckbox > label:hover {
-            color: #C9B99B !important;
-        }
-        
-        /* ===== DOWNLOAD BUTTONS ===== */
+        .stSelectbox label {color: #C9B99B !important; font-weight: 500 !important;}
+        .stCheckbox > label {color: #D4C4A8 !important; font-weight: 500 !important;}
+        .stCheckbox > label:hover {color: #C9B99B !important;}
         .stDownloadButton > button {
             background: linear-gradient(135deg, #262730 0%, #1e2130 100%) !important;
-            color: #D4C4A8 !important;
-            border: 2px solid #8B7355 !important;
-            padding: 0.75rem 1rem !important;
-            border-radius: 8px !important;
-            font-weight: 600 !important;
-            width: 100% !important;
-            text-align: center !important;
+            color: #D4C4A8 !important; border: 2px solid #8B7355 !important;
+            padding: 0.75rem 1rem !important; border-radius: 8px !important;
+            font-weight: 600 !important; width: 100% !important; text-align: center !important;
             transition: all 0.3s ease !important;
         }
-        
         .stDownloadButton > button:hover {
             background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
-            transform: translateY(-2px) !important;
-            color: #0e1117 !important;
+            transform: translateY(-2px) !important; color: #0e1117 !important;
             box-shadow: 0 4px 12px rgba(166, 124, 82, 0.4) !important;
         }
-        
-        /* ===== SUCCESS/INFO BOXES ===== */
         .stSuccess {
             background: linear-gradient(135deg, rgba(184, 183, 109, 0.2) 0%, rgba(184, 183, 109, 0.1) 100%) !important;
-            color: #B8B76D !important;
-            border-left: 4px solid #B8B76D !important;
-            border-radius: 8px !important;
-            padding: 1rem !important;
+            color: #B8B76D !important; border-left: 4px solid #B8B76D !important;
+            border-radius: 8px !important; padding: 1rem !important;
         }
-        
         .stInfo {
             background: linear-gradient(135deg, rgba(166, 124, 82, 0.2) 0%, rgba(166, 124, 82, 0.1) 100%) !important;
-            color: #D4C4A8 !important;
-            border-left: 4px solid #A67C52 !important;
-            border-radius: 8px !important;
+            color: #D4C4A8 !important; border-left: 4px solid #A67C52 !important; border-radius: 8px !important;
         }
-        
         .stWarning {
             background: linear-gradient(135deg, rgba(184, 149, 106, 0.2) 0%, rgba(184, 149, 106, 0.1) 100%) !important;
-            color: #D4C4A8 !important;
-            border-left: 4px solid #B8956A !important;
-            border-radius: 8px !important;
+            color: #D4C4A8 !important; border-left: 4px solid #B8956A !important; border-radius: 8px !important;
         }
-        
         .stError {
             background: linear-gradient(135deg, rgba(166, 124, 82, 0.3) 0%, rgba(166, 124, 82, 0.15) 100%) !important;
-            color: #D4C4A8 !important;
-            border-left: 4px solid #A67C52 !important;
-            border-radius: 8px !important;
+            color: #D4C4A8 !important; border-left: 4px solid #A67C52 !important; border-radius: 8px !important;
         }
-        
-        /* ===== TABS STYLING ===== */
         .stTabs [data-baseweb="tab-list"] {
-            background-color: #1e2130 !important;
-            border-radius: 10px !important;
-            padding: 0.5rem !important;
+            background-color: #1e2130 !important; border-radius: 10px !important; padding: 0.5rem !important;
         }
-        
         .stTabs [data-baseweb="tab"] {
-            color: #8B7355 !important;
-            font-weight: 500 !important;
-            padding: 0.75rem 1.5rem !important;
+            color: #8B7355 !important; font-weight: 500 !important; padding: 0.75rem 1.5rem !important;
         }
-        
         .stTabs [aria-selected="true"] {
-            color: #C9B99B !important;
-            border-bottom: 3px solid #A67C52 !important;
-            font-weight: 600 !important;
+            color: #C9B99B !important; border-bottom: 3px solid #A67C52 !important; font-weight: 600 !important;
         }
-        
-        /* ===== TABLES - FULL VISIBILITY ===== */
         .dataframe {
-            color: #D4C4A8 !important;
-            background-color: #1e2130 !important;
-            border: 2px solid #8B7355 !important;
-            border-radius: 8px !important;
+            color: #D4C4A8 !important; background-color: #1e2130 !important;
+            border: 2px solid #8B7355 !important; border-radius: 8px !important;
         }
-        
         .dataframe thead tr th {
-            background-color: #262730 !important;
-            color: #C9B99B !important;
-            border: 1px solid #8B7355 !important;
-            font-weight: 600 !important;
-            padding: 0.75rem !important;
+            background-color: #262730 !important; color: #C9B99B !important;
+            border: 1px solid #8B7355 !important; font-weight: 600 !important; padding: 0.75rem !important;
         }
-        
         .dataframe tbody tr td {
-            background-color: #1e2130 !important;
-            color: #D4C4A8 !important;
-            border: 1px solid #8B7355 !important;
-            padding: 0.75rem !important;
+            background-color: #1e2130 !important; color: #D4C4A8 !important;
+            border: 1px solid #8B7355 !important; padding: 0.75rem !important;
         }
-        
         .dataframe tbody tr:hover td {
-            background-color: #262730 !important;
-            color: #C9B99B !important;
+            background-color: #262730 !important; color: #C9B99B !important;
         }
-        
         table {
-            color: #D4C4A8 !important;
-            background-color: #1e2130 !important;
-            border: 2px solid #8B7355 !important;
-            border-radius: 8px !important;
+            color: #D4C4A8 !important; background-color: #1e2130 !important;
+            border: 2px solid #8B7355 !important; border-radius: 8px !important;
         }
-        
         table thead tr th {
-            background-color: #262730 !important;
-            color: #C9B99B !important;
-            border: 1px solid #8B7355 !important;
-            font-weight: 600 !important;
-            padding: 0.75rem !important;
+            background-color: #262730 !important; color: #C9B99B !important;
+            border: 1px solid #8B7355 !important; font-weight: 600 !important; padding: 0.75rem !important;
         }
-        
         table tbody tr td {
-            background-color: #1e2130 !important;
-            color: #D4C4A8 !important;
-            border: 1px solid #8B7355 !important;
-            padding: 0.75rem !important;
+            background-color: #1e2130 !important; color: #D4C4A8 !important;
+            border: 1px solid #8B7355 !important; padding: 0.75rem !important;
         }
-        
-        table tbody tr:hover td {
-            background-color: #262730 !important;
-        }
-        
-        /* ===== DIVIDERS ===== */
+        table tbody tr:hover td {background-color: #262730 !important;}
         hr {
-            border: none !important;
-            height: 2px !important;
+            border: none !important; height: 2px !important;
             background: linear-gradient(90deg, transparent 0%, #8B7355 50%, transparent 100%) !important;
             margin: 2rem 0 !important;
         }
-        
-        /* ===== HIDE STREAMLIT BRANDING ===== */
         #MainMenu, footer, header {visibility: hidden;}
-        
-        /* ===== SCROLLBAR STYLING ===== */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #1e2130;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #8B7355;
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #A67C52;
-        }
+        ::-webkit-scrollbar {width: 10px; height: 10px;}
+        ::-webkit-scrollbar-track {background: #1e2130;}
+        ::-webkit-scrollbar-thumb {background: #8B7355; border-radius: 5px;}
+        ::-webkit-scrollbar-thumb:hover {background: #A67C52;}
     </style>
     """, unsafe_allow_html=True)
 else:
@@ -382,50 +220,27 @@ else:
         .stApp {background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;}
         .main-header {font-size: 2.2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important;}
         .sub-header {font-size: 1.2rem !important; color: #666 !important; text-align: center;}
-        
-        /* ===== SIDEBAR COLLAPSE VISIBLE IN LIGHT MODE ===== */
         [data-testid="collapsedControl"] {
-            background-color: #1f77b4 !important;
-            border: 2px solid #0d47a1 !important;
-            color: white !important;
+            background-color: #1f77b4 !important; border: 2px solid #0d47a1 !important; color: white !important;
         }
-        
-        [data-testid="collapsedControl"]:hover {
-            background-color: #0d47a1 !important;
-        }
-        
-        [data-testid="collapsedControl"] svg {
-            fill: white !important;
-        }
-        
+        [data-testid="collapsedControl"]:hover {background-color: #0d47a1 !important;}
+        [data-testid="collapsedControl"] svg {fill: white !important;}
         [data-testid="column"]:last-child {
-            position: fixed !important;
-            top: 0.8rem !important;
-            right: 0.8rem !important;
-            z-index: 999999 !important;
-            width: 60px !important;
+            position: fixed !important; top: 0.8rem !important; right: 0.8rem !important;
+            z-index: 999999 !important; width: 60px !important;
         }
-        
         [data-testid="column"]:last-child .stButton > button {
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
-            color: #1f2937 !important;
-            border: 3px solid #f59e0b !important;
-            padding: 0 !important;
-            border-radius: 50% !important;
-            font-size: 1.8rem !important;
-            width: 60px !important;
-            height: 60px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+            color: #1f2937 !important; border: 3px solid #f59e0b !important;
+            padding: 0 !important; border-radius: 50% !important; font-size: 1.8rem !important;
+            width: 60px !important; height: 60px !important;
+            display: flex !important; align-items: center !important; justify-content: center !important;
             box-shadow: 0 4px 20px rgba(245, 158, 11, 0.5) !important;
             transition: all 0.3s ease !important;
         }
-        
         [data-testid="column"]:last-child .stButton > button:hover {
             transform: scale(1.15) rotate(180deg) !important;
         }
-        
         #MainMenu, footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
@@ -477,14 +292,10 @@ def load_data():
         return None, None, None, None
 
 def ensure_columns(data):
-    """Ensure all required technical indicator columns exist"""
-    
     if 'Returns' not in data.columns:
         data['Returns'] = data['Close'].pct_change()
-    
     if 'Volatility' not in data.columns:
         data['Volatility'] = data['Returns'].rolling(window=30).std() * np.sqrt(252) * 100
-    
     if 'MA7' not in data.columns:
         data['MA7'] = data['Close'].rolling(window=7).mean()
     if 'MA30' not in data.columns:
@@ -493,27 +304,23 @@ def ensure_columns(data):
         data['MA50'] = data['Close'].rolling(window=50).mean()
     if 'MA200' not in data.columns:
         data['MA200'] = data['Close'].rolling(window=200).mean()
-    
     if 'RSI' not in data.columns:
         delta = data['Close'].diff()
         gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
         loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
         rs = gain / loss
         data['RSI'] = 100 - (100 / (1 + rs))
-    
     if 'MACD' not in data.columns:
         exp1 = data['Close'].ewm(span=12, adjust=False).mean()
         exp2 = data['Close'].ewm(span=26, adjust=False).mean()
         data['MACD'] = exp1 - exp2
         data['MACD_Signal'] = data['MACD'].ewm(span=9, adjust=False).mean()
         data['MACD_Hist'] = data['MACD'] - data['MACD_Signal']
-    
     if 'BB_Middle' not in data.columns:
         data['BB_Middle'] = data['Close'].rolling(window=20).mean()
         data['BB_Std'] = data['Close'].rolling(window=20).std()
         data['BB_Upper'] = data['BB_Middle'] + (data['BB_Std'] * 2)
         data['BB_Lower'] = data['BB_Middle'] - (data['BB_Std'] * 2)
-    
     return data
 
 @st.cache_data(ttl=3600)
@@ -523,7 +330,6 @@ def load_live_data(ticker):
         if not data.empty:
             if isinstance(data.columns, pd.MultiIndex):
                 data.columns = data.columns.get_level_values(0)
-            
             data = ensure_columns(data)
             return data
         return None
@@ -644,10 +450,10 @@ with col5:
 st.markdown("---")
 
 theme_emoji = "🌙" if st.session_state.theme == 'dark' else "☀️"
-st.success(f"{theme_emoji} Dashboard v6.1 Final - {crypto_name} | {selected_model}")
+st.success(f"{theme_emoji} Dashboard v6.2 Final - {crypto_name} | {selected_model}")
 
 # ============================================================================
-# CANDLESTICK CHART WITH CLEAN LEGENDS (NO BOXES)
+# CANDLESTICK CHART
 # ============================================================================
 
 st.markdown("## 📈 Price Analysis & Predictions")
@@ -747,7 +553,6 @@ fig.add_trace(go.Bar(
     legendgroup='volume'
 ), row=2, col=1)
 
-# FIXED: LEGEND WITHOUT BOXES - CLEAN DESIGN
 fig.update_layout(
     template=chart_template,
     plot_bgcolor=bg_color,
@@ -762,14 +567,10 @@ fig.update_layout(
         y=0.99,
         xanchor="left",
         x=1.01,
-        bgcolor='rgba(0, 0, 0, 0)',  # TRANSPARENT - NO BOX
-        bordercolor='rgba(0, 0, 0, 0)',  # TRANSPARENT - NO BORDER
+        bgcolor='rgba(0, 0, 0, 0)',
+        bordercolor='rgba(0, 0, 0, 0)',
         borderwidth=0,
-        font=dict(
-            color=legend_font_color,
-            size=12,
-            family="Arial"
-        )
+        font=dict(color=legend_font_color, size=12, family="Arial")
     ),
     showlegend=True
 )
@@ -781,7 +582,7 @@ fig.update_xaxes(title_text="Date", row=2, col=1, title_font=dict(color=text_col
 st.plotly_chart(fig, use_container_width=True)
 
 # ============================================================================
-# TECHNICAL INDICATORS - CLEAN LEGENDS
+# TECHNICAL INDICATORS (SAME AS BEFORE - ABBREVIATED FOR SPACE)
 # ============================================================================
 
 if show_technical:
@@ -794,13 +595,9 @@ if show_technical:
         
         fig_rsi = go.Figure()
         fig_rsi.add_trace(go.Scatter(
-            x=data.index[-200:],
-            y=data['RSI'].iloc[-200:],
-            mode='lines',
-            name='RSI',
-            line=dict(color='#C9B99B', width=3),
-            fill='tozeroy',
-            fillcolor='rgba(201, 185, 155, 0.2)'
+            x=data.index[-200:], y=data['RSI'].iloc[-200:],
+            mode='lines', name='RSI', line=dict(color='#C9B99B', width=3),
+            fill='tozeroy', fillcolor='rgba(201, 185, 155, 0.2)'
         ))
         
         fig_rsi.add_hline(y=70, line_dash="dash", line_color="#A67C52", annotation_text="Overbought (70)", annotation_font_color=text_color)
@@ -811,21 +608,10 @@ if show_technical:
         fig_rsi.add_hrect(y0=0, y1=30, fillcolor="#8B7355", opacity=0.1, line_width=0)
         
         fig_rsi.update_layout(
-            template=chart_template,
-            plot_bgcolor=bg_color,
-            paper_bgcolor=bg_color,
-            font=dict(color=text_color),
-            height=450,
-            xaxis_title="Date",
-            yaxis_title="RSI",
-            yaxis=dict(range=[0, 100]),
-            showlegend=True,
-            legend=dict(
-                font=dict(color=legend_font_color),
-                bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
-                bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
-                borderwidth=0
-            )
+            template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+            font=dict(color=text_color), height=450, xaxis_title="Date", yaxis_title="RSI",
+            yaxis=dict(range=[0, 100]), showlegend=True,
+            legend=dict(font=dict(color=legend_font_color), bgcolor='rgba(0, 0, 0, 0)', bordercolor='rgba(0, 0, 0, 0)', borderwidth=0)
         )
         st.plotly_chart(fig_rsi, use_container_width=True)
         
@@ -842,44 +628,18 @@ if show_technical:
     with tab2:
         st.markdown("**MACD (Moving Average Convergence Divergence)** - Trend-following momentum indicator")
         
-        fig_macd = make_subplots(rows=2, cols=1, shared_xaxes=True, 
-                                 vertical_spacing=0.03, row_heights=[0.7, 0.3])
-        
-        fig_macd.add_trace(go.Scatter(
-            x=data.index[-200:], y=data['Close'].iloc[-200:],
-            mode='lines', name='Price', line=dict(color='#C9B99B', width=2.5)
-        ), row=1, col=1)
-        
-        fig_macd.add_trace(go.Scatter(
-            x=data.index[-200:], y=data['MACD'].iloc[-200:],
-            mode='lines', name='MACD', line=dict(color='#A67C52', width=2.5)
-        ), row=2, col=1)
-        
-        fig_macd.add_trace(go.Scatter(
-            x=data.index[-200:], y=data['MACD_Signal'].iloc[-200:],
-            mode='lines', name='Signal', line=dict(color='#8B7355', width=2.5)
-        ), row=2, col=1)
+        fig_macd = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.03, row_heights=[0.7, 0.3])
+        fig_macd.add_trace(go.Scatter(x=data.index[-200:], y=data['Close'].iloc[-200:], mode='lines', name='Price', line=dict(color='#C9B99B', width=2.5)), row=1, col=1)
+        fig_macd.add_trace(go.Scatter(x=data.index[-200:], y=data['MACD'].iloc[-200:], mode='lines', name='MACD', line=dict(color='#A67C52', width=2.5)), row=2, col=1)
+        fig_macd.add_trace(go.Scatter(x=data.index[-200:], y=data['MACD_Signal'].iloc[-200:], mode='lines', name='Signal', line=dict(color='#8B7355', width=2.5)), row=2, col=1)
         
         hist_colors = ['#B8B76D' if val >= 0 else '#A67C52' for val in data['MACD_Hist'].iloc[-200:]]
-        fig_macd.add_trace(go.Bar(
-            x=data.index[-200:], y=data['MACD_Hist'].iloc[-200:],
-            name='Histogram', marker_color=hist_colors, opacity=0.7
-        ), row=2, col=1)
+        fig_macd.add_trace(go.Bar(x=data.index[-200:], y=data['MACD_Hist'].iloc[-200:], name='Histogram', marker_color=hist_colors, opacity=0.7), row=2, col=1)
         
         fig_macd.update_layout(
-            template=chart_template,
-            plot_bgcolor=bg_color,
-            paper_bgcolor=bg_color,
-            font=dict(color=text_color),
-            height=550,
-            showlegend=True,
-            hovermode='x unified',
-            legend=dict(
-                font=dict(color=legend_font_color),
-                bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
-                bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
-                borderwidth=0
-            )
+            template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+            font=dict(color=text_color), height=550, showlegend=True, hovermode='x unified',
+            legend=dict(font=dict(color=legend_font_color), bgcolor='rgba(0, 0, 0, 0)', bordercolor='rgba(0, 0, 0, 0)', borderwidth=0)
         )
         st.plotly_chart(fig_macd, use_container_width=True)
     
@@ -887,43 +647,15 @@ if show_technical:
         st.markdown("**Bollinger Bands** - Volatility bands placed above and below a moving average")
         
         fig_bb = go.Figure()
-        
-        fig_bb.add_trace(go.Scatter(
-            x=data.index[-200:], y=data['BB_Upper'].iloc[-200:],
-            mode='lines', name='Upper Band', line=dict(color='#A67C52', width=2, dash='dash')
-        ))
-        
-        fig_bb.add_trace(go.Scatter(
-            x=data.index[-200:], y=data['BB_Middle'].iloc[-200:],
-            mode='lines', name='SMA (20)', line=dict(color='#C9B99B', width=2.5)
-        ))
-        
-        fig_bb.add_trace(go.Scatter(
-            x=data.index[-200:], y=data['BB_Lower'].iloc[-200:],
-            mode='lines', name='Lower Band', line=dict(color='#8B7355', width=2, dash='dash'),
-            fill='tonexty', fillcolor='rgba(166, 124, 82, 0.15)'
-        ))
-        
-        fig_bb.add_trace(go.Scatter(
-            x=data.index[-200:], y=data['Close'].iloc[-200:],
-            mode='lines', name='Close Price', line=dict(color='#B8B76D', width=3)
-        ))
+        fig_bb.add_trace(go.Scatter(x=data.index[-200:], y=data['BB_Upper'].iloc[-200:], mode='lines', name='Upper Band', line=dict(color='#A67C52', width=2, dash='dash')))
+        fig_bb.add_trace(go.Scatter(x=data.index[-200:], y=data['BB_Middle'].iloc[-200:], mode='lines', name='SMA (20)', line=dict(color='#C9B99B', width=2.5)))
+        fig_bb.add_trace(go.Scatter(x=data.index[-200:], y=data['BB_Lower'].iloc[-200:], mode='lines', name='Lower Band', line=dict(color='#8B7355', width=2, dash='dash'), fill='tonexty', fillcolor='rgba(166, 124, 82, 0.15)'))
+        fig_bb.add_trace(go.Scatter(x=data.index[-200:], y=data['Close'].iloc[-200:], mode='lines', name='Close Price', line=dict(color='#B8B76D', width=3)))
         
         fig_bb.update_layout(
-            template=chart_template,
-            plot_bgcolor=bg_color,
-            paper_bgcolor=bg_color,
-            font=dict(color=text_color),
-            height=500,
-            xaxis_title="Date",
-            yaxis_title="Price (USD)",
-            showlegend=True,
-            legend=dict(
-                font=dict(color=legend_font_color),
-                bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
-                bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
-                borderwidth=0
-            )
+            template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+            font=dict(color=text_color), height=500, xaxis_title="Date", yaxis_title="Price (USD)", showlegend=True,
+            legend=dict(font=dict(color=legend_font_color), bgcolor='rgba(0, 0, 0, 0)', bordercolor='rgba(0, 0, 0, 0)', borderwidth=0)
         )
         st.plotly_chart(fig_bb, use_container_width=True)
         
@@ -935,7 +667,7 @@ if show_technical:
             st.metric("30-Day Avg Width", f"{data['BB_Width'].iloc[-30:].mean():.2f}%")
 
 # ============================================================================
-# ADDITIONAL ANALYSIS - CLEAN LEGENDS
+# ADDITIONAL ANALYSIS
 # ============================================================================
 
 st.markdown("---")
@@ -958,34 +690,13 @@ with col1:
             else:
                 vol_colors_60.append('#A67C52')
     
-    fig_vol.add_trace(go.Bar(
-        x=data.index[-60:],
-        y=data['Volume'].iloc[-60:],
-        name='Volume',
-        marker_color=vol_colors_60,
-        opacity=0.7
-    ), secondary_y=False)
-    
-    fig_vol.add_trace(go.Scatter(
-        x=data.index[-60:],
-        y=data['Close'].iloc[-60:],
-        name='Price',
-        line=dict(color='#C9B99B', width=2.5)
-    ), secondary_y=True)
+    fig_vol.add_trace(go.Bar(x=data.index[-60:], y=data['Volume'].iloc[-60:], name='Volume', marker_color=vol_colors_60, opacity=0.7), secondary_y=False)
+    fig_vol.add_trace(go.Scatter(x=data.index[-60:], y=data['Close'].iloc[-60:], name='Price', line=dict(color='#C9B99B', width=2.5)), secondary_y=True)
     
     fig_vol.update_layout(
-        template=chart_template,
-        plot_bgcolor=bg_color,
-        paper_bgcolor=bg_color,
-        font=dict(color=text_color),
-        height=400,
-        showlegend=True,
-        legend=dict(
-            font=dict(color=legend_font_color),
-            bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
-            bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
-            borderwidth=0
-        )
+        template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+        font=dict(color=text_color), height=400, showlegend=True,
+        legend=dict(font=dict(color=legend_font_color), bgcolor='rgba(0, 0, 0, 0)', bordercolor='rgba(0, 0, 0, 0)', borderwidth=0)
     )
     fig_vol.update_yaxes(title_text="Volume", secondary_y=False, title_font=dict(color=text_color))
     fig_vol.update_yaxes(title_text="Price (USD)", secondary_y=True, title_font=dict(color=text_color))
@@ -998,33 +709,16 @@ with col2:
     returns = data['Returns'].dropna() * 100
     
     fig_dist = go.Figure()
-    fig_dist.add_trace(go.Histogram(
-        x=returns[-252:],
-        nbinsx=50,
-        name='Daily Returns',
-        marker_color='#C9B99B',
-        opacity=0.8
-    ))
+    fig_dist.add_trace(go.Histogram(x=returns[-252:], nbinsx=50, name='Daily Returns', marker_color='#C9B99B', opacity=0.8))
     
     mean_return = returns[-252:].mean()
     fig_dist.add_vline(x=mean_return, line_dash="dash", line_color="#B8B76D", line_width=2,
                       annotation_text=f"Mean: {mean_return:.2f}%", annotation_font_color=text_color)
     
     fig_dist.update_layout(
-        template=chart_template,
-        plot_bgcolor=bg_color,
-        paper_bgcolor=bg_color,
-        font=dict(color=text_color),
-        height=400,
-        xaxis_title="Daily Returns (%)",
-        yaxis_title="Frequency",
-        showlegend=True,
-        legend=dict(
-            font=dict(color=legend_font_color),
-            bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
-            bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
-            borderwidth=0
-        )
+        template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+        font=dict(color=text_color), height=400, xaxis_title="Daily Returns (%)", yaxis_title="Frequency", showlegend=True,
+        legend=dict(font=dict(color=legend_font_color), bgcolor='rgba(0, 0, 0, 0)', bordercolor='rgba(0, 0, 0, 0)', borderwidth=0)
     )
     st.plotly_chart(fig_dist, use_container_width=True)
     
@@ -1035,7 +729,7 @@ with col2:
         st.metric("Std Dev", f"{returns[-252:].std():.2f}%")
 
 # ============================================================================
-# MODEL COMPARISON (FIXED PIE CHART - ALL MODELS VISIBLE)
+# MODEL COMPARISON - FIXED TABLE ORDER + PIE CHART
 # ============================================================================
 
 if has_predictions:
@@ -1048,7 +742,11 @@ if has_predictions:
         st.markdown("### 📊 Performance Metrics Table")
         comparison_df = pd.DataFrame(predictions_data['all_metrics'][selected_crypto])
         
-        styled_df = comparison_df.style.format({
+        # FIXED: REVERSE ORDER - Show from 3, 2, 1, 0
+        comparison_df_reversed = comparison_df.iloc[::-1].reset_index(drop=True)
+        comparison_df_reversed.index = [3, 2, 1, 0]  # Set index to 3, 2, 1, 0
+        
+        styled_df = comparison_df_reversed.style.format({
             'RMSE': '${:,.2f}',
             'MAE': '${:,.2f}',
             'R² Score': '{:.4f}',
@@ -1060,24 +758,24 @@ if has_predictions:
     with col2:
         st.markdown("### 🥧 Model Accuracy Distribution")
         
-        # FIXED: PIE CHART WITH ALL 4 MODELS + PERCENTAGES VISIBLE
+        # FIXED: PIE CHART WITH ALL 4 MODELS VISIBLE
         fig_pie = go.Figure(data=[go.Pie(
-            labels=comparison_df['Model'].tolist(),
-            values=comparison_df['R² Score'].tolist(),
+            labels=comparison_df['Model'].tolist(),  # All 4 models
+            values=comparison_df['R² Score'].tolist(),  # All 4 values
             hole=0.35,
             marker=dict(
                 colors=['#C9B99B', '#A67C52', '#8B7355', '#B8956A'],
                 line=dict(color='#ffffff' if st.session_state.theme == 'light' else '#0e1117', width=3)
             ),
             textfont=dict(
-                color='#ffffff' if st.session_state.theme == 'light' else '#0e1117',
+                color='#0e1117',
                 size=14,
                 family="Arial Black"
             ),
             textposition='auto',
             textinfo='label+percent',
             insidetextorientation='radial',
-            pull=[0.05, 0.05, 0.05, 0.05],  # Slightly separate slices for visibility
+            pull=[0.05, 0.05, 0.05, 0.05],
             hovertemplate='<b>%{label}</b><br>R² Score: %{value:.4f}<br>Share: %{percent}<extra></extra>'
         )])
         
@@ -1094,12 +792,9 @@ if has_predictions:
                 y=0.5,
                 xanchor="left",
                 x=1.05,
-                font=dict(
-                    color=legend_font_color,
-                    size=12
-                ),
-                bgcolor='rgba(0, 0, 0, 0)',  # NO BOX
-                bordercolor='rgba(0, 0, 0, 0)',  # NO BORDER
+                font=dict(color=legend_font_color, size=12),
+                bgcolor='rgba(0, 0, 0, 0)',
+                bordercolor='rgba(0, 0, 0, 0)',
                 borderwidth=0
             ),
             margin=dict(l=20, r=120, t=40, b=20)
@@ -1114,14 +809,7 @@ st.markdown("---")
 st.markdown("## 📋 Summary Statistics")
 
 summary_data = {
-    'Metric': [
-        'Current Price',
-        'All-Time High',
-        'All-Time Low',
-        'Avg Volume (30D)',
-        'Volatility (30D)',
-        'Current RSI'
-    ],
+    'Metric': ['Current Price', 'All-Time High', 'All-Time Low', 'Avg Volume (30D)', 'Volatility (30D)', 'Current RSI'],
     'Value': [
         f"${current_price:,.2f}",
         f"${data['Close'].max():,.2f}",
@@ -1193,7 +881,7 @@ with col3:
 st.markdown("---")
 st.markdown(
     f"<div style='text-align: center; color: #8B7355; padding: 1rem;'>"
-    f"✨ Dashboard v6.1 Final | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨"
+    f"✨ Dashboard v6.2 Final | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨"
     f"</div>",
     unsafe_allow_html=True
 )

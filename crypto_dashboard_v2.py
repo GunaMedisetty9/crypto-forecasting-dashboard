@@ -39,233 +39,107 @@ MODEL_COLORS = {
 # ============================================================================
 # CSS (SAME AS v6.1)
 # ============================================================================
-
 if st.session_state.theme == 'dark':
     st.markdown("""
-    <style>
-        # :root { color-scheme: dark; }
-        * {transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;}
-        .stApp, .stApp > header, [data-testid="stHeader"] {
-            background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;
-        }
-        [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
-            background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
-            border-right: 2px solid #8B7355 !important;
-        }
-        [data-testid="stSidebar"] * {color: #D4C4A8 !important;}
-        [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
-            color: #C9B99B !important; font-weight: 600 !important;
-        }
-        [data-testid="stSidebar"] label {
-            color: #C9B99B !important; font-weight: 500 !important; font-size: 1rem !important;
-        }
-        [data-testid="collapsedControl"] {
-            background-color: #C9B99B !important;
-            border: 2px solid #A67C52 !important;
-            div[data-testid="stSidebarCollapseButton"] {
+<style>
+:root { color-scheme: dark; }
+
+* { transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important; }
+
+.stApp, .stApp > header, [data-testid="stHeader"] {
+    background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;
+}
+
+[data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
+    background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
+    border-right: 2px solid #8B7355 !important;
+}
+
+[data-testid="stSidebar"] * { color: #D4C4A8 !important; }
+
+[data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+    color: #C9B99B !important;
+    font-weight: 600 !important;
+}
+
+[data-testid="stSidebar"] label {
+    color: #C9B99B !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+}
+
+/* Sidebar toggle button (covers both Streamlit variants) */
+div[data-testid="collapsedControl"],
+div[data-testid="stSidebarCollapseButton"]{
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+    z-index: 1000000 !important;
+
+    position: fixed !important;
+    top: 0.75rem !important;
+    left: 0.75rem !important;
+
     background-color: #C9B99B !important;
     border: 2px solid #A67C52 !important;
-    color: #0e1117 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: flex !important;
-    z-index: 999999 !important;
+    border-radius: 10px !important;
+    padding: 0.25rem 0.4rem !important;
+
+    box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
 }
-            color: #0e1117 !important;
-            box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
-        }
-        [data-testid="collapsedControl"]:hover {
-            background-color: #A67C52 !important;
-            border-color: #C9B99B !important;
-            box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
-        }
+
+div[data-testid="collapsedControl"]:hover,
+div[data-testid="stSidebarCollapseButton"]:hover{
+    background-color: #A67C52 !important;
+    border-color: #C9B99B !important;
+    box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
+}
+
+/* ">>" icon color = same as dark text color */
 div[data-testid="collapsedControl"] svg,
-div[data-testid="stSidebarCollapseButton"] svg {
-    fill: #D4C4A8 !important;   /* your dark text_color */
-    stroke: #D4C4A8 !important; /* your dark text_color */
+div[data-testid="stSidebarCollapseButton"] svg{
+    fill: #D4C4A8 !important;
+    stroke: #D4C4A8 !important;
 }
-        [data-testid="stSidebar"] .stSelectbox > div > div {
-            background-color: #262730 !important;
-            color: #D4C4A8 !important;
-            border: 2px solid #8B7355 !important;
-        }
-        [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] {
-            background-color: #262730 !important;
-        }
-        [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div {
-            background-color: #262730 !important; color: #D4C4A8 !important;
-        }
-        [data-testid="stSidebar"] div[role="listbox"] {
-            background-color: #262730 !important; border: 2px solid #8B7355 !important;
-        }
-        [data-testid="stSidebar"] div[role="option"] {
-            background-color: #262730 !important; color: #D4C4A8 !important; padding: 0.75rem !important;
-        }
-        [data-testid="stSidebar"] div[role="option"]:hover {
-            background-color: #3a3d4a !important; color: #C9B99B !important;
-        }
-        .main-header {
-            font-size: 2.2rem !important; color: #C9B99B !important; text-align: center;
-            font-weight: 700 !important; margin-bottom: 0.5rem !important;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
-        }
-        .sub-header {
-            font-size: 1.2rem !important; color: #A67C52 !important;
-            text-align: center; font-weight: 400 !important;
-        }
-        h2, h3 {
-            color: #C9B99B !important; font-weight: 600 !important;
-            border-bottom: 2px solid #8B7355 !important; padding-bottom: 0.5rem !important;
-        }
-        .stMarkdown {color: #D4C4A8 !important;}
-        [data-testid="stMetricValue"] {
-            color: #C9B99B !important; font-size: 1.8rem !important; font-weight: bold !important;
-        }
-        [data-testid="stMetricLabel"] {color: #B8956A !important; font-weight: 500 !important;}
-        [data-testid="stMetricDelta"] {color: #B8B76D !important; font-weight: 600 !important;}
-        div[data-testid="metric-container"] {
-            background: linear-gradient(135deg, #1e2130 0%, #262730 100%) !important;
-            border: 2px solid #8B7355 !important; border-radius: 10px !important;
-            padding: 1rem !important; box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
-        }
-        div[data-testid="metric-container"]:hover {
-            border-color: #C9B99B !important;
-            box-shadow: 0 6px 12px rgba(201, 185, 155, 0.2) !important;
-        }
-        [data-testid="column"]:last-child {
-            position: fixed !important; top: 0.8rem !important; right: 0.8rem !important;
-            z-index: 999999 !important; width: 60px !important;
-        }
-        [data-testid="column"]:last-child .stButton > button {
-            background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
-            color: #0e1117 !important; border: 3px solid #C9B99B !important;
-            padding: 0 !important; border-radius: 50% !important; font-size: 1.8rem !important;
-            width: 60px !important; height: 60px !important;
-            display: flex !important; align-items: center !important; justify-content: center !important;
-            box-shadow: 0 4px 20px rgba(166, 124, 82, 0.5) !important;
-            transition: all 0.3s ease !important; margin: 0 !important;
-        }
-        [data-testid="column"]:last-child .stButton > button:hover {
-            transform: scale(1.15) rotate(180deg) !important;
-            box-shadow: 0 6px 30px rgba(166, 124, 82, 0.7) !important;
-        }
-        .stSelectbox > div > div {
-            background-color: #262730 !important; color: #D4C4A8 !important;
-            border: 2px solid #8B7355 !important;
-        }
-        .stSelectbox label {color: #C9B99B !important; font-weight: 500 !important;}
-        .stCheckbox > label {color: #D4C4A8 !important; font-weight: 500 !important;}
-        .stCheckbox > label:hover {color: #C9B99B !important;}
-        .stDownloadButton > button {
-            background: linear-gradient(135deg, #262730 0%, #1e2130 100%) !important;
-            color: #D4C4A8 !important; border: 2px solid #8B7355 !important;
-            padding: 0.75rem 1rem !important; border-radius: 8px !important;
-            font-weight: 600 !important; width: 100% !important; text-align: center !important;
-            transition: all 0.3s ease !important;
-        }
-        .stDownloadButton > button:hover {
-            background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
-            transform: translateY(-2px) !important; color: #0e1117 !important;
-            box-shadow: 0 4px 12px rgba(166, 124, 82, 0.4) !important;
-        }
-        .stSuccess {
-            background: linear-gradient(135deg, rgba(184, 183, 109, 0.2) 0%, rgba(184, 183, 109, 0.1) 100%) !important;
-            color: #B8B76D !important; border-left: 4px solid #B8B76D !important;
-            border-radius: 8px !important; padding: 1rem !important;
-        }
-        .stInfo {
-            background: linear-gradient(135deg, rgba(166, 124, 82, 0.2) 0%, rgba(166, 124, 82, 0.1) 100%) !important;
-            color: #D4C4A8 !important; border-left: 4px solid #A67C52 !important; border-radius: 8px !important;
-        }
-        .stWarning {
-            background: linear-gradient(135deg, rgba(184, 149, 106, 0.2) 0%, rgba(184, 149, 106, 0.1) 100%) !important;
-            color: #D4C4A8 !important; border-left: 4px solid #B8956A !important; border-radius: 8px !important;
-        }
-        .stError {
-            background: linear-gradient(135deg, rgba(166, 124, 82, 0.3) 0%, rgba(166, 124, 82, 0.15) 100%) !important;
-            color: #D4C4A8 !important; border-left: 4px solid #A67C52 !important; border-radius: 8px !important;
-        }
-        .stTabs [data-baseweb="tab-list"] {
-            background-color: #1e2130 !important; border-radius: 10px !important; padding: 0.5rem !important;
-        }
-        .stTabs [data-baseweb="tab"] {
-            color: #8B7355 !important; font-weight: 500 !important; padding: 0.75rem 1.5rem !important;
-        }
-        .stTabs [aria-selected="true"] {
-            color: #C9B99B !important; border-bottom: 3px solid #A67C52 !important; font-weight: 600 !important;
-        }
-        .dataframe {
-            color: #D4C4A8 !important; background-color: #1e2130 !important;
-            border: 2px solid #8B7355 !important; border-radius: 8px !important;
-        }
-        .dataframe thead tr th {
-            background-color: #262730 !important; color: #C9B99B !important;
-            border: 1px solid #8B7355 !important; font-weight: 600 !important; padding: 0.75rem !important;
-        }
-        .dataframe tbody tr td {
-            background-color: #1e2130 !important; color: #D4C4A8 !important;
-            border: 1px solid #8B7355 !important; padding: 0.75rem !important;
-        }
-        .dataframe tbody tr:hover td {
-            background-color: #262730 !important; color: #C9B99B !important;
-        }
-        table {
-            color: #D4C4A8 !important; background-color: #1e2130 !important;
-            border: 2px solid #8B7355 !important; border-radius: 8px !important;
-        }
-        table thead tr th {
-            background-color: #262730 !important; color: #C9B99B !important;
-            border: 1px solid #8B7355 !important; font-weight: 600 !important; padding: 0.75rem !important;
-        }
-        table tbody tr td {
-            background-color: #1e2130 !important; color: #D4C4A8 !important;
-            border: 1px solid #8B7355 !important; padding: 0.75rem !important;
-        }
-        table tbody tr:hover td {background-color: #262730 !important;}
-        hr {
-            border: none !important; height: 2px !important;
-            background: linear-gradient(90deg, transparent 0%, #8B7355 50%, transparent 100%) !important;
-            margin: 2rem 0 !important;
-        }
-        #MainMenu, footer, {visibility: hidden;}
-        ::-webkit-scrollbar {width: 10px; height: 10px;}
-        ::-webkit-scrollbar-track {background: #1e2130;}
-        ::-webkit-scrollbar-thumb {background: #8B7355; border-radius: 5px;}
-        ::-webkit-scrollbar-thumb:hover {background: #A67C52;}
-    </style>
-    """, unsafe_allow_html=True)
+
+#MainMenu, footer { visibility: hidden; }
+
+</style>
+""", unsafe_allow_html=True)
+
 else:
     st.markdown("""
-    <style>
-        # :root { color-scheme: light; }
-        * {transition: background-color 0.5s ease, color 0.5s ease !important;}
-        .stApp {background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;}
-        .main-header {font-size: 2.2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important;}
-        .sub-header {font-size: 1.2rem !important; color: #666 !important; text-align: center;}
-        [data-testid="collapsedControl"] {
-            background-color: #1f77b4 !important; border: 2px solid #0d47a1 !important; color: white !important;
-        }
-        [data-testid="collapsedControl"]:hover {background-color: #0d47a1 !important;}
-        [data-testid="collapsedControl"] svg {fill: white !important;}
-        [data-testid="column"]:last-child {
-            position: fixed !important; top: 0.8rem !important; right: 0.8rem !important;
-            z-index: 999999 !important; width: 60px !important;
-        }
-        [data-testid="column"]:last-child .stButton > button {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
-            color: #1f2937 !important; border: 3px solid #f59e0b !important;
-            padding: 0 !important; border-radius: 50% !important; font-size: 1.8rem !important;
-            width: 60px !important; height: 60px !important;
-            display: flex !important; align-items: center !important; justify-content: center !important;
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.5) !important;
-            transition: all 0.3s ease !important;
-        }
-        [data-testid="column"]:last-child .stButton > button:hover {
-            transform: scale(1.15) rotate(180deg) !important;
-        }
-        #MainMenu, footer {visibility: hidden;}
-    </style>
-    """, unsafe_allow_html=True)
+<style>
+:root { color-scheme: light; }
+
+* { transition: background-color 0.5s ease, color 0.5s ease !important; }
+
+.stApp {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;
+}
+
+.main-header { font-size: 2.2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important; }
+.sub-header { font-size: 1.2rem !important; color: #666 !important; text-align: center; }
+
+/* Toggle in light mode */
+div[data-testid="collapsedControl"],
+div[data-testid="stSidebarCollapseButton"]{
+    background-color: #1f77b4 !important;
+    border: 2px solid #0d47a1 !important;
+    color: white !important;
+}
+
+div[data-testid="collapsedControl"] svg,
+div[data-testid="stSidebarCollapseButton"] svg{
+    fill: white !important;
+    stroke: white !important;
+}
+
+#MainMenu, footer { visibility: hidden; }
+
+</style>
+""", unsafe_allow_html=True)
+
 
 # ============================================================================
 # HEADER

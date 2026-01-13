@@ -3,29 +3,22 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import joblib
-from datetime import datetime, timedelta
+from datetime import datetime
 import warnings
 warnings.filterwarnings('ignore')
 import yfinance as yf
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib import colors
 
-# Page configuration
 st.set_page_config(
     page_title="Crypto Forecasting Dashboard",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
-# ============================================================================
-# THEME MANAGEMENT
-# ============================================================================
 
 if 'theme' not in st.session_state:
     st.session_state.theme = 'dark'
@@ -34,259 +27,316 @@ def toggle_theme():
     st.session_state.theme = 'dark' if st.session_state.theme == 'light' else 'light'
 
 # ============================================================================
-# PERFECT CSS - ALL ISSUES FIXED
+# WARM BROWN/SEPIA COLOR SCHEME
 # ============================================================================
 
 if st.session_state.theme == 'dark':
     st.markdown("""
     <style>
-        /* ===== FIX TOP WHITE AREA ===== */
-        .stApp > header {
+        /* ===== SMOOTH TRANSITIONS ===== */
+        * {
+            transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;
+        }
+        
+        /* ===== BACKGROUNDS ===== */
+        .stApp, .stApp > header, [data-testid="stHeader"] {
             background-color: #0e1117 !important;
         }
         
-        [data-testid="stHeader"] {
-            background-color: #0e1117 !important;
-        }
-        
-        .stApp {
-            background-color: #0e1117 !important;
-        }
-        
-        /* ===== SIDEBAR DARK ===== */
-        [data-testid="stSidebar"] {
+        /* ===== SIDEBAR - WARM BROWN TEXT ===== */
+        [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
             background-color: #1e2130 !important;
         }
         
-        [data-testid="stSidebar"] > div:first-child {
-            background-color: #1e2130 !important;
-        }
-        
+        /* All sidebar text in warm brown/beige */
         [data-testid="stSidebar"] * {
-            color: #ffffff !important;
+            color: #D4C4A8 !important;
         }
         
         [data-testid="stSidebar"] h1,
         [data-testid="stSidebar"] h2,
-        [data-testid="stSidebar"] h3 {
-            color: #F7931A !important;
-            font-size: 1.2rem !important;
+        [data-testid="stSidebar"] h3,
+        [data-testid="stSidebar"] .stMarkdown {
+            color: #C9B99B !important;
+            font-weight: 500 !important;
         }
         
-        /* ===== CONSISTENT TITLE SIZE ===== */
+        /* Sidebar labels */
+        [data-testid="stSidebar"] label {
+            color: #B8956A !important;
+        }
+        
+        /* ===== MAIN HEADERS - WARM BROWN ===== */
         .main-header {
             font-size: 2rem !important;
-            color: #F7931A !important;
+            color: #C9B99B !important;
             text-align: center;
             font-weight: 700 !important;
             margin-bottom: 0.5rem !important;
-            line-height: 1.2 !important;
         }
         
         .sub-header {
             font-size: 1.1rem !important;
-            color: #b8b8b8 !important;
+            color: #A67C52 !important;
             text-align: center;
             font-weight: 400 !important;
-            margin-top: 0 !important;
         }
         
-        /* ===== TOGGLE BUTTON ===== */
-        div[data-testid="column"]:last-child .stButton > button {
-            background: transparent !important;
-            color: #F7931A !important;
-            border: 2px solid #F7931A !important;
-            padding: 0.4rem 0.8rem !important;
-            border-radius: 20px !important;
-            font-size: 1.2rem !important;
-            transition: all 0.3s ease !important;
-            margin-top: 1rem !important;
+        /* ===== ALL MARKDOWN TEXT - WARM BEIGE ===== */
+        .stMarkdown {
+            color: #D4C4A8 !important;
         }
         
-        div[data-testid="column"]:last-child .stButton > button:hover {
-            background: #F7931A !important;
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+            color: #C9B99B !important;
+        }
+        
+        .stMarkdown p, .stMarkdown span, .stMarkdown div {
+            color: #D4C4A8 !important;
+        }
+        
+        /* ===== METRICS - WARM TONES ===== */
+        [data-testid="stMetricValue"] {
+            color: #D4C4A8 !important;
+            font-size: 1.6rem !important;
+            font-weight: bold !important;
+        }
+        
+        [data-testid="stMetricLabel"] {
+            color: #B8956A !important;
+            font-size: 0.9rem !important;
+        }
+        
+        [data-testid="stMetricDelta"] {
+            color: #8B7355 !important;
+        }
+        
+        /* ===== FLOATING TOGGLE - TOP RIGHT ===== */
+        [data-testid="column"]:last-child {
+            position: fixed !important;
+            top: 1rem !important;
+            right: 1rem !important;
+            z-index: 999999 !important;
+            width: 60px !important;
+        }
+        
+        [data-testid="column"]:last-child .stButton > button {
+            background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
             color: #0e1117 !important;
-            transform: scale(1.1) !important;
+            border: 2px solid #C9B99B !important;
+            padding: 0 !important;
+            border-radius: 50% !important;
+            font-size: 1.8rem !important;
+            width: 60px !important;
+            height: 60px !important;
+            min-width: 60px !important;
+            min-height: 60px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 4px 20px rgba(166, 124, 82, 0.4) !important;
+            transition: all 0.3s ease !important;
+            margin: 0 !important;
         }
         
-        /* ===== CLEAN DOWNLOAD LINKS (NOT BUTTONS) ===== */
-        .stDownloadButton {
-            margin-bottom: 0.8rem !important;
+        [data-testid="column"]:last-child .stButton > button:hover {
+            transform: scale(1.1) rotate(15deg) !important;
+            box-shadow: 0 6px 30px rgba(166, 124, 82, 0.6) !important;
+            background: linear-gradient(135deg, #8B7355 0%, #A67C52 100%) !important;
         }
         
+        /* ===== SELECT BOXES - WARM COLORS ===== */
+        .stSelectbox > div > div {
+            background-color: #262730 !important;
+            color: #D4C4A8 !important;
+            border: 1px solid #8B7355 !important;
+        }
+        
+        .stSelectbox label {
+            color: #B8956A !important;
+        }
+        
+        /* Select dropdown options */
+        .stSelectbox option {
+            color: #D4C4A8 !important;
+            background-color: #262730 !important;
+        }
+        
+        /* ===== CHECKBOXES - WARM TEXT ===== */
+        .stCheckbox > label {
+            color: #D4C4A8 !important;
+            font-size: 0.95rem !important;
+        }
+        
+        .stCheckbox > label > span {
+            color: #D4C4A8 !important;
+        }
+        
+        /* ===== DOWNLOAD BUTTONS - WARM HOVER ===== */
         .stDownloadButton > button {
             background-color: transparent !important;
-            color: #ffffff !important;
+            color: #D4C4A8 !important;
             border: none !important;
             padding: 0.5rem 0.8rem !important;
             border-radius: 6px !important;
             font-weight: 500 !important;
             width: 100% !important;
             text-align: left !important;
-            transition: all 0.2s ease !important;
             font-size: 0.95rem !important;
         }
         
         .stDownloadButton > button:hover {
-            background-color: rgba(247, 147, 26, 0.15) !important;
+            background-color: rgba(166, 124, 82, 0.15) !important;
             transform: translateX(5px) !important;
-            color: #F7931A !important;
+            color: #C9B99B !important;
         }
         
-        .stDownloadButton > button::before {
-            margin-right: 8px;
-        }
-        
-        /* ===== METRICS ===== */
-        [data-testid="stMetricValue"] {
-            color: #e5e5e5 !important;
-            font-size: 1.6rem !important;
-            font-weight: bold !important;
-        }
-        
-        [data-testid="stMetricLabel"] {
-            color: #b8b8b8 !important;
-            font-size: 0.9rem !important;
-        }
-        
-        [data-testid="stMetricDelta"] {
-            color: #4ade80 !important;
-        }
-        
-        /* ===== SELECT BOXES ===== */
-        .stSelectbox > div > div {
-            background-color: #262730 !important;
-            color: #ffffff !important;
-            border: 1px solid #444 !important;
-        }
-        
-        .stSelectbox label {
-            color: #ffffff !important;
-        }
-        
-        /* ===== CHECKBOXES ===== */
-        .stCheckbox > label {
-            color: #ffffff !important;
-            font-size: 0.95rem !important;
-        }
-        
-        /* ===== MARKDOWN TEXT ===== */
-        .stMarkdown {
-            color: #d1d5db !important;
-        }
-        
-        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-            color: #F7931A !important;
-        }
-        
-        /* ===== SUCCESS BOX ===== */
+        /* ===== SUCCESS BOX - WARM TONES ===== */
         .stSuccess {
-            background-color: #1a4d2e !important;
-            color: #4ade80 !important;
-            border-left: 4px solid #22c55e !important;
+            background-color: rgba(139, 115, 85, 0.2) !important;
+            color: #C9B99B !important;
+            border-left: 4px solid #A67C52 !important;
         }
         
-        /* ===== TABS ===== */
+        /* ===== INFO/WARNING BOXES ===== */
+        .stInfo {
+            background-color: rgba(166, 124, 82, 0.2) !important;
+            color: #D4C4A8 !important;
+            border-left: 4px solid #B8956A !important;
+        }
+        
+        .stWarning {
+            background-color: rgba(184, 149, 106, 0.2) !important;
+            color: #D4C4A8 !important;
+            border-left: 4px solid #B8956A !important;
+        }
+        
+        /* ===== TABS - WARM COLORS ===== */
         .stTabs [data-baseweb="tab-list"] {
             background-color: #1e2130 !important;
         }
         
         .stTabs [data-baseweb="tab"] {
-            color: #9ca3af !important;
+            color: #8B7355 !important;
         }
         
         .stTabs [aria-selected="true"] {
-            color: #F7931A !important;
-            border-bottom-color: #F7931A !important;
+            color: #C9B99B !important;
+            border-bottom-color: #A67C52 !important;
         }
         
-        /* ===== HIDE BRANDING ===== */
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
+        /* ===== DATAFRAMES/TABLES - WARM TEXT ===== */
+        .dataframe {
+            color: #D4C4A8 !important;
+            background-color: #1e2130 !important;
+        }
+        
+        .dataframe th {
+            color: #C9B99B !important;
+            background-color: #262730 !important;
+        }
+        
+        .dataframe td {
+            color: #D4C4A8 !important;
+        }
+        
+        /* ===== EXPANDER - WARM COLORS ===== */
+        .streamlit-expanderHeader {
+            color: #C9B99B !important;
+        }
+        
+        /* ===== INPUT FIELDS ===== */
+        .stTextInput input {
+            color: #D4C4A8 !important;
+            background-color: #262730 !important;
+            border: 1px solid #8B7355 !important;
+        }
+        
+        .stTextInput label {
+            color: #B8956A !important;
+        }
         
         /* ===== HORIZONTAL RULE ===== */
         hr {
-            border-color: #333 !important;
+            border-color: #8B7355 !important;
         }
+        
+        /* ===== HIDE BRANDING ===== */
+        #MainMenu, footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 else:
-    # Light theme
+    # Light theme (keep as is)
     st.markdown("""
     <style>
-        /* ===== CONSISTENT TITLE SIZE ===== */
+        * {
+            transition: background-color 0.5s ease, color 0.5s ease !important;
+        }
+        
         .main-header {
             font-size: 2rem !important;
             color: #1f77b4 !important;
             text-align: center;
             font-weight: 700 !important;
-            margin-bottom: 0.5rem !important;
-            line-height: 1.2 !important;
         }
         
         .sub-header {
             font-size: 1.1rem !important;
             color: #666 !important;
             text-align: center;
-            font-weight: 400 !important;
-            margin-top: 0 !important;
         }
         
-        /* ===== TOGGLE BUTTON ===== */
-        div[data-testid="column"]:last-child .stButton > button {
-            background: transparent !important;
-            color: #1f77b4 !important;
-            border: 2px solid #1f77b4 !important;
-            padding: 0.4rem 0.8rem !important;
-            border-radius: 20px !important;
-            font-size: 1.2rem !important;
-            margin-top: 1rem !important;
+        [data-testid="column"]:last-child {
+            position: fixed !important;
+            top: 1rem !important;
+            right: 1rem !important;
+            z-index: 999999 !important;
+            width: 60px !important;
         }
         
-        div[data-testid="column"]:last-child .stButton > button:hover {
-            background: #1f77b4 !important;
-            color: white !important;
-            transform: scale(1.1) !important;
-        }
-        
-        /* ===== CLEAN DOWNLOAD LINKS ===== */
-        .stDownloadButton > button {
-            background-color: transparent !important;
-            color: #1f77b4 !important;
+        [data-testid="column"]:last-child .stButton > button {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+            color: #1f2937 !important;
             border: none !important;
-            padding: 0.5rem 0.8rem !important;
-            border-radius: 6px !important;
-            font-weight: 500 !important;
-            width: 100% !important;
-            text-align: left !important;
-            font-size: 0.95rem !important;
+            padding: 0 !important;
+            border-radius: 50% !important;
+            font-size: 1.8rem !important;
+            width: 60px !important;
+            height: 60px !important;
+            min-width: 60px !important;
+            min-height: 60px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4) !important;
+            transition: all 0.3s ease !important;
         }
         
-        .stDownloadButton > button:hover {
-            background-color: rgba(31, 119, 180, 0.1) !important;
-            transform: translateX(5px) !important;
+        [data-testid="column"]:last-child .stButton > button:hover {
+            transform: scale(1.1) rotate(15deg) !important;
+            box-shadow: 0 6px 30px rgba(245, 158, 11, 0.6) !important;
         }
         
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
+        #MainMenu, footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 
 # ============================================================================
-# HEADER - CONSISTENT SIZE
+# HEADER
 # ============================================================================
 
-col1, col2 = st.columns([6, 1])
+col1, col2 = st.columns([20, 1])
 with col1:
     st.markdown('<div class="main-header">📈 Cryptocurrency Market Forecasting Dashboard</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-header">🤖 Time Series Analysis with ARIMA, SARIMA, Prophet & LSTM</div>', unsafe_allow_html=True)
 with col2:
-    st.button("🌓", on_click=toggle_theme, help="Toggle Theme", key="theme_toggle")
+    toggle_symbol = "☀️" if st.session_state.theme == 'dark' else "🌙"
+    st.button(toggle_symbol, on_click=toggle_theme, key="theme_toggle", help="Toggle Theme")
 
 st.markdown("---")
 
 # ============================================================================
-# CRYPTOCURRENCY LIST
+# DATA & DASHBOARD (Same as v3.3)
 # ============================================================================
 
 CRYPTO_LIST = {
@@ -299,10 +349,6 @@ CRYPTO_LIST = {
     'Polkadot': 'DOT-USD',
     'Avalanche': 'AVAX-USD'
 }
-
-# ============================================================================
-# DATA LOADING
-# ============================================================================
 
 @st.cache_data
 def load_data():
@@ -335,10 +381,6 @@ def load_live_data(ticker):
 
 data_dict, predictions_data, train_data, test_data = load_data()
 
-# ============================================================================
-# SIDEBAR
-# ============================================================================
-
 st.sidebar.title("⚙️ Dashboard Controls")
 st.sidebar.markdown("---")
 
@@ -349,7 +391,6 @@ crypto_name = st.sidebar.selectbox(
 )
 selected_crypto = CRYPTO_LIST[crypto_name]
 
-# Load data
 if selected_crypto in ['BTC-USD', 'ETH-USD']:
     data = data_dict[selected_crypto]
     has_predictions = True
@@ -369,10 +410,6 @@ selected_model = st.sidebar.selectbox(
 show_technical = st.sidebar.checkbox("Show Technical Indicators", value=True)
 show_forecast = st.sidebar.checkbox("Show Future Forecast", value=True) if has_predictions else False
 
-# ============================================================================
-# MODEL PERFORMANCE
-# ============================================================================
-
 if has_predictions:
     st.sidebar.markdown("---")
     st.sidebar.markdown("### 📊 Model Performance")
@@ -384,10 +421,6 @@ if has_predictions:
     st.sidebar.metric("RMSE", f"${best_model['RMSE']:,.2f}")
     st.sidebar.metric("R² Score", f"{best_model['R² Score']:.4f}")
     st.sidebar.metric("MAPE", f"{best_model['MAPE (%)']:.2f}%")
-
-# ============================================================================
-# EXPORT FUNCTIONS
-# ============================================================================
 
 def generate_pdf_report(crypto_name, data, metrics_df=None):
     buffer = BytesIO()
@@ -401,24 +434,10 @@ def generate_pdf_report(crypto_name, data, metrics_df=None):
     
     date_text = Paragraph(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", styles['Normal'])
     elements.append(date_text)
-    elements.append(Spacer(1, 12))
-    
-    current_price = data['Close'].iloc[-1]
-    stats_text = f"""
-    <b>Current Market Status:</b><br/>
-    Price: ${current_price:,.2f}<br/>
-    7-Day MA: ${data['MA7'].iloc[-1]:,.2f}<br/>
-    30-Day MA: ${data['MA30'].iloc[-1]:,.2f}<br/>
-    """
-    elements.append(Paragraph(stats_text, styles['Normal']))
     
     doc.build(elements)
     buffer.seek(0)
     return buffer
-
-# ============================================================================
-# CLEAN EXPORT SECTION - SIMPLE LINKS
-# ============================================================================
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 📥 Export Report")
@@ -427,14 +446,12 @@ pdf_buffer = generate_pdf_report(crypto_name, data,
                                  pd.DataFrame(predictions_data['all_metrics'][selected_crypto]) if has_predictions else None)
 csv_data = data.to_csv()
 
-# Simple download links (not big buttons)
 st.sidebar.download_button(
     label="📄 PDF Report",
     data=pdf_buffer,
     file_name=f"{crypto_name}_forecast_{datetime.now().strftime('%Y%m%d')}.pdf",
     mime="application/pdf",
-    key="pdf_dl",
-    use_container_width=False
+    key="pdf_dl"
 )
 
 st.sidebar.download_button(
@@ -442,13 +459,8 @@ st.sidebar.download_button(
     data=csv_data,
     file_name=f"{crypto_name}_data_{datetime.now().strftime('%Y%m%d')}.csv",
     mime="text/csv",
-    key="csv_dl",
-    use_container_width=False
+    key="csv_dl"
 )
-
-# ============================================================================
-# MAIN METRICS
-# ============================================================================
 
 col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -477,6 +489,4 @@ with col5:
 st.markdown("---")
 
 theme_emoji = "🌙" if st.session_state.theme == 'dark' else "☀️"
-st.success(f"{theme_emoji} Dashboard v3.1 - {crypto_name} | Theme: {st.session_state.theme.capitalize()}")
-
-# [Rest of your chart code here]
+st.success(f"{theme_emoji} Dashboard v3.4 - {crypto_name} | Warm Sepia Theme")

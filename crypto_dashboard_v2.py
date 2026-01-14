@@ -796,52 +796,31 @@ with col1:
     
     fig_vol = make_subplots(specs=[[{"secondary_y": True}]])
     
-    # ✅ AGGREGATE VOLUME FOR BETTER VISIBILITY
-    if len(recent_plot_data) > 90:
-        # Aggregate to weekly for cleaner chart
-        volume_data = recent_plot_data['Volume'].resample('W').sum()
-        weekly_close = recent_plot_data['Close'].resample('W').last()
-        
-        up_mask = weekly_close >= weekly_close.shift(1)
-        vol_up = volume_data.where(up_mask, 0)
-        vol_down = volume_data.where(~up_mask, 0)
-        
-        fig_vol.add_trace(
-            go.Bar(x=volume_data.index, y=vol_up, name='Volume Up', 
-                   marker_color='#00C853', opacity=0.85),
-            secondary_y=False
-        )
-        fig_vol.add_trace(
-            go.Bar(x=volume_data.index, y=vol_down, name='Volume Down', 
-                   marker_color='#FF5252', opacity=0.85),
-            secondary_y=False
-        )
-        fig_vol.add_trace(
-            go.Scatter(x=recent_plot_data.index, y=recent_plot_data['Close'], 
-                       name='Price', line=dict(color='#C9B99B', width=2.5)),
-            secondary_y=True
-        )
-    else:
-        # Use daily bars for short periods
-        up_mask = recent_plot_data['Close'] >= recent_plot_data['Close'].shift(1)
-        vol_up = recent_plot_data['Volume'].where(up_mask, 0)
-        vol_down = recent_plot_data['Volume'].where(~up_mask, 0)
-        
-        fig_vol.add_trace(
-            go.Bar(x=recent_plot_data.index, y=vol_up, name='Volume Up', 
-                   marker_color='#00C853', opacity=0.85),
-            secondary_y=False
-        )
-        fig_vol.add_trace(
-            go.Bar(x=recent_plot_data.index, y=vol_down, name='Volume Down', 
-                   marker_color='#FF5252', opacity=0.85),
-            secondary_y=False
-        )
-        fig_vol.add_trace(
-            go.Scatter(x=recent_plot_data.index, y=recent_plot_data['Close'], 
-                       name='Price', line=dict(color='#C9B99B', width=2.5)),
-            secondary_y=True
-        )
+    # ✅ ALWAYS aggregate to weekly for cleaner view
+    # Aggregate to weekly for cleaner chart
+    volume_data = recent_plot_data['Volume'].resample('W').sum()
+    weekly_close = recent_plot_data['Close'].resample('W').last()
+    
+    up_mask = weekly_close >= weekly_close.shift(1)
+    vol_up = volume_data.where(up_mask, 0)
+    vol_down = volume_data.where(~up_mask, 0)
+    
+    fig_vol.add_trace(
+        go.Bar(x=volume_data.index, y=vol_up, name='Volume Up', 
+               marker_color='#00C853', opacity=0.85),
+        secondary_y=False
+    )
+    fig_vol.add_trace(
+        go.Bar(x=volume_data.index, y=vol_down, name='Volume Down', 
+               marker_color='#FF5252', opacity=0.85),
+        secondary_y=False
+    )
+    # Keep daily price line for detail
+    fig_vol.add_trace(
+        go.Scatter(x=recent_plot_data.index, y=recent_plot_data['Close'], 
+                   name='Price', line=dict(color='#C9B99B', width=2.5)),
+        secondary_y=True
+    )
     
     fig_vol.update_layout(
         title=dict(text=f"{crypto_name} - Volume & Price (Last 6 Months)", 
@@ -866,7 +845,7 @@ with col1:
         title_text="Volume", 
         secondary_y=False, 
         title_font=dict(color=text_color),
-        range=[0, recent_plot_data["Volume"].quantile(0.99) * 1.2]
+        range=[0, volume_data.quantile(0.99) * 1.2]  # Use aggregated volume for range
     )
     fig_vol.update_yaxes(
         title_text="Price (USD)", 

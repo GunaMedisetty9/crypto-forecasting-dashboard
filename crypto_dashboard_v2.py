@@ -188,7 +188,7 @@ div[data-testid="stSidebarCollapseButton"] svg {
             color: #8B7355 !important; font-weight: 500 !important; padding: 0.75rem 1.5rem !important;
         }
         .stTabs [aria-selected="true"] {
-            color: #C9B99B !important; border-bottom:0!important; font-weight: 600 !important;
+            color: #C9B99B !important; border-bottom:3px solid transparent !important; font-weight: 600 !important;
         }
         .dataframe {
             color: #D4C4A8 !important; background-color: #1e2130 !important;

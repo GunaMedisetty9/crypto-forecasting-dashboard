@@ -16,7 +16,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 st.set_page_config(
     page_title="Crypto Forecasting Dashboard",
-    page_icon="📈",
+    page_icon="ðŸ“ˆ",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -29,16 +29,17 @@ def toggle_theme():
 # ===== Color palettes (must be defined BEFORE charts use them) =====
 PALETTE_OKABE_ITO = ["#0072B2", "#56B4E9", "#009E73", "#E69F00", "#D55E00", "#CC79A7", "#000000"]
 PALETTE_EXTRA = ["#5778A4", "#E49444", "#D1615D", "#85B6B2", "#6A9F58", "#E7CA60", "#A87C9F", "#F1A2A9", "#967662", "#B8B0AC"]
+
 MODEL_COLORS = {
     "ARIMA":   "#0072B2",
     "SARIMA":  "#56B4E9",
     "Prophet": "#E69F00",  # amber
     "LSTM":    "#009E73",
 }
-
 if st.session_state.theme == "dark":
     st.markdown("""
     <style>
+        /* ===== FIXED HEADER - NO SPLIT ===== */
         .stApp {
             background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;
         }
@@ -63,6 +64,7 @@ if st.session_state.theme == "dark":
             border-color: #C9B99B !important;
         }
         
+        /* ===== ALL YOUR ORIGINAL STYLES ===== */
         [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
             background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
             border-right: 2px solid #8B7355 !important;
@@ -83,177 +85,275 @@ if st.session_state.theme == "dark":
             font-size: 1rem !important;
         }
         
-        [data-testid="collapsedControl"], div[data-testid="stSidebarCollapseButton"] {
+        /* ===== ADD ALL YOUR OTHER ORIGINAL CSS HERE ===== */
+        /* Copy the rest of your existing CSS styles below this line */
+        
+        /* Hide branding */
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+    </style>
+    """, unsafe_allow_html=True)
+else:
+    # Your light theme CSS stays the same
+    st.markdown(f"""
+    <style>
+        /* Your existing light theme CSS */
+    </style>
+    """, unsafe_allow_html=True)
+        [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
+            background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
+            border-right: 2px solid #8B7355 !important;
+        }
+        [data-testid="stSidebar"] * {color: #D4C4A8 !important;}
+        [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+            color: #C9B99B !important; font-weight: 600 !important;
+        }
+        [data-testid="stSidebar"] label {
+            color: #C9B99B !important; font-weight: 500 !important; font-size: 1rem !important;
+        }
+        [data-testid="collapsedControl"] {
             background-color: #C9B99B !important;
             border: 2px solid #A67C52 !important;
+            div[data-testid="stSidebarCollapseButton"] {
+    background-color: #C9B99B !important;
+    border: 2px solid #A67C52 !important;
+    color: #0e1117 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    z-index: 999999 !important;
+}
             color: #0e1117 !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            display: flex !important;
-            z-index: 999999 !important;
             box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
         }
-        
-        [data-testid="collapsedControl"]:hover, div[data-testid="stSidebarCollapseButton"]:hover {
+        [data-testid="collapsedControl"]:hover {
             background-color: #A67C52 !important;
             border-color: #C9B99B !important;
             box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
         }
-        
-        div[data-testid="collapsedControl"] svg, div[data-testid="stSidebarCollapseButton"] svg {
-            fill: #D4C4A8 !important;
-            stroke: #D4C4A8 !important;
-        }
-        
+div[data-testid="collapsedControl"] svg,
+div[data-testid="stSidebarCollapseButton"] svg {
+    fill: #D4C4A8 !important;   /* your dark text_color */
+    stroke: #D4C4A8 !important; /* your dark text_color */
+}
         [data-testid="stSidebar"] .stSelectbox > div > div {
             background-color: #262730 !important;
             color: #D4C4A8 !important;
             border: 2px solid #8B7355 !important;
         }
-        
-            .main-header {
-            font-size: 2.2rem !important;
-            color: #C9B99B !important;
-            text-align: center !important;
-            font-weight: 700 !important;
-            margin-bottom: 0.5rem !important;
+        [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] {
+            background-color: #262730 !important;
+        }
+        [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div {
+            background-color: #262730 !important; color: #D4C4A8 !important;
+        }
+        [data-testid="stSidebar"] div[role="listbox"] {
+            background-color: #262730 !important; border: 2px solid #8B7355 !important;
+        }
+        [data-testid="stSidebar"] div[role="option"] {
+            background-color: #262730 !important; color: #D4C4A8 !important; padding: 0.75rem !important;
+        }
+        [data-testid="stSidebar"] div[role="option"]:hover {
+            background-color: #3a3d4a !important; color: #C9B99B !important;
+        }
+        .main-header {
+            font-size: 2.2rem !important; color: #C9B99B !important; text-align: center;
+            font-weight: 700 !important; margin-bottom: 0.5rem !important;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
-            background: linear-gradient(135deg, #1e2130 0%, #262730 100%) !important;
-            padding: 100px 20px !important;
-            border-radius: 12px !important;
-            border: 2px solid #8B7355 !important;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
-            margin: 0 0 2rem 0 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            min-height: 400px !important;
         }
-        
         .sub-header {
-            font-size: 1.2rem !important;
-            color: #A67C52 !important;
-            text-align: center !important;
-            font-weight: 400 !important;
+            font-size: 1.2rem !important; color: #A67C52 !important;
+            text-align: center; font-weight: 400 !important;
         }
-        
         h2, h3 {
-            color: #C9B99B !important;
-            font-weight: 600 !important;
-            border-bottom: 2px solid #8B7355 !important;
-            padding-bottom: 0.5rem !important;
+            color: #C9B99B !important; font-weight: 600 !important;
+            border-bottom: 2px solid #8B7355 !important; padding-bottom: 0.5rem !important;
         }
-        
         .stMarkdown {color: #D4C4A8 !important;}
-        
         [data-testid="stMetricValue"] {
-            color: #C9B99B !important;
-            font-size: 1.8rem !important;
-            font-weight: bold !important;
+            color: #C9B99B !important; font-size: 1.8rem !important; font-weight: bold !important;
         }
-        
-        [data-testid="stMetricLabel"] {
-            color: #B8956A !important;
-            font-weight: 500 !important;
-        }
-        
-        [data-testid="stMetricDelta"] {
-            color: #B8B76D !important;
-            font-weight: 600 !important;
-        }
-        
+        [data-testid="stMetricLabel"] {color: #B8956A !important; font-weight: 500 !important;}
+        [data-testid="stMetricDelta"] {color: #B8B76D !important; font-weight: 600 !important;}
         div[data-testid="metric-container"] {
             background: linear-gradient(135deg, #1e2130 0%, #262730 100%) !important;
-            border: 2px solid #8B7355 !important;
-            border-radius: 10px !important;
-            padding: 1rem !important;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+            border: 2px solid #8B7355 !important; border-radius: 10px !important;
+            padding: 1rem !important; box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
         }
-        
+        div[data-testid="metric-container"]:hover {
+            border-color: #C9B99B !important;
+            box-shadow: 0 6px 12px rgba(201, 185, 155, 0.2) !important;
+        }
         [data-testid="column"]:last-child {
-            position: fixed !important;
-            top: 0.8rem !important;
-            right: 0.8rem !important;
-            z-index: 999999 !important;
-            width: 60px !important;
+            position: fixed !important; top: 0.8rem !important; right: 0.8rem !important;
+            z-index: 999999 !important; width: 60px !important;
         }
-        
         [data-testid="column"]:last-child .stButton > button {
             background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
-            color: #0e1117 !important;
-            border: 3px solid #C9B99B !important;
-            padding: 0 !important;
-            border-radius: 50% !important;
-            font-size: 1.8rem !important;
-            width: 60px !important;
-            height: 60px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+            color: #0e1117 !important; border: 3px solid #C9B99B !important;
+            padding: 0 !important; border-radius: 50% !important; font-size: 1.8rem !important;
+            width: 60px !important; height: 60px !important;
+            display: flex !important; align-items: center !important; justify-content: center !important;
             box-shadow: 0 4px 20px rgba(166, 124, 82, 0.5) !important;
-            transition: all 0.3s ease !important;
-            margin: 0 !important;
+            transition: all 0.3s ease !important; margin: 0 !important;
         }
-        
         [data-testid="column"]:last-child .stButton > button:hover {
             transform: scale(1.15) rotate(180deg) !important;
             box-shadow: 0 6px 30px rgba(166, 124, 82, 0.7) !important;
         }
-        
+        .stSelectbox > div > div {
+            background-color: #262730 !important; color: #D4C4A8 !important;
+            border: 2px solid #8B7355 !important;
+        }
+        .stSelectbox label {color: #C9B99B !important; font-weight: 500 !important;}
+        .stCheckbox > label {color: #D4C4A8 !important; font-weight: 500 !important;}
+        .stCheckbox > label:hover {color: #C9B99B !important;}
+        .stDownloadButton > button {
+            background: linear-gradient(135deg, #262730 0%, #1e2130 100%) !important;
+            color: #D4C4A8 !important; border: 2px solid #8B7355 !important;
+            padding: 0.75rem 1rem !important; border-radius: 8px !important;
+            font-weight: 600 !important; width: 100% !important; text-align: center !important;
+            transition: all 0.3s ease !important;
+        }
+        .stDownloadButton > button:hover {
+            background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
+            transform: translateY(-2px) !important; color: #0e1117 !important;
+            box-shadow: 0 4px 12px rgba(166, 124, 82, 0.4) !important;
+        }
+        .stSuccess {
+            background: linear-gradient(135deg, rgba(184, 183, 109, 0.2) 0%, rgba(184, 183, 109, 0.1) 100%) !important;
+            color: #B8B76D !important; border-left: 4px solid #B8B76D !important;
+            border-radius: 8px !important; padding: 1rem !important;
+        }
+        .stInfo {
+            background: linear-gradient(135deg, rgba(166, 124, 82, 0.2) 0%, rgba(166, 124, 82, 0.1) 100%) !important;
+            color: #D4C4A8 !important; border-left: 4px solid #A67C52 !important; border-radius: 8px !important;
+        }
+        .stWarning {
+            background: linear-gradient(135deg, rgba(184, 149, 106, 0.2) 0%, rgba(184, 149, 106, 0.1) 100%) !important;
+            color: #D4C4A8 !important; border-left: 4px solid #B8956A !important; border-radius: 8px !important;
+        }
         .stError {
             background: linear-gradient(135deg, rgba(166, 124, 82, 0.3) 0%, rgba(166, 124, 82, 0.15) 100%) !important;
-            color: #D4C4A8 !important;
-            border-left: 4px solid #A67C52 !important;
-            border-radius: 8px !important;
+            color: #D4C4A8 !important; border-left: 4px solid transparent #A67C52; border-radius: 8px !important;
+        }
+        .stTabs [data-baseweb="tab-list"] {
+            background-color: #1e2130 !important; border-radius: 10px !important; padding: 0.5rem !important;
+        }
+        .stTabs [data-baseweb="tab"] {
+            color: #8B7355 !important; font-weight: 500 !important; padding: 0.75rem 1.5rem !important;
+        }
+        .stTabs [aria-selected="true"] {
+            color: #C9B99B !important; border-bottom:3px solid #D4C4A8!important; font-weight: 600 !important;
+        }
+        /* Remove Streamlit/BaseWeb default (red) active-tab indicator */
+        .stTabs div[data-baseweb="tab-highlight"] {background-color: transparent !important;
         }
         
+        .dataframe {
+            color: #D4C4A8 !important; background-color: #1e2130 !important;
+            border: 2px solid #8B7355 !important; border-radius: 8px !important;
+        }
+        .dataframe thead tr th {
+            background-color: #262730 !important; color: #C9B99B !important;
+            border: 1px solid #8B7355 !important; font-weight: 600 !important; padding: 0.75rem !important;
+        }
+        .dataframe tbody tr td {
+            background-color: #1e2130 !important; color: #D4C4A8 !important;
+            border: 1px solid #8B7355 !important; padding: 0.75rem !important;
+        }
+        .dataframe tbody tr:hover td {
+            background-color: #262730 !important; color: #C9B99B !important;
+        }
+        table {
+            color: #D4C4A8 !important; background-color: #1e2130 !important;
+            border: 2px solid #8B7355 !important; border-radius: 8px !important;
+        }
+        table thead tr th {
+            background-color: #262730 !important; color: #C9B99B !important;
+            border: 1px solid #8B7355 !important; font-weight: 600 !important; padding: 0.75rem !important;
+        }
+        table tbody tr td {
+            background-color: #1e2130 !important; color: #D4C4A8 !important;
+            border: 1px solid #8B7355 !important; padding: 0.75rem !important;
+        }
+        table tbody tr:hover td {background-color: #262730 !important;}
+        hr {
+            border: none !important; height: 2px !important;
+            background: linear-gradient(90deg, transparent 0%, #8B7355 50%, transparent 100%) !important;
+            margin: 2rem 0 !important;
+        }
         #MainMenu, footer {visibility: hidden;}
+        ::-webkit-scrollbar {width: 10px; height: 10px;}
+        ::-webkit-scrollbar-track {background: #1e2130;}
+        ::-webkit-scrollbar-thumb {background: #8B7355; border-radius: 5px;}
+        ::-webkit-scrollbar-thumb:hover {background: #A67C52;}
     </style>
     """, unsafe_allow_html=True)
-
 else:
     st.markdown("""
     <style>
-        .stApp {
-            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;
-        }
-        
-        [data-testid="stHeader"] {
-            background: transparent !important;
-        }
-        
+        :root { color-scheme: light; }
+        * {transition: background-color 0.5s ease, color 0.5s ease !important;}
+        .stApp {background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;}
+        .main-header {font-size: 2.2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important;}
+        .sub-header {font-size: 1.2rem !important; color: #666 !important; text-align: center;}
+        /* Button container (both Streamlit variants) */
+div[data-testid="collapsedControl"],
+div[data-testid="stSidebarCollapseButton"] {
+  background-color: #C9B99B !important;
+  border: 2px solid #A67C52 !important;
+  color: #0e1117 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  z-index: 999999 !important;
+  box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
+}
+
+div[data-testid="collapsedControl"]:hover,
+div[data-testid="stSidebarCollapseButton"]:hover {
+  background-color: #A67C52 !important;
+  border-color: #C9B99B !important;
+  box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
+}
+
+/* ONLY the ">>" icon color = your dark text color */
+div[data-testid="collapsedControl"] svg,
+div[data-testid="stSidebarCollapseButton"] svg {
+  fill: #D4C4A8 !important;
+  stroke: #D4C4A8 !important;
+}        
         [data-testid="column"]:last-child {
-            position: fixed !important;
-            top: 0.8rem !important;
-            right: 0.8rem !important;
-            z-index: 999999 !important;
-            width: 60px !important;
+            position: fixed !important; top: 0.8rem !important; right: 0.8rem !important;
+            z-index: 999999 !important; width: 60px !important;
         }
-        
         [data-testid="column"]:last-child .stButton > button {
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
-            color: #1f2937 !important;
-            border: 3px solid #f59e0b !important;
-            padding: 0 !important;
-            border-radius: 50% !important;
-            font-size: 1.8rem !important;
-            width: 60px !important;
-            height: 60px !important;
+            color: #1f2937 !important; border: 3px solid #f59e0b !important;
+            padding: 0 !important; border-radius: 50% !important; font-size: 1.8rem !important;
+            width: 60px !important; height: 60px !important;
+            display: flex !important; align-items: center !important; justify-content: center !important;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.5) !important;
+            transition: all 0.3s ease !important;
         }
-        
+        [data-testid="column"]:last-child .stButton > button:hover {
+            transform: scale(1.15) rotate(180deg) !important;
+        }
         #MainMenu, footer {visibility: hidden;}
     </style>
-    """, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)                     
+
 # ============================================================================
 # HEADER
 # ============================================================================
 
 col1, col2 = st.columns([20, 1])
 with col1:
-    st.markdown('<div class="main-header">📈 Cryptocurrency Market Forecasting Dashboard</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">🤖 Advanced Time Series Analysis with ARIMA, SARIMA, Prophet & LSTM</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header">ðŸ“ˆ Cryptocurrency Market Forecasting Dashboard</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">ðŸ¤– Advanced Time Series Analysis with ARIMA, SARIMA, Prophet & LSTM</div>', unsafe_allow_html=True)
 with col2:
-    toggle_symbol = "☀️" if st.session_state.theme == 'dark' else "🌙"
+    toggle_symbol = "â˜€ï¸" if st.session_state.theme == 'dark' else "ðŸŒ™"
     st.button(toggle_symbol, on_click=toggle_theme, key="theme_toggle", help="Toggle Theme")
 
 st.markdown("---")
@@ -362,7 +462,7 @@ data_dict, predictions_data, train_data, test_data = load_data()
 # SIDEBAR
 # ============================================================================
 
-st.sidebar.title("⚙️ Dashboard Controls")
+st.sidebar.title("âš™ï¸ Dashboard Controls")
 st.sidebar.markdown("---")
 
 selected_crypto = st.sidebar.selectbox(
@@ -403,15 +503,15 @@ time_range = st.sidebar.radio(
 
 if has_predictions:
     st.sidebar.markdown("---")
-    st.sidebar.markdown("### 📊 Model Performance")
+    st.sidebar.markdown("### ðŸ“Š Model Performance")
     
     metrics_df = pd.DataFrame(predictions_data['all_metrics'][selected_crypto])
     best_model = metrics_df.sort_values('RMSE').iloc[0]
     
-    st.sidebar.metric("🏆 Best Model", best_model['Model'])
-    st.sidebar.metric("📉 RMSE", f"${best_model['RMSE']:,.2f}")
-    st.sidebar.metric("📊 R² Score", f"{best_model['R² Score']:.4f}")
-    st.sidebar.metric("📈 MAPE", f"{best_model['MAPE (%)']:.2f}%")
+    st.sidebar.metric("ðŸ† Best Model", best_model['Model'])
+    st.sidebar.metric("ðŸ“‰ RMSE", f"${best_model['RMSE']:,.2f}")
+    st.sidebar.metric("ðŸ“Š RÂ² Score", f"{best_model['RÂ² Score']:.4f}")
+    st.sidebar.metric("ðŸ“ˆ MAPE", f"{best_model['MAPE (%)']:.2f}%")
 
 def generate_pdf_report(crypto_name, data, metrics_df=None):
     buffer = BytesIO()
@@ -425,14 +525,14 @@ def generate_pdf_report(crypto_name, data, metrics_df=None):
     return buffer
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 📥 Export Report")
+st.sidebar.markdown("### ðŸ“¥ Export Report")
 
 pdf_buffer = generate_pdf_report(crypto_name, data, 
                                  pd.DataFrame(predictions_data['all_metrics'][selected_crypto]) if has_predictions else None)
 csv_data = data.to_csv()
 
 st.sidebar.download_button(
-    label="📄 Download PDF Report",
+    label="ðŸ“„ Download PDF Report",
     data=pdf_buffer,
     file_name=f"{crypto_name}_forecast_{datetime.now().strftime('%Y%m%d')}.pdf",
     mime="application/pdf",
@@ -440,7 +540,7 @@ st.sidebar.download_button(
 )
 
 st.sidebar.download_button(
-    label="📊 Download CSV Data",
+    label="ðŸ“Š Download CSV Data",
     data=csv_data,
     file_name=f"{crypto_name}_data_{datetime.now().strftime('%Y%m%d')}.csv",
     mime="text/csv",
@@ -460,31 +560,31 @@ current_vol = data['Volatility'].iloc[-1] if 'Volatility' in data.columns else 0
 current_volume = data['Volume'].iloc[-1]
 
 with col1:
-    st.metric("💰 Current Price", f"${current_price:,.2f}", f"{price_change_1d:+.2f}%")
+    st.metric("ðŸ’° Current Price", f"${current_price:,.2f}", f"{price_change_1d:+.2f}%")
 
 with col2:
-    st.metric("📊 7-Day MA", f"${data['MA7'].iloc[-1]:,.2f}" if 'MA7' in data.columns else "N/A")
+    st.metric("ðŸ“Š 7-Day MA", f"${data['MA7'].iloc[-1]:,.2f}" if 'MA7' in data.columns else "N/A")
 
 with col3:
     rsi_delta = "Overbought" if current_rsi > 70 else ("Oversold" if current_rsi < 30 else "Neutral")
-    st.metric("📈 RSI", f"{current_rsi:.2f}", rsi_delta)
+    st.metric("ðŸ“ˆ RSI", f"{current_rsi:.2f}", rsi_delta)
 
 with col4:
-    st.metric("🌊 Volatility (30D)", f"{current_vol:.2f}%")
+    st.metric("ðŸŒŠ Volatility (30D)", f"{current_vol:.2f}%")
 
 with col5:
-    st.metric("💹 Volume", f"{current_volume/1e9:.2f}B")
+    st.metric("ðŸ’¹ Volume", f"{current_volume/1e9:.2f}B")
 
 st.markdown("---")
 
-theme_emoji = "🌙" if st.session_state.theme == 'dark' else "☀️"
+theme_emoji = "ðŸŒ™" if st.session_state.theme == 'dark' else "â˜€ï¸"
 st.success(f"{theme_emoji} Dashboard v6.2 Final - {crypto_name} | {selected_model}")
 
 # ============================================================================
 # CANDLESTICK CHART
 # ============================================================================
 
-st.markdown("## 📈 Price Analysis & Predictions")
+st.markdown("## ðŸ“ˆ Price Analysis & Predictions")
 
 chart_template = 'plotly_dark' if st.session_state.theme == 'dark' else 'plotly_white'
 bg_color = '#0e1117' if st.session_state.theme == 'dark' else '#ffffff'
@@ -622,9 +722,9 @@ else:
 # ============================================================================
 
 if show_technical:
-    st.markdown("## 📊 Technical Indicators")
+    st.markdown("## ðŸ“Š Technical Indicators")
     
-    tab1, tab2, tab3 = st.tabs(["📈 RSI Analysis", "📉 MACD Indicator", "🔔 Bollinger Bands"])
+    tab1, tab2, tab3 = st.tabs(["ðŸ“ˆ RSI Analysis", "ðŸ“‰ MACD Indicator", "ðŸ”” Bollinger Bands"])
     
     with tab1:
         st.markdown("**RSI (Relative Strength Index)** - Momentum oscillator measuring speed and magnitude of price changes")
@@ -661,7 +761,7 @@ if show_technical:
         with col2:
             st.metric("7-Day Avg RSI", f"{data['RSI'].iloc[-7:].mean():.2f}")
         with col3:
-            status = "🔴 Overbought" if rsi_current > 70 else ("🟢 Oversold" if rsi_current < 30 else "🟡 Neutral")
+            status = "ðŸ”´ Overbought" if rsi_current > 70 else ("ðŸŸ¢ Oversold" if rsi_current < 30 else "ðŸŸ¡ Neutral")
             st.metric("Status", status)
     
     with tab2:
@@ -710,19 +810,19 @@ if show_technical:
 # ============================================================================
 
 st.markdown("---")
-st.markdown("## 📊 Advanced Market Analysis")
+st.markdown("## ðŸ“Š Advanced Market Analysis")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown("### 📈 Volume & Price Analysis")
+    st.markdown("### ðŸ“ˆ Volume & Price Analysis")
     
     # Use last 180 days
     recent_plot_data = plot_data.iloc[-180:]
     
     fig_vol = make_subplots(specs=[[{"secondary_y": True}]])
     
-    # ✅ ALWAYS aggregate to weekly for cleaner view
+    # âœ… ALWAYS aggregate to weekly for cleaner view
     # Aggregate to weekly for cleaner chart
     volume_data = recent_plot_data['Volume'].resample('W').sum()
     weekly_close = recent_plot_data['Close'].resample('W').last()
@@ -781,7 +881,7 @@ with col1:
     
     st.plotly_chart(fig_vol, use_container_width=True)
 with col2:
-    st.markdown("### 📊 Returns Distribution")
+    st.markdown("### ðŸ“Š Returns Distribution")
     
     returns = data['Returns'].dropna() * 100
     
@@ -811,35 +911,35 @@ with col2:
 
 if has_predictions:
     st.markdown("---")
-    st.markdown("## 🏆 Model Performance Comparison")
+    st.markdown("## ðŸ† Model Performance Comparison")
     
     col1, col2 = st.columns([2.5, 1.5])
     
     with col1:
-        st.markdown("### 📊 Performance Metrics Table")
+        st.markdown("### ðŸ“Š Performance Metrics Table")
         comparison_df = pd.DataFrame(predictions_data['all_metrics'][selected_crypto])
         
         # FIXED: REVERSE ORDER - Show from 3, 2, 1, 0
         comparison_df_reversed = comparison_df.iloc[::-1].reset_index(drop=True)
         comparison_df_reversed.index = [3, 2, 1, 0]  # Set index to 3, 2, 1, 0
         
-                # Highlight last 3 columns (RMSE, R² Score, MAPE) for LSTM row (index 3)
+                # Highlight last 3 columns (RMSE, RÂ² Score, MAPE) for LSTM row (index 3)
         def highlight_lstm_row(row):
             if row.name == 3:  # LSTM row
-                return ['background-color: #ffd700; color: #0e1117; font-weight: bold' if col in ['RMSE', 'R² Score', 'MAPE (%)'] else '' for col in row.index]
+                return ['background-color: #ffd700; color: #0e1117; font-weight: bold' if col in ['RMSE', 'RÂ² Score', 'MAPE (%)'] else '' for col in row.index]
             return ['' for _ in row.index]
         
         styled_df = comparison_df_reversed.style.format({
             'RMSE': '${:,.2f}',
             'MAE': '${:,.2f}',
-            'R² Score': '{:.4f}',
+            'RÂ² Score': '{:.4f}',
             'MAPE (%)': '{:.2f}%'
         }).apply(highlight_lstm_row, axis=1)
         
         st.dataframe(styled_df, use_container_width=True)
     
 with col2:
-    st.markdown("### 🥧 Model Accuracy Distribution")
+    st.markdown("### ðŸ¥§ Model Accuracy Distribution")
 
     # Define pie colors BEFORE using them
     pie_colors = [MODEL_COLORS.get(m, PALETTE_OKABE_ITO[i % len(PALETTE_OKABE_ITO)])
@@ -847,7 +947,7 @@ with col2:
 
     fig_pie = go.Figure(data=[go.Pie(
         labels=comparison_df['Model'].tolist(),
-        values=[max(0.01, abs(x)) for x in comparison_df['R² Score'].tolist()],
+        values=[max(0.01, abs(x)) for x in comparison_df['RÂ² Score'].tolist()],
         hole=0.35,
         marker=dict(
             colors=pie_colors,
@@ -862,7 +962,7 @@ with col2:
         textinfo='label+percent',
         insidetextorientation='radial',
         pull=[0, 0, 0, 0],
-        hovertemplate='<b>%{label}</b><br>R² Score: %{value:.4f}<br>Share: %{percent}<extra></extra>'
+        hovertemplate='<b>%{label}</b><br>RÂ² Score: %{value:.4f}<br>Share: %{percent}<extra></extra>'
     )])
 
     fig_pie.update_layout(
@@ -894,7 +994,7 @@ with col2:
 # ============================================================================
 
 st.markdown("---")
-st.markdown("## 📋 Summary Statistics")
+st.markdown("## ðŸ“‹ Summary Statistics")
 
 summary_data = {
     'Metric': ['Current Price', 'All-Time High', 'All-Time Low', 'Avg Volume (30D)', 'Volatility (30D)', 'Current RSI'],
@@ -915,52 +1015,52 @@ st.table(summary_df)
 # ============================================================================
 
 st.markdown("---")
-st.markdown("## 🎯 Trading Signals & Market Analysis")
+st.markdown("## ðŸŽ¯ Trading Signals & Market Analysis")
 
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown("#### 📈 Trend Analysis")
+    st.markdown("#### ðŸ“ˆ Trend Analysis")
     if data['Close'].iloc[-1] > data['MA50'].iloc[-1]:
-        st.success("🟢 **Bullish Trend**")
+        st.success("ðŸŸ¢ **Bullish Trend**")
         st.write("Price is above MA50 indicating upward momentum")
     else:
-        st.error("🔴 **Bearish Trend**")
+        st.error("ðŸ”´ **Bearish Trend**")
         st.write("Price is below MA50 indicating downward pressure")
     
     if data['MA7'].iloc[-1] > data['MA30'].iloc[-1]:
-        st.info("📈 Short-term: **Positive**")
+        st.info("ðŸ“ˆ Short-term: **Positive**")
     else:
-        st.warning("📉 Short-term: **Negative**")
+        st.warning("ðŸ“‰ Short-term: **Negative**")
 
 with col2:
-    st.markdown("#### 🎯 Momentum Indicators")
+    st.markdown("#### ðŸŽ¯ Momentum Indicators")
     
     if current_rsi > 70:
-        st.warning("⚠️ **RSI Overbought**")
+        st.warning("âš ï¸ **RSI Overbought**")
         st.write("Consider taking profits")
     elif current_rsi < 30:
-        st.success("✅ **RSI Oversold**")
+        st.success("âœ… **RSI Oversold**")
         st.write("Potential buy opportunity")
     else:
-        st.info("➡️ **RSI Neutral**")
+        st.info("âž¡ï¸ **RSI Neutral**")
         st.write("No strong signal")
     
-    macd_signal = "Bullish 🟢" if data['MACD'].iloc[-1] > data['MACD_Signal'].iloc[-1] else "Bearish 🔴"
+    macd_signal = "Bullish ðŸŸ¢" if data['MACD'].iloc[-1] > data['MACD_Signal'].iloc[-1] else "Bearish ðŸ”´"
     st.metric("MACD Signal", macd_signal)
 
 with col3:
-    st.markdown("#### 🌊 Volatility Status")
+    st.markdown("#### ðŸŒŠ Volatility Status")
     
     avg_vol = data['Volatility'].mean()
     if current_vol > avg_vol * 1.5:
-        st.error("🌊 **High Volatility**")
+        st.error("ðŸŒŠ **High Volatility**")
         st.write("Increased risk, use caution")
     elif current_vol < avg_vol * 0.5:
-        st.success("😌 **Low Volatility**")
+        st.success("ðŸ˜Œ **Low Volatility**")
         st.write("Stable market conditions")
     else:
-        st.info("📊 **Normal Volatility**")
+        st.info("ðŸ“Š **Normal Volatility**")
         st.write("Standard market behavior")
     
     st.metric("Vol vs Average", f"{((current_vol / avg_vol - 1) * 100):+.1f}%")
@@ -969,7 +1069,7 @@ with col3:
 st.markdown("---")
 st.markdown(
     f"<div style='text-align: center; color: #8B7355; padding: 1rem;'>"
-    f"✨ Dashboard v6.2 Final | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨"
+    f"âœ¨ Dashboard v6.2 Final | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance âœ¨"
     f"</div>",
     unsafe_allow_html=True
 )

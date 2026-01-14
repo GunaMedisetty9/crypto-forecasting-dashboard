@@ -782,7 +782,7 @@ with col1:
         template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
         xaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)'),
         yaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)'),
-        yaxis2=dict(showgrid=False)
+        yaxis2=dict(showgrid=False),
         font=dict(color=text_color), height=500, showlegend=True,
         legend=dict(font=dict(color=legend_font_color), bgcolor='rgba(0, 0, 0, 0)', bordercolor='rgba(0, 0, 0, 0)', borderwidth=0)
     )

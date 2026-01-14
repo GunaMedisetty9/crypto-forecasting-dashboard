@@ -682,12 +682,17 @@ if show_technical:
             fill='tozeroy', fillcolor='rgba(201, 185, 155, 0.2)'
         ))
         
-        fig_rsi.add_hline(y=70, line_dash="dash", line_color="#A67C52", annotation_text="Overbought (70)", annotation_font_color=text_color)
-        fig_rsi.add_hline(y=30, line_dash="dash", line_color="#8B7355", annotation_text="Oversold (30)", annotation_font_color=text_color)
-        fig_rsi.add_hline(y=50, line_dash="dot", line_color="#666", annotation_text="Neutral", annotation_font_color=text_color)
+        # One-color guide lines (same tone as RSI line)
+guide = "#C9B99B"
+
+fig_rsi.add_hline(y=70, line_dash="dash", line_color=guide,
+                  annotation_text="Overbought (70)", annotation_font_color=text_color)
+fig_rsi.add_hline(y=30, line_dash="dash", line_color=guide,
+                  annotation_text="Oversold (30)", annotation_font_color=text_color)
+
         
-        fig_rsi.add_hrect(y0=70, y1=100, fillcolor="#A67C52", opacity=0.1, line_width=0)
-        fig_rsi.add_hrect(y0=0, y1=30, fillcolor="#8B7355", opacity=0.1, line_width=0)
+        fig_rsi.add_hrect(y0=70, y1=100, fillcolor="#A67C52", opacity=0.05, line_width=0)
+        fig_rsi.add_hrect(y0=0, y1=30, fillcolor="#8B7355", opacity=0.05, line_width=0)
         
         fig_rsi.update_layout(
             template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,

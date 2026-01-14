@@ -766,28 +766,63 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("### 📈 Volume & Price Analysis")
+    
+    # Use last 180 days for better visibility
     recent_plot_data = plot_data.iloc[-180:]
+    
     fig_vol = make_subplots(specs=[[{"secondary_y": True}]])
-    # Up/Down mask based on Close change
-    # up_mask = plot_data['Close'] >= plot_data['Close'].shift(1)
-    # vol_up = plot_data['Volume'].where(up_mask, 0)
-    # vol_down = plot_data['Volume'].where(~up_mask, 0)
-    # fig_vol.add_trace(go.Bar(x=plot_data.index, y=vol_up, name='Volume Up', marker_color='#00C853', opacity=0.85),secondary_y=False )
-    # fig_vol.add_trace(go.Bar(x=plot_data.index, y=vol_down, name='Volume Down', marker_color='#FF5252', opacity=0.85),secondary_y=False )
-    # fig_vol.add_trace(go.Scatter(x=plot_data.index,y=plot_data['Close'], name='Price', line=dict(color='#C9B99B', width=2.5)), secondary_y=True)
+    
+    # ✅ UNCOMMENTED & FIXED - Uses recent_plot_data
+    up_mask = recent_plot_data['Close'] >= recent_plot_data['Close'].shift(1)
+    vol_up = recent_plot_data['Volume'].where(up_mask, 0)
+    vol_down = recent_plot_data['Volume'].where(~up_mask, 0)
+    
+    fig_vol.add_trace(
+        go.Bar(x=recent_plot_data.index, y=vol_up, name='Volume Up', 
+               marker_color='#00C853', opacity=0.85),
+        secondary_y=False
+    )
+    fig_vol.add_trace(
+        go.Bar(x=recent_plot_data.index, y=vol_down, name='Volume Down', 
+               marker_color='#FF5252', opacity=0.85),
+        secondary_y=False
+    )
+    fig_vol.add_trace(
+        go.Scatter(x=recent_plot_data.index, y=recent_plot_data['Close'], 
+                   name='Price', line=dict(color='#C9B99B', width=2.5)),
+        secondary_y=True
+    )
     
     fig_vol.update_layout(
-        title=dict(text=f"{crypto_name} - Volume & Price", font=dict(size=16, color=text_color)),
+        title=dict(text=f"{crypto_name} - Volume & Price (Last 6 Months)", 
+                   font=dict(size=16, color=text_color)),
         barmode='overlay',
-        template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+        template=chart_template,
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color,
         xaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)'),
         yaxis=dict(showgrid=True, gridcolor='rgba(128,128,128,0.2)'),
         yaxis2=dict(showgrid=False),
-        font=dict(color=text_color), height=500, showlegend=True,
-        legend=dict(font=dict(color=legend_font_color), bgcolor='rgba(0, 0, 0, 0)', bordercolor='rgba(0, 0, 0, 0)', borderwidth=0)
+        font=dict(color=text_color),
+        height=500,
+        showlegend=True,
+        legend=dict(font=dict(color=legend_font_color), 
+                    bgcolor='rgba(0, 0, 0, 0)', 
+                    bordercolor='rgba(0, 0, 0, 0)', 
+                    borderwidth=0)
     )
-    fig_vol.update_yaxes(title_text="Volume", secondary_y=False, title_font=dict(color=text_color),range=[0, recent_plot_data["Volume"].quantile(0.99) * 1.2])
-    fig_vol.update_yaxes(title_text="Price (USD)", secondary_y=True, title_font=dict(color=text_color))
+    
+    fig_vol.update_yaxes(
+        title_text="Volume", 
+        secondary_y=False, 
+        title_font=dict(color=text_color),
+        range=[0, recent_plot_data["Volume"].quantile(0.99) * 1.2]
+    )
+    fig_vol.update_yaxes(
+        title_text="Price (USD)", 
+        secondary_y=True, 
+        title_font=dict(color=text_color)
+    )
     
     st.plotly_chart(fig_vol, use_container_width=True)
 

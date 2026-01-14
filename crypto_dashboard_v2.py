@@ -608,24 +608,48 @@ if show_forecast and has_predictions:
     except Exception as e:
         st.warning(f"Could not load predictions: {str(e)}")
 
-volume_colors = []
-for i in range(len(recent_data)):
-    if i == 0:
-        volume_colors.append('#009E73')
-    else:
-        if recent_data['Close'].iloc[i] >= recent_data['Close'].iloc[i-1]:
+# Aggregate volume for better visibility on long time ranges
+if len(recent_data) > 365:
+    # For data > 1 year, aggregate volume by week
+    volume_data = recent_data['Volume'].resample('W').sum()
+    volume_index = volume_data.index
+    volume_values = volume_data.values
+    
+    # Calculate colors based on weekly close price change
+    weekly_close = recent_data['Close'].resample('W').last()
+    volume_colors = []
+    for i in range(len(weekly_close)):
+        if i == 0:
             volume_colors.append('#009E73')
         else:
-            volume_colors.append('#D55E00')
+            if weekly_close.iloc[i] >= weekly_close.iloc[i-1]:
+                volume_colors.append('#009E73')
+            else:
+                volume_colors.append('#D55E00')
+else:
+    # For data < 1 year, use daily volume
+    volume_index = recent_data.index
+    volume_values = recent_data['Volume'].values
+    volume_colors = []
+    for i in range(len(recent_data)):
+        if i == 0:
+            volume_colors.append('#009E73')
+        else:
+            if recent_data['Close'].iloc[i] >= recent_data['Close'].iloc[i-1]:
+                volume_colors.append('#009E73')
+            else:
+                volume_colors.append('#D55E00')
 
+# Add volume bars with aggregated data
 fig.add_trace(go.Bar(
-    x=recent_data.index,
-    y=recent_data['Volume'],
+    x=volume_index,
+    y=volume_values,
     name='Volume',
     marker_color=volume_colors,
     opacity=0.7,
     legendgroup='volume'
 ), row=2, col=1)
+
 
 # ===== Color palettes (do NOT change your text colors) =====
 PALETTE_OKABE_ITO = ["#0072B2", "#56B4E9", "#009E73", "#E69F00", "#D55E00", "#CC79A7", "#000000"]  # amber = #E69F00

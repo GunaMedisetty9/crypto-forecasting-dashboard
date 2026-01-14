@@ -768,18 +768,6 @@ with col1:
     st.markdown("### 📈 Volume & Price Analysis")
     
     fig_vol = make_subplots(specs=[[{"secondary_y": True}]])
-    
-    vol_colors_60 = []
-    for i in range(len(plot_data)):
-        if i == 0:
-            vol_colors_60.append('#B8B76D')
-        else:
-            if data['Close'].iloc[-60+i] >= data['Close'].iloc[-60+i-1]:
-                vol_colors_60.append('#B8B76D')
-            else:
-                vol_colors_60.append('#FCA5A5')
-    
-    AMBER = "#FFCCCB"
     # Up/Down mask based on Close change
     up_mask = plot_data['Close'] >= plot_data['Close'].shift(1)
     vol_up = plot_data['Volume'].where(up_mask, 0)

@@ -775,7 +775,8 @@ with col1:
             else:
                 vol_colors_60.append('#A67C52')
     
-    fig_vol.add_trace(go.Bar(x=plot_data.index,y=plot_data['Volume'], name='Volume', marker_color=vol_colors_60, opacity=0.7), secondary_y=False)
+    AMBER = "#E69F00"
+    fig_vol.add_trace(go.Bar(x=plot_data.index,y=plot_data["Volume"],name="Volume",marker_color=AMBER,opacity=0.85),secondary_y=False)
     fig_vol.add_trace(go.Scatter(x=plot_data.index,y=plot_data['Close'], name='Price', line=dict(color='#C9B99B', width=2.5)), secondary_y=True)
     
     fig_vol.update_layout(

@@ -777,7 +777,7 @@ with col1:
             if data['Close'].iloc[-60+i] >= data['Close'].iloc[-60+i-1]:
                 vol_colors_60.append('#B8B76D')
             else:
-                vol_colors_60.append('#D3D3D3')
+                vol_colors_60.append('#A67C52')
     
     AMBER = "#FFCCCB"
     fig_vol.add_trace(go.Bar(x=plot_data.index,y=plot_data["Volume"],name="Volume",marker_color=AMBER,opacity=0.85),secondary_y=False)

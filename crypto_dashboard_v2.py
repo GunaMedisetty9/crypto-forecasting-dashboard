@@ -111,13 +111,23 @@ if st.session_state.theme == "dark":
             border: 2px solid #8B7355 !important;
         }
         
-        .main-header {
+            .main-header {
             font-size: 2.2rem !important;
             color: #C9B99B !important;
             text-align: center !important;
             font-weight: 700 !important;
             margin-bottom: 0.5rem !important;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
+            background: linear-gradient(135deg, #1e2130 0%, #262730 100%) !important;
+            padding: 100px 20px !important;
+            border-radius: 12px !important;
+            border: 2px solid #8B7355 !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+            margin: 0 0 2rem 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: 400px !important;
         }
         
         .sub-header {

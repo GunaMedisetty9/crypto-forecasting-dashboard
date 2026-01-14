@@ -864,7 +864,7 @@ with col2:
     
     fig_dist.update_layout(
         template=chart_template, plot_bgcolor=bg_color, paper_bgcolor=bg_color,
-        font=dict(color=text_color), height=400, xaxis_title="Daily Returns (%)", yaxis_title="Frequency", showlegend=True,
+        font=dict(color=text_color), height=500, xaxis_title="Daily Returns (%)", yaxis_title="Frequency", showlegend=True,
         legend=dict(font=dict(color=legend_font_color), bgcolor='rgba(0, 0, 0, 0)', bordercolor='rgba(0, 0, 0, 0)', borderwidth=0)
     )
     st.plotly_chart(fig_dist, use_container_width=True)

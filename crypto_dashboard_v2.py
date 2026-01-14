@@ -683,13 +683,12 @@ if show_technical:
         ))
         
         # One-color guide lines (same tone as RSI line)
-guide = "#C9B99B"
+         guide = "#C9B99B"
 
-fig_rsi.add_hline(y=70, line_dash="dash", line_color=guide,
+          fig_rsi.add_hline(y=70, line_dash="dash", line_color=guide,
                   annotation_text="Overbought (70)", annotation_font_color=text_color)
-fig_rsi.add_hline(y=30, line_dash="dash", line_color=guide,
+        fig_rsi.add_hline(y=30, line_dash="dash", line_color=guide,
                   annotation_text="Oversold (30)", annotation_font_color=text_color)
-        
         fig_rsi.add_hrect(y0=70, y1=100, fillcolor="#A67C52", opacity=0.05, line_width=0)
         fig_rsi.add_hrect(y0=0, y1=30, fillcolor="#8B7355", opacity=0.05, line_width=0)
         

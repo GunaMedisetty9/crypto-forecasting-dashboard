@@ -780,7 +780,14 @@ with col1:
                 vol_colors_60.append('#FCA5A5')
     
     AMBER = "#FFCCCB"
-    fig_vol.add_trace(go.Bar(x=plot_data.index,y=plot_data["Volume"],name="Volume",marker_color=AMBER,opacity=0.85),secondary_y=False)
+    # Up/Down mask based on Close change
+    up_mask = plot_data['Close'] >= plot_data['Close'].shift(1)
+
+vol_up = plot_data['Volume'].where(up_mask, 0)
+vol_down = plot_data['Volume'].where(~up_mask, 0)
+
+    fig_vol.add_trace(go.Bar(x=plot_data.index, y=vol_up, name='Volume Up', marker_color='#B8B76D', opacity=0.7),secondary_y=False )
+    fig_vol.add_trace(go.Bar(x=plot_data.index, y=vol_down, name='Volume Down', marker_color='#FCA5A5', opacity=0.7),secondary_y=False )
     fig_vol.add_trace(go.Scatter(x=plot_data.index,y=plot_data['Close'], name='Price', line=dict(color='#C9B99B', width=2.5)), secondary_y=True)
     
     fig_vol.update_layout(

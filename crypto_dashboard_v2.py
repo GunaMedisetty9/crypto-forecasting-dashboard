@@ -607,111 +607,59 @@ if show_forecast and has_predictions:
                     ), row=1, col=1)
     except Exception as e:
         st.warning(f"Could not load predictions: {str(e)}")
-
 # Aggregate volume for better visibility on long time ranges
 if len(recent_data) > 365:
     # For data > 1 year, aggregate volume by week
     volume_data = recent_data['Volume'].resample('W').sum()
-    volume_index = volume_data.index
-    volume_values = volume_data.values
-    
-    # Calculate colors based on weekly close price change
     weekly_close = recent_data['Close'].resample('W').last()
-    volume_colors = []
-    for i in range(len(weekly_close)):
-        if i == 0:
-            volume_colors.append('#009E73')
-        else:
-            if weekly_close.iloc[i] >= weekly_close.iloc[i-1]:
-                volume_colors.append('#009E73')
-            else:
-                volume_colors.append('#D55E00')
+    
+    up_mask = weekly_close >= weekly_close.shift(1)
+    vol_up = volume_data.where(up_mask, 0)
+    vol_down = volume_data.where(~up_mask, 0)
+    
+    # Add separate traces for up/down volume
+    fig.add_trace(go.Bar(
+        x=volume_data.index,
+        y=vol_up,
+        name='Volume Up',
+        marker_color='#009E73',
+        opacity=0.7,
+        legendgroup='volume'
+    ), row=2, col=1)
+    
+    fig.add_trace(go.Bar(
+        x=volume_data.index,
+        y=vol_down,
+        name='Volume Down',
+        marker_color='#D55E00',
+        opacity=0.7,
+        legendgroup='volume'
+    ), row=2, col=1)
 else:
     # For data < 1 year, use daily volume
-    volume_index = recent_data.index
-    volume_values = recent_data['Volume'].values
-    # ✅ NEW CODE - PASTE THIS ✅
-
-# Aggregate volume for better visibility on long time ranges
-if len(recent_data) > 365:
-    # For data > 1 year, aggregate volume by week
-    volume_data = recent_data['Volume'].resample('W').sum()
-    volume_index = volume_data.index
-    volume_values = volume_data.values
+    up_mask = recent_data['Close'] >= recent_data['Close'].shift(1)
+    vol_up = recent_data['Volume'].where(up_mask, 0)
+    vol_down = recent_data['Volume'].where(~up_mask, 0)
     
-    # Calculate colors based on weekly close price change
-    weekly_close = recent_data['Close'].resample('W').last()
-    volume_colors = []
-    for i in range(len(weekly_close)):
-        if i == 0:
-            volume_colors.append('#009E73')
-        else:
-            if weekly_close.iloc[i] >= weekly_close.iloc[i-1]:
-                volume_colors.append('#009E73')
-            else:
-                volume_colors.append('#D55E00')
-else:
-    # For data < 1 year, use daily volume
-    volume_index = recent_data.index
-    volume_values = recent_data['Volume'].values
-    volume_colors = []
-    for i in range(len(recent_data)):
-        if i == 0:
-            volume_colors.append('#009E73')
-        else:
-            if recent_data['Close'].iloc[i] >= recent_data['Close'].iloc[i-1]:
-                volume_colors.append('#009E73')
-            else:
-                volume_colors.append('#D55E00')
+    # Add separate traces for up/down volume
+    fig.add_trace(go.Bar(
+        x=recent_data.index,
+        y=vol_up,
+        name='Volume Up',
+        marker_color='#009E73',
+        opacity=0.7,
+        legendgroup='volume'
+    ), row=2, col=1)
+    
+    fig.add_trace(go.Bar(
+        x=recent_data.index,
+        y=vol_down,
+        name='Volume Down',
+        marker_color='#D55E00',
+        opacity=0.7,
+        legendgroup='volume'
+    ), row=2, col=1)
 
-fig.add_trace(go.Bar(
-    x=volume_index,
-    y=volume_values,
-    name='Volume',
-    marker_color=volume_colors,
-    opacity=0.7,
-    legendgroup='volume'
-), row=2, col=1)
-
-# ===== Color palettes (do NOT change your text colors) =====
-PALETTE_OKABE_ITO = ["#0072B2", "#56B4E9", "#009E73", "#E69F00", "#D55E00", "#CC79A7", "#000000"]  # amber = #E69F00
-PALETTE_EXTRA = ["#5778A4", "#E49444", "#D1615D", "#85B6B2", "#6A9F58", "#E7CA60", "#A87C9F", "#F1A2A9", "#967662", "#B8B0AC"]
-
-MODEL_COLORS = {
-    "ARIMA":   "#0072B2",
-    "SARIMA":  "#56B4E9",
-    "Prophet": "#E69F00",  # amber
-    "LSTM":    "#009E73",
-}
-
-
-fig.update_layout(
-    template=chart_template,
-    plot_bgcolor=bg_color,
-    paper_bgcolor=bg_color,
-    font=dict(color=text_color, size=12),
-    height=650,
-    xaxis_rangeslider_visible=False,
-    hovermode='x unified',
-    legend=dict(
-        orientation="v",
-        yanchor="top",
-        y=0.99,
-        xanchor="left",
-        x=1.01,
-        bgcolor='rgba(0, 0, 0, 0)',
-        bordercolor='rgba(0, 0, 0, 0)',
-        borderwidth=0,
-        font=dict(color=legend_font_color, size=12, family="Arial")
-    ),
-    showlegend=True
-)
-
-fig.update_yaxes(title_text="Price (USD)", row=1, col=1, title_font=dict(color=text_color))
-fig.update_yaxes(title_text="Volume", row=2, col=1, title_font=dict(color=text_color))
-fig.update_xaxes(title_text="Date", row=2, col=1, title_font=dict(color=text_color))
-
-st.plotly_chart(fig, use_container_width=True)
 
 # ============================================================================
 # TECHNICAL INDICATORS (SAME AS BEFORE - ABBREVIATED FOR SPACE)

@@ -190,6 +190,10 @@ div[data-testid="stSidebarCollapseButton"] svg {
         .stTabs [aria-selected="true"] {
             color: #C9B99B !important; border-bottom:3px solid #D4C4A8!important; font-weight: 600 !important;
         }
+        /* Remove Streamlit/BaseWeb default (red) active-tab indicator */
+        .stTabs div[data-baseweb="tab-highlight"] {background-color: transparent !important;
+        }
+        
         .dataframe {
             color: #D4C4A8 !important; background-color: #1e2130 !important;
             border: 2px solid #8B7355 !important; border-radius: 8px !important;

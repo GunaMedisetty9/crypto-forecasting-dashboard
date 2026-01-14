@@ -160,7 +160,7 @@ div[data-testid="stSidebarCollapseButton"] svg {
             transition: all 0.3s ease !important;
         }
         .stDownloadButton > button:hover {
-            background: linear-gradient(135deg, transparent 0%, #8B7355 100%) !important;
+            background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
             transform: translateY(-2px) !important; color: #0e1117 !important;
             box-shadow: 0 4px 12px rgba(166, 124, 82, 0.4) !important;
         }
@@ -171,7 +171,7 @@ div[data-testid="stSidebarCollapseButton"] svg {
         }
         .stInfo {
             background: linear-gradient(135deg, rgba(166, 124, 82, 0.2) 0%, rgba(166, 124, 82, 0.1) 100%) !important;
-            color: #D4C4A8 !important; border-left: 4px solid transparent !important; border-radius: 8px !important;
+            color: #D4C4A8 !important; border-left: 4px solid #A67C52 !important; border-radius: 8px !important;
         }
         .stWarning {
             background: linear-gradient(135deg, rgba(184, 149, 106, 0.2) 0%, rgba(184, 149, 106, 0.1) 100%) !important;

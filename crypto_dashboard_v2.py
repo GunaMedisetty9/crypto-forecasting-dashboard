@@ -48,10 +48,11 @@ if st.session_state.theme == 'dark':
         :root { color-scheme: dark; }
         * {transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;}
         ..stApp {
-    background: linear-gradient(180deg, #FFF8DC 0%, #1a1d29 100%) !important;}
-    [data-testid="stHeader"] {
-    background: rgba(166, 124, 82, 0.3) !important;
-    }
+    background: linear-gradient(180deg, #FFF8DC 0%, #0e1117 70%, #1a1d29 100%) !important;
+}
+[data-testid="stHeader"] {
+    background: transparent !important;
+}
     ata-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
             background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
             border-right: 2px solid #8B7355 !important;}

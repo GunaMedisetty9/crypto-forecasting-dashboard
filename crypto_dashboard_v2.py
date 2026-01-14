@@ -179,7 +179,7 @@ div[data-testid="stSidebarCollapseButton"] svg {
         }
         .stError {
             background: linear-gradient(135deg, rgba(166, 124, 82, 0.3) 0%, rgba(166, 124, 82, 0.15) 100%) !important;
-            color: #D4C4A8 !important; border-left: 4px solid #A67C52 !important; border-radius: 8px !important;
+            color: #D4C4A8 !important; border-left: 4px solid transparent !important; border-radius: 8px !important;
         }
         .stTabs [data-baseweb="tab-list"] {
             background-color: #1e2130 !important; border-radius: 10px !important; padding: 0.5rem !important;

@@ -786,7 +786,7 @@ with col1:
         font=dict(color=text_color), height=500, showlegend=True,
         legend=dict(font=dict(color=legend_font_color), bgcolor='rgba(0, 0, 0, 0)', bordercolor='rgba(0, 0, 0, 0)', borderwidth=0)
     )
-    fig_vol.update_yaxes(title_text="Volume", secondary_y=False, title_font=dict(color=text_color),range=[0, plot_data["Volume"].quantile(0.99) * 1.2])
+    fig_vol.update_yaxes(title_text="Volume", secondary_y=False, title_font=dict(color=text_color),range=[0, recent_plot_data["Volume"].quantile(0.99) * 1.2])
     fig_vol.update_yaxes(title_text="Price (USD)", secondary_y=True, title_font=dict(color=text_color))
     
     st.plotly_chart(fig_vol, use_container_width=True)

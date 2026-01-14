@@ -769,12 +769,12 @@ with col1:
     recent_plot_data = plot_data.iloc[-180:]
     fig_vol = make_subplots(specs=[[{"secondary_y": True}]])
     # Up/Down mask based on Close change
-    up_mask = plot_data['Close'] >= plot_data['Close'].shift(1)
-    vol_up = plot_data['Volume'].where(up_mask, 0)
-    vol_down = plot_data['Volume'].where(~up_mask, 0)
-    fig_vol.add_trace(go.Bar(x=plot_data.index, y=vol_up, name='Volume Up', marker_color='#00C853', opacity=0.85),secondary_y=False )
-    fig_vol.add_trace(go.Bar(x=plot_data.index, y=vol_down, name='Volume Down', marker_color='#FF5252', opacity=0.85),secondary_y=False )
-    fig_vol.add_trace(go.Scatter(x=plot_data.index,y=plot_data['Close'], name='Price', line=dict(color='#C9B99B', width=2.5)), secondary_y=True)
+    # up_mask = plot_data['Close'] >= plot_data['Close'].shift(1)
+    # vol_up = plot_data['Volume'].where(up_mask, 0)
+    # vol_down = plot_data['Volume'].where(~up_mask, 0)
+    # fig_vol.add_trace(go.Bar(x=plot_data.index, y=vol_up, name='Volume Up', marker_color='#00C853', opacity=0.85),secondary_y=False )
+    # fig_vol.add_trace(go.Bar(x=plot_data.index, y=vol_down, name='Volume Down', marker_color='#FF5252', opacity=0.85),secondary_y=False )
+    # fig_vol.add_trace(go.Scatter(x=plot_data.index,y=plot_data['Close'], name='Price', line=dict(color='#C9B99B', width=2.5)), secondary_y=True)
     
     fig_vol.update_layout(
         title=dict(text=f"{crypto_name} - Volume & Price", font=dict(size=16, color=text_color)),

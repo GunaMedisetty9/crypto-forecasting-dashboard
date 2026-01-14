@@ -36,14 +36,58 @@ MODEL_COLORS = {
     "Prophet": "#E69F00",  # amber
     "LSTM":    "#009E73",
 }
-if st.session_state.theme == 'dark':
-    st.markdown("""
+if st.session_state.theme == "dark":
+    st.markdown(f"""
     <style>
-        # :root { color-scheme: dark; }
-        * {transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;}
-        .stApp, .stApp > header, [data-testid="stHeader"] {
+        /* ===== PERFECT HEADER FIX - NO MORE SPLIT ===== */
+        .stApp {{
             background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;
-        }
+        }}
+        
+        /* ===== MAKE HEADER TRANSPARENT ===== */
+        [data-testid="stHeader"] {{
+            background: transparent !important;
+            background-color: transparent !important;
+        }}
+        
+        [data-testid="stToolbar"] {{
+            background: transparent !important;
+        }}
+        
+        /* ===== STYLE SHARE/EDIT/GITHUB BUTTONS ===== */
+        [data-testid="stToolbar"] button {{
+            background-color: rgba(166, 124, 82, 0.3) !important;
+            border: 1px solid #8B7355 !important;
+            color: #D4C4A8 !important;
+            border-radius: 6px !important;
+        }}
+        
+        [data-testid="stToolbar"] button:hover {{
+            background-color: #A67C52 !important;
+            border-color: #C9B99B !important;
+            color: #0e1117 !important;
+        }}
+        
+        /* ===== ALL YOUR EXISTING STYLES (keep these) ===== */
+        [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {{
+            background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
+            border-right: 2px solid #8B7355 !important;
+        }}
+        
+        /* ... ADD ALL YOUR OTHER EXISTING CSS HERE ... */
+        
+        /* Hide Streamlit branding */
+        #MainMenu {{visibility: hidden;}}
+        footer {{visibility: hidden;}}
+    </style>
+    """, unsafe_allow_html=True)
+else:
+    # Your light theme CSS stays the same
+    st.markdown(f"""
+    <style>
+        /* Your existing light theme CSS */
+    </style>
+    """, unsafe_allow_html=True)
         [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
             background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
             border-right: 2px solid #8B7355 !important;

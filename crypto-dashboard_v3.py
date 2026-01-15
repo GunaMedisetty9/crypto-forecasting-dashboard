@@ -55,17 +55,15 @@ if st.session_state.theme == 'dark':
     border-right: 2px solid #8B7355 !important;
 }
      [data-testid="stHeader"] {
-    background: linear-gradient(145deg, 
-        #FFFD99 0%, 
-        #FFE066 25%, 
-        #FFD700 50%, 
-        #FFA500 75%, 
-        #FF8C00 100%) !important;
+    background: linear-gradient(170deg, 
+        #FFFBCC 0%, 
+        #FFF2A8 30%, 
+        #FFE8A1 60%, 
+        #FFDC73 100%) !important;
     box-shadow: 
-        0 8px 25px rgba(255, 215, 0, 0.5),
-        inset 0 1px 3px rgba(255, 255, 255, 0.8),
-        0 0 30px rgba(255, 215, 0, 0.3) !important;
-    border-bottom: 3px solid #DAA520 !important;
+        0 3px 12px rgba(255, 215, 0, 0.25),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+    border-bottom: 1px solid rgba(218, 165, 32, 0.8) !important;
 }
 /* Reset container positioning */
 section[data-testid="stAppViewContainer"] {

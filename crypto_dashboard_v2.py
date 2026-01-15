@@ -526,8 +526,7 @@ with col5:
 st.markdown("---")
 
 theme_emoji = "🌙" if st.session_state.theme == 'dark' else "☀️"
-st.success(f"{theme_emoji} Dashboard v2 Final - {crypto_name} | {selected_model}")
-st.success(f"🔥📊 Dashboard v2 Final - {crypto_name} | {selected_model} ❤️ by Medisetty Guna 💎✨")
+st.success(f"{theme_emoji} Dashboard v2 Final - {crypto_name} | {selected_model}{theme_emoji}")
 # ============================================================================ 
 # CANDLESTICK CHART + VOLUME
 # ============================================================================
@@ -1106,7 +1105,8 @@ with col3:
 st.markdown("---")
 st.markdown(
     f"<div style='text-align: center; color: #8B7355; padding: 1rem;'>"
-    f"✨ Dashboard v6.2 Final | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨"
+    f"✨ Dashboard v2 Final | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨"
+    f"🔥📊 Final - BTC | LSTM made With ❤️ by Medisetty Guna 💎✨"
     f"</div>",
     unsafe_allow_html=True
 )

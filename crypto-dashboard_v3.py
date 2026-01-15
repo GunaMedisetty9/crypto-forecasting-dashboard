@@ -59,10 +59,11 @@ if st.session_state.theme == 'dark':
      # top: auto !important;
      # background: linear-gradient(180deg, #FFF8DC 0%, #FFE4B5 100%) !important;    ###here is where Yellow top satisfied just dont trychanging this 
      # z-index: 1 !important;
-     # } #DAA520
+     # }
      /* Force header to scroll */
 [data-testid="stHeader"] {
-    background: linear-gradient(180deg, #FFD700 0%, #F5DEB3 100%) !important;
+    background: linear-gradient(180deg, #FFF8DC 0%, #FFE4B5 100%) !important;
+    position: relative !important;
 }
 
 /* Reset container positioning */
@@ -1104,7 +1105,7 @@ with col3:
 st.markdown("---")
 st.markdown(
     f"<div style='text-align: center; color: #8B7355; padding: 1rem;'>"
-    f"✨ Dashboard v2 Final |🔥📊 Final - BTC:LSTM | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨\n\n"
+    f"✨ Dashboard v3 Building Mode |🔥📊 Final - BTC:LSTM | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨\n\n"
     f"Made With ❤️ by Medisetty Guna 💎✨"
     f"</div>",
     unsafe_allow_html=True

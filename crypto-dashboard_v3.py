@@ -62,8 +62,7 @@ if st.session_state.theme == 'dark':
      # } #DAA520
      /* Force header to scroll */
 [data-testid="stHeader"] {
-    background: linear-gradient(180deg, #FFF8DC 0%, #DAA520 100%) !important;
-    position: relative !important;
+    background: linear-gradient(180deg, #FFD700 0%, #F5DEB3 100%) !important;
 }
 
 /* Reset container positioning */

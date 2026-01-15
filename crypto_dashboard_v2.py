@@ -56,12 +56,22 @@ if st.session_state.theme == 'dark':
      background: linear-gradient(180deg, #FFF8DC 0%, #FFE4B5 100%) !important;    ###here is where Yellow top satisfied just dont trychanging this 
      z-index: 1 !important;
      }
-     section[data-testid="stAppViewContainer"] > div:first-child {
-     position: static !important;
-     }
-    [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
-            background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
-            border-right: 2px solid #8B7355 !important;}
+     /* Force header to scroll */
+[data-testid="stHeader"] {
+    display: block !important;
+    position: static !important;
+    transform: none !important;
+    top: 0 !important;
+}
+
+/* Reset container positioning */
+section[data-testid="stAppViewContainer"] {
+    overflow: visible !important;
+}
+
+section[data-testid="stAppViewContainer"] > div > div:first-child {
+    position: static !important;
+}
         [data-testid="stSidebar"] * {color: #D4C4A8 !important;}
         [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
             color: #C9B99B !important; font-weight: 600 !important;

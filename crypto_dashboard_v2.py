@@ -526,8 +526,8 @@ with col5:
 st.markdown("---")
 
 theme_emoji = "🌙" if st.session_state.theme == 'dark' else "☀️"
-st.success(f"{theme_emoji} Dashboard v6.2 Final - {crypto_name} | {selected_model}")
-
+st.success(f"{theme_emoji} Dashboard v2 Final - {crypto_name} | {selected_model}")
+st.success(f"🔥📊 Dashboard v2 Final - {crypto_name} | {selected_model} ❤️ by Medisetty Guna 💎✨")
 # ============================================================================ 
 # CANDLESTICK CHART + VOLUME
 # ============================================================================

@@ -62,10 +62,8 @@ if st.session_state.theme == 'dark':
      # }
      /* Force header to scroll */
 [data-testid="stHeader"] {
-    display: block !important;
-    position: static !important;
-    transform: none !important;
-    top: 0 !important;
+    background: linear-gradient(180deg, #FFF8DC 0%, #FFE4B5 100%) !important;
+    position: relative !important;
 }
 
 /* Reset container positioning */

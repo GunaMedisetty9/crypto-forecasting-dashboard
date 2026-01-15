@@ -1105,8 +1105,8 @@ with col3:
 st.markdown("---")
 st.markdown(
     f"<div style='text-align: center; color: #8B7355; padding: 1rem;'>"
-    f"✨ Dashboard v2 Final | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨\n\n"
-    f"🔥📊 Final - BTC | LSTM made With ❤️ by Medisetty Guna 💎✨"
+    f"✨ Dashboard v2 Final |🔥📊 Final - BTC:LSTM | Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Data Source: Yahoo Finance ✨\n\n"
+    f"Made With ❤️ by Medisetty Guna 💎✨"
     f"</div>",
     unsafe_allow_html=True
 )

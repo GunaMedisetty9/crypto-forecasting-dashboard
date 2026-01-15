@@ -56,10 +56,9 @@ if st.session_state.theme == 'dark':
 }
      [data-testid="stHeader"] {
     background: linear-gradient(to right,
-        #FFF8DC 0%,    /* Light gold - left */
-        #FFFD99 10%,   /* Bright gold */
-        #FFE066 40%,   /* Medium gold */
-        #FFD700 80%,   /* Classic gold */
+        #FFE066 0%,    /* Medium gold - LEFT (less light) */
+        #FFD700 40%,   /* Classic gold */
+        #FFB347 80%,   /* Medium gold */
         #DAA520 100%   /* Dark gold - RIGHT ONLY */
     ) !important;
     box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4) !important;

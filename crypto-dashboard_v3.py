@@ -59,10 +59,10 @@ if st.session_state.theme == 'dark':
      # top: auto !important;
      # background: linear-gradient(180deg, #FFF8DC 0%, #FFE4B5 100%) !important;    ###here is where Yellow top satisfied just dont trychanging this 
      # z-index: 1 !important;
-     # }
+     # } #DAA520
      /* Force header to scroll */
 [data-testid="stHeader"] {
-    background: linear-gradient(180deg, #FFF8DC 0%, #DAA520 100%) !important;
+    background: linear-gradient(180deg, #FFF8DC 0%, #F4C430 100%) !important;
     position: relative !important;
 }
 

@@ -55,7 +55,10 @@ if st.session_state.theme == 'dark':
     border-right: 2px solid #8B7355 !important;
 }
      [data-testid="stHeader"] {
-    background: #F5DEB3 !important;
+    background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%) !important;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4), 
+                inset 0 2px 5px rgba(255, 255, 255, 0.5) !important;
+    border-bottom: 2px solid #B8860B !important;
 }
 /* Reset container positioning */
 section[data-testid="stAppViewContainer"] {

@@ -54,18 +54,9 @@ if st.session_state.theme == 'dark':
     background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
     border-right: 2px solid #8B7355 !important;
 }
-     # [data-testid="stHeader"] {
-     # position: static !important;
-     # top: auto !important;
-     # background: linear-gradient(180deg, #FFF8DC 0%, #FFE4B5 100%) !important;    ###here is where Yellow top satisfied just dont trychanging this 
-     # z-index: 1 !important;
-     # }
-     /* Force header to scroll */
-[data-testid="stHeader"] {
-    background: linear-gradient(180deg, #FFF8DC 0%, #EEE8AA 100%) !important;
-    position: relative !important;
+     [data-testid="stHeader"] {
+    background: #F5DEB3 !important;
 }
-
 /* Reset container positioning */
 section[data-testid="stAppViewContainer"] {
     overflow: visible !important;

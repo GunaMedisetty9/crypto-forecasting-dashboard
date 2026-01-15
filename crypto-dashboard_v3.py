@@ -57,8 +57,8 @@ if st.session_state.theme == 'dark':
      [data-testid="stHeader"] {
     background: linear-gradient(to right,
         #FFF8DC 0%,    /* Light gold - left */
-        #FFFD99 20%,   /* Bright gold */
-        #FFE066 50%,   /* Medium gold */
+        #FFFD99 10%,   /* Bright gold */
+        #FFE066 40%,   /* Medium gold */
         #FFD700 80%,   /* Classic gold */
         #DAA520 100%   /* Dark gold - RIGHT ONLY */
     ) !important;

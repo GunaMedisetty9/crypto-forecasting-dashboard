@@ -51,7 +51,8 @@ if st.session_state.theme == 'dark':
     background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;  ###here is where black satisfied just dashboard but not sidebar
 }
 [data-testid="stHeader"] {
-    background: linear-gradient(180deg, #FFF8DC 0%, #FFE4B5 100%) !important; position: relative !important;    ###here is where Yellow top satisfied just dont trychanging this 
+    position: relative !important;
+    background: linear-gradient(180deg, #FFF8DC 0%, #FFE4B5 100%) !important;    ###here is where Yellow top satisfied just dont trychanging this 
 }
     [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
             background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;

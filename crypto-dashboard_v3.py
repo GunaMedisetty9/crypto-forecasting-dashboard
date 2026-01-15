@@ -48,7 +48,7 @@ if st.session_state.theme == 'dark':
         :root { color-scheme: dark; }
         * {transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;}
         .stApp {
-    background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;  ###here is where black satisfied just dashboard but not sidebar
+    background: linear-gradient(180deg, #0e1117 0%, #1a1d29 100%) !important;
     }
     [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
     background: linear-gradient(180deg, #1e2130 0%, #2a2d3a 100%) !important;
@@ -56,10 +56,10 @@ if st.session_state.theme == 'dark':
 }
      [data-testid="stHeader"] {
     background: linear-gradient(to right,
-        #FFE066 0%,    /* Medium gold - LEFT (less light) */
-        #FFD700 40%,   /* Classic gold */
-        #FFB347 80%,   /* Medium gold */
-        #DAA520 100%   /* Dark gold - RIGHT ONLY */
+        #FFE066 0%,
+        #FFD700 40%,
+        #FFB347 80%,
+        #DAA520 100%
     ) !important;
     box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4) !important;
 }
@@ -72,51 +72,52 @@ section[data-testid="stAppViewContainer"] {
 section[data-testid="stAppViewContainer"] > div > div:first-child {
     position: static !important;
 }
-        [data-testid="stSidebar"] * {color: #D4C4A8 !important;}
+        /* MAIN TEXT + SIDEBAR TEXT */
+        [data-testid="stSidebar"] * {color: #f5bc58 !important;}
         [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
-            color: #C9B99B !important; font-weight: 600 !important;
+            color: #f5bc58 !important; font-weight: 600 !important;
         }
         [data-testid="stSidebar"] label {
-            color: #C9B99B !important; font-weight: 500 !important; font-size: 1rem !important;
+            color: #f5bc58 !important; font-weight: 500 !important; font-size: 1rem !important;
         }
         [data-testid="collapsedControl"] {
-            background-color: #C9B99B !important;
+            background-color: #f5bc58 !important;
             border: 2px solid #A67C52 !important;
             color: #0e1117 !important;
             box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
         }
         [data-testid="collapsedControl"]:hover {
             background-color: #A67C52 !important;
-            border-color: #C9B99B !important;
+            border-color: #f5bc58 !important;
             box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
         }
         div[data-testid="collapsedControl"] svg,
         div[data-testid="stSidebarCollapseButton"] svg {
-            fill: #D4C4A8 !important;
-            stroke: #D4C4A8 !important;
+            fill: #f5bc58 !important;
+            stroke: #f5bc58 !important;
         }
         [data-testid="stSidebar"] .stSelectbox > div > div {
             background-color: #262730 !important;
-            color: #D4C4A8 !important;
+            color: #f5bc58 !important;
             border: 2px solid #8B7355 !important;
         }
         [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] {
             background-color: #262730 !important;
         }
         [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div {
-            background-color: #262730 !important; color: #D4C4A8 !important;
+            background-color: #262730 !important; color: #f5bc58 !important;
         }
         [data-testid="stSidebar"] div[role="listbox"] {
             background-color: #262730 !important; border: 2px solid #8B7355 !important;
         }
         [data-testid="stSidebar"] div[role="option"] {
-            background-color: #262730 !important; color: #D4C4A8 !important; padding: 0.75rem !important;
+            background-color: #262730 !important; color: #f5bc58 !important; padding: 0.75rem !important;
         }
         [data-testid="stSidebar"] div[role="option"]:hover {
-            background-color: #3a3d4a !important; color: #C9B99B !important;
+            background-color: #3a3d4a !important; color: #f5bc58 !important;
         }
         .main-header {
-            font-size: 2.2rem !important; color: #C9B99B !important; text-align: center;
+            font-size: 2.2rem !important; color: #f5bc58 !important; text-align: center;
             font-weight: 700 !important; margin-bottom: 0.5rem !important;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
         }
@@ -125,12 +126,12 @@ section[data-testid="stAppViewContainer"] > div > div:first-child {
             text-align: center; font-weight: 400 !important;
         }
         h2, h3 {
-            color: #C9B99B !important; font-weight: 600 !important;
+            color: #f5bc58 !important; font-weight: 600 !important;
             border-bottom: 2px solid #8B7355 !important; padding-bottom: 0.5rem !important;
         }
-        .stMarkdown {color: #D4C4A8 !important;}
+        .stMarkdown {color: #f5bc58 !important;}
         [data-testid="stMetricValue"] {
-            color: #C9B99B !important; font-size: 1.8rem !important; font-weight: bold !important;
+            color: #f5bc58 !important; font-size: 1.8rem !important; font-weight: bold !important;
         }
         [data-testid="stMetricLabel"] {color: #B8956A !important; font-weight: 500 !important;}
         [data-testid="stMetricDelta"] {color: #B8B76D !important; font-weight: 600 !important;}
@@ -140,7 +141,7 @@ section[data-testid="stAppViewContainer"] > div > div:first-child {
             padding: 1rem !important; box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
         }
         div[data-testid="metric-container"]:hover {
-            border-color: #C9B99B !important;
+            border-color: #f5bc58 !important;
             box-shadow: 0 6px 12px rgba(201, 185, 155, 0.2) !important;
         }
         [data-testid="column"]:last-child {
@@ -149,7 +150,7 @@ section[data-testid="stAppViewContainer"] > div > div:first-child {
         }
         [data-testid="column"]:last-child .stButton > button {
             background: linear-gradient(135deg, #A67C52 0%, #8B7355 100%) !important;
-            color: #0e1117 !important; border: 3px solid #C9B99B !important;
+            color: #0e1117 !important; border: 3px solid #f5bc58 !important;
             padding: 0 !important; border-radius: 50% !important; font-size: 1.8rem !important;
             width: 60px !important; height: 60px !important;
             display: flex !important; align-items: center !important; justify-content: center !important;
@@ -161,15 +162,15 @@ section[data-testid="stAppViewContainer"] > div > div:first-child {
             box-shadow: 0 6px 30px rgba(166, 124, 82, 0.7) !important;
         }
         .stSelectbox > div > div {
-            background-color: #262730 !important; color: #D4C4A8 !important;
+            background-color: #262730 !important; color: #f5bc58 !important;
             border: 2px solid #8B7355 !important;
         }
-        .stSelectbox label {color: #C9B99B !important; font-weight: 500 !important;}
-        .stCheckbox > label {color: #D4C4A8 !important; font-weight: 500 !important;}
-        .stCheckbox > label:hover {color: #C9B99B !important;}
+        .stSelectbox label {color: #f5bc58 !important; font-weight: 500 !important;}
+        .stCheckbox > label {color: #f5bc58 !important; font-weight: 500 !important;}
+        .stCheckbox > label:hover {color: #f5bc58 !important;}
         .stDownloadButton > button {
             background: linear-gradient(135deg, #262730 0%, #1e2130 100%) !important;
-            color: #D4C4A8 !important; border: 2px solid #8B7355 !important;
+            color: #f5bc58 !important; border: 2px solid #8B7355 !important;
             padding: 0.75rem 1rem !important; border-radius: 8px !important;
             font-weight: 600 !important; width: 100% !important; text-align: center !important;
             transition: all 0.3s ease !important;
@@ -186,15 +187,15 @@ section[data-testid="stAppViewContainer"] > div > div:first-child {
         }
         .stInfo {
             background: linear-gradient(135deg, rgba(166, 124, 82, 0.2) 0%, rgba(166, 124, 82, 0.1) 100%) !important;
-            color: #D4C4A8 !important; border-left: 4px solid #A67C52 !important; border-radius: 8px !important;
+            color: #f5bc58 !important; border-left: 4px solid #A67C52 !important; border-radius: 8px !important;
         }
         .stWarning {
             background: linear-gradient(135deg, rgba(184, 149, 106, 0.2) 0%, rgba(184, 149, 106, 0.1) 100%) !important;
-            color: #D4C4A8 !important; border-left: 4px solid #B8956A !important; border-radius: 8px !important;
+            color: #f5bc58 !important; border-left: 4px solid #B8956A !important; border-radius: 8px !important;
         }
         .stError {
             background: linear-gradient(135deg, rgba(166, 124, 82, 0.3) 0%, rgba(166, 124, 82, 0.15) 100%) !important;
-            color: #D4C4A8 !important; border-left: 4px solid #A67C52; border-radius: 8px !important;
+            color: #f5bc58 !important; border-left: 4px solid #A67C52; border-radius: 8px !important;
         }
         .stTabs [data-baseweb="tab-list"] {
             background-color: #1e2130 !important; border-radius: 10px !important; padding: 0.5rem !important;
@@ -203,34 +204,34 @@ section[data-testid="stAppViewContainer"] > div > div:first-child {
             color: #8B7355 !important; font-weight: 500 !important; padding: 0.75rem 1.5rem !important;
         }
         .stTabs [aria-selected="true"] {
-            color: #C9B99B !important; border-bottom:3px solid #D4C4A8!important; font-weight: 600 !important;
+            color: #f5bc58 !important; border-bottom:3px solid #f5bc58!important; font-weight: 600 !important;
         }
         .stTabs div[data-baseweb="tab-highlight"] {background-color: transparent !important;}
         .dataframe {
-            color: #D4C4A8 !important; background-color: #1e2130 !important;
+            color: #f5bc58 !important; background-color: #1e2130 !important;
             border: 2px solid #8B7355 !important; border-radius: 8px !important;
         }
         .dataframe thead tr th {
-            background-color: #262730 !important; color: #C9B99B !important;
+            background-color: #262730 !important; color: #f5bc58 !important;
             border: 1px solid #8B7355 !important; font-weight: 600 !important; padding: 0.75rem !important;
         }
         .dataframe tbody tr td {
-            background-color: #1e2130 !important; color: #D4C4A8 !important;
+            background-color: #1e2130 !important; color: #f5bc58 !important;
             border: 1px solid #8B7355 !important; padding: 0.75rem !important;
         }
         .dataframe tbody tr:hover td {
-            background-color: #262730 !important; color: #C9B99B !important;
+            background-color: #262730 !important; color: #f5bc58 !important;
         }
         table {
-            color: #D4C4A8 !important; background-color: #1e2130 !important;
+            color: #f5bc58 !important; background-color: #1e2130 !important;
             border: 2px solid #8B7355 !important; border-radius: 8px !important;
         }
         table thead tr th {
-            background-color: #262730 !important; color: #C9B99B !important;
+            background-color: #262730 !important; color: #f5bc58 !important;
             border: 1px solid #8B7355 !important; font-weight: 600 !important; padding: 0.75rem !important;
         }
         table tbody tr td {
-            background-color: #1e2130 !important; color: #D4C4A8 !important;
+            background-color: #1e2130 !important; color: #f5bc58 !important;
             border: 1px solid #8B7355 !important; padding: 0.75rem !important;
         }
         table tbody tr:hover td {background-color: #262730 !important;}
@@ -244,55 +245,6 @@ section[data-testid="stAppViewContainer"] > div > div:first-child {
         ::-webkit-scrollbar-track {background: #1e2130;}
         ::-webkit-scrollbar-thumb {background: #8B7355; border-radius: 5px;}
         ::-webkit-scrollbar-thumb:hover {background: #A67C52;}
-    </style>
-    """, unsafe_allow_html=True)
-else:
-    st.markdown("""
-    <style>
-        :root { color-scheme: light; }
-        * {transition: background-color 0.5s ease, color 0.5s ease !important;}
-        .stApp {background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%) !important;}
-        .main-header {font-size: 2.2rem !important; color: #1f77b4 !important; text-align: center; font-weight: 700 !important;}
-        .sub-header {font-size: 1.2rem !important; color: #666 !important; text-align: center;}
-        div[data-testid="collapsedControl"],
-        div[data-testid="stSidebarCollapseButton"] {
-          background-color: #C9B99B !important;
-          border: 2px solid #A67C52 !important;
-          color: #0e1117 !important;
-          opacity: 1 !important;
-          visibility: visible !important;
-          display: flex !important;
-          z-index: 999999 !important;
-          box-shadow: 0 4px 12px rgba(201, 185, 155, 0.4) !important;
-        }
-        div[data-testid="collapsedControl"]:hover,
-        div[data-testid="stSidebarCollapseButton"]:hover {
-          background-color: #A67C52 !important;
-          border-color: #C9B99B !important;
-          box-shadow: 0 6px 16px rgba(201, 185, 155, 0.6) !important;
-        }
-        div[data-testid="collapsedControl"] svg,
-        div[data-testid="stSidebarCollapseButton"] svg {
-          fill: #D4C4A8 !important;
-          stroke: #D4C4A8 !important;
-        }
-        [data-testid="column"]:last-child {
-            position: fixed !important; top: 0.8rem !important; right: 0.8rem !important;
-            z-index: 999999 !important; width: 60px !important;
-        }
-        [data-testid="column"]:last-child .stButton > button {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
-            color: #1f2937 !important; border: 3px solid #f59e0b !important;
-            padding: 0 !important; border-radius: 50% !important; font-size: 1.8rem !important;
-            width: 60px !important; height: 60px !important;
-            display: flex !important; align-items: center !important; justify-content: center !important;
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.5) !important;
-            transition: all 0.3s ease !important;
-        }
-        [data-testid="column"]:last-child .stButton > button:hover {
-            transform: scale(1.15) rotate(180deg) !important;
-        }
-        #MainMenu, footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 
